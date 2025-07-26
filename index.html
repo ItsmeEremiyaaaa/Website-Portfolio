@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jeremiah Escubido | Website Portfolio</title>
+  <link rel="stylesheet" href="JeremiahEscubido1.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <style>
+    /* Modal Styles */
+    .custom-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .custom-modal-content {
+      background: white;
+      padding: 30px;
+      margin: 10% auto;
+      width: 80%;
+      max-width: 450px;
+      border-radius: 12px;
+      text-align: center;
+      position: relative;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .custom-close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .custom-close-btn:hover {
+      color: #000;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Intro Section -->
+  <div class="intro-wrapper">
+    <video class="intro-bg-video" autoplay muted loop playsinline>
+      <source src="media/intro.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <div class="intro">
+      <div class="text-align-center" id="js-pin">
+        <div class="max-width-small align-center">
+          <div class="margin-bottom margin-small">
+            <h1 class="main-title video-masked-text">
+              <span>My Website Portfolio</span>
+            </h1>
+            <h3 class="portinfo">
+              This website showcases my creative journey, technical skills, and professional projects. 
+              Whether you're here to explore my web development work, design concepts, or academic achievements
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs Section -->
+  <section class="section_tabs">
+    <div class="padding-section-large">
+      <div class="tabs_height">
+        <div class="tabs_sticky-wrapper">
+          <div class="tabs_container">
+            <div class="tabs_component">
+
+              <!-- Left Panel -->
+              <div class="tabs_left">
+                <div class="tabs_left-top">
+                  <div class="tabs_let-content is-1">
+                    <h2 class="heading-style-h4 text-color-gray100">
+                      Hi, I'm Jeremiah <span class="text-color-green">Falcon</span> Escubido
+                    </h2>
+                    <div class="tabs_line"></div>
+                    <p class="introabout">
+                      A passionate and driven BSIT student at St. Mary’s College of Bansalan. 
+                      I specialize in exploring the ever-evolving world of technology from building websites and designing 
+                      user-friendly interfaces to understanding how digital tools impact real-world experiences.
+                    </p>
+                  </div>
+
+                  <div class="tabs_let-content is-2">
+                    <h2 class="heading-style-h4 text-color-gray100">
+                      My projects <span class="text-color-green">and Works</span>
+                    </h2>
+                    <div class="tabs_line"></div>
+                    <p class="text-size-small text-color-gray400">
+                        Throughout my journey as an IT student and developer, I’ve built a variety of personal 
+                        and academic projects that showcase both functionality and 
+                        creativity. My work focuses on responsive design, interactivity, and user experience.
+                    </p>
+                  </div>
+
+                  <div class="tabs_let-content is-3">
+                    <h2 class="heading-style-h4 text-color-gray100">
+                      My Hobbies, <span class="text-color-green">and Favorites</span>
+                    </h2>
+                    <div class="tabs_line"></div>
+                    <p class="text-size-small text-color-gray400">
+                      I'm deeply passionate about creative and technical expression—especially through video editing, 
+                      developing my ideals, and programming. Video editing is where I find the most artistic freedom; 
+                      I love shaping raw footage into stories, 
+                      experimenting with timing, visuals, and sound to evoke emotion and clarity. 
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Profile Button -->
+                <div class="tabs_left-bottom">
+                  <div class="button is-green is-secondary" id="openModalBtn">
+                    <div class="button-text">Visit My Profile</div>
+                    <div class="button-circle-wrapper">
+                      <div class="button-icon _1 w-embed">→</div>
+                      <div class="button-icon _2 w-embed">→</div>
+                    </div>
+                    <div class="button-circlee background-color-green"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Video Panel -->
+              <div class="tabs_right">
+                <div class="tabs_video is-1 w-background-video">
+                  <video autoplay loop muted playsinline>
+                    <source src="Profile/ProfilePixel.mp4" type="video/mp4">
+                  </video>
+                </div>
+                <div class="tabs_video w-background-video">
+                  <video autoplay loop muted playsinline>
+                    <source src="media/GameDevelopment2.mp4" type="video/mp4">
+                  </video>
+                </div>
+                <div class="tabs_video w-background-video">
+                  <video autoplay loop muted playsinline>
+                    <source src="media/videoplayback.mp4" type="video/mp4">
+                  </video>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal Markup -->
+  <div class="custom-modal" id="customModal">
+    <div class="custom-modal-content">
+      <span class="custom-close-btn" id="closeModalBtn">&times;</span>
+      <h2>My Account</h2>
+      <img src="media/LinkedLN.PNG" alt="Profile Picture" class="modal-profile-image" />
+      <!-- Link added here -->
+      <a href="https://www.linkedin.com/in/jeremiah-escubido" target="_blank" class="modal-link">
+        <i class="fab fa-linkedin"></i>
+        View My LinkedIn Profile
+      </a>
+      
+    </div>
+  </div>
+  
+  
+  <script>
+    const modal = document.getElementById("customModal");
+    const openBtn = document.getElementById("openModalBtn");
+    const closeBtn = document.getElementById("closeModalBtn");
+
+    openBtn.addEventListener("click", () => {
+      modal.style.display = "block";
+    });
+
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+
+  
+    const slideRight = document.getElementById("slideRight");
+    const slideLeft = document.getElementById("slideLeft");
+    const imageWrapper = document.querySelector(".slider-image-wrapper");
+    const images = document.querySelectorAll(".modal-slide-image");
+
+    let currentIndex = 0;
+
+    function updateSlider() {
+     const offset = -currentIndex * 100;
+     imageWrapper.style.transform = `translateX(${offset}%)`;
+    }
+    slideRight.addEventListener("click", () => {
+      if (currentIndex < images.length - 1) {
+        currentIndex++;
+        updateSlider();
+      }
+    });
+
+    slideLeft.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateSlider();
+      }
+    });
+
+    // Initial setup
+    imageWrapper.style.display = "flex";
+    imageWrapper.style.transition = "transform 0.5s ease";
+    images.forEach(img => {
+      img.style.minWidth = "100%";
+    });
+  </script>
+
+
+  <div class="section2">
+  <video autoplay muted loop class="bg-video">
+    <source src="media/Cover1.mp4" type="video/mp4">
+  </video>
+  <!-- Moved overlay INSIDE section2 -->
+  <div class="overlay-icon"></div>
+</div>
+
+<div class="profile-modal" id="profileModal">
+  <div class="profile-modal-content">
+    <span class="profile-close-btn" id="closeProfileModal">&times;</span>
+    <h2>My Profile</h2>
+    <img src="media/Profile8.jpg" alt="Profile Picture" class="profile-modal-image" />
+    <div class="profile-details">
+      <p><strong>Name:</strong> Jeremiah Escubido</p>
+      <p><strong>Course:</strong> Bachelor of Science in Information Technology</p> 
+      <p><strong>Hobbies:</strong> Videogames, Editing, Designing, Programming</p>
+      <p><strong>Email:</strong> "jeremiahescubido05@gmail.com"</p>
+    </div>
+    </a>
+  </div>
+</div>
+
+<script>
+  // modal.js - Dedicated modal functionality
+document.addEventListener('DOMContentLoaded', () => {
+    // Original Modal
+    const modal = document.getElementById("customModal");
+    const openBtn = document.getElementById("openModalBtn");
+    const closeBtn = document.getElementById("closeModalBtn");
+
+    if (modal && openBtn && closeBtn) {
+        openBtn.addEventListener("click", () => modal.style.display = "block");
+        closeBtn.addEventListener("click", () => modal.style.display = "none");
+        window.addEventListener("click", (e) => e.target === modal && (modal.style.display = "none"));
+    }
+
+    // Profile Modal
+    const profileModal = document.getElementById("profileModal");
+    const overlayIcon = document.querySelector(".overlay-icon");
+    const closeProfileModal = document.getElementById("closeProfileModal");
+
+    if (profileModal && overlayIcon && closeProfileModal) {
+        overlayIcon.addEventListener("click", (e) => {
+            e.preventDefault();
+            profileModal.style.display = "block";
+        });
+        closeProfileModal.addEventListener("click", () => profileModal.style.display = "none");
+        window.addEventListener("click", (e) => e.target === profileModal && (profileModal.style.display = "none"));
+    }
+});
+</script>
+
+
+  <!-- JS for Modal -->
+  <script>
+    const modal = document.getElementById("customModal");
+    const openBtn = document.getElementById("openModalBtn");
+    const closeBtn = document.getElementById("closeModalBtn");
+
+    openBtn.addEventListener("click", () => {
+      modal.style.display = "block";
+    });
+
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  </script>
+
+    <div class="overlay-icon2" id="skillTrigger">
+  </div>
+</div>
+
+
+<div class="skill-modal" id="skillModal">
+  <div class="skill-modal-content">
+    <span class="skill-close-btn" id="closeSkillModal">
+      <i class="fas fa-times"></i> 
+    </span>
+    <h2>My Skills</h2>
+    <div class="skill-details">
+      <p><strong>Programming:</strong> Java, Python, C#, C++, HTML, Javascript</p>
+      <p><strong>Editing:</strong> Vegas Pro, Capcut, After Effects, Adobe Premier</p>
+      <p><strong>Physical:</strong> Basketball and Soccer</p>
+      <p><strong>projects:</strong> Documentations, Excel, Powerpoints</p>
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Skill Modal Elements
+  const skillModal = document.getElementById('skillModal');
+  const skillTrigger = document.getElementById('skillTrigger');
+  const closeSkillModal = document.getElementById('closeSkillModal');
+
+  // Open modal when clicking skill icon
+  if (skillTrigger) {
+    skillTrigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      skillModal.style.display = 'block';
+    });
+  }
+
+  // Close modal
+  if (closeSkillModal) {
+    closeSkillModal.addEventListener('click', function() {
+      skillModal.style.display = 'none';
+    });
+  }
+
+  // Close when clicking outside modal
+  window.addEventListener('click', function(event) {
+    if (event.target === skillModal) {
+      skillModal.style.display = 'none';
+    }
+  });
+});
+</script>
+
+
+<!-- Achievements Trigger Icon -->
+<div class="overlay-icon3" id="achievementsTrigger">
+</div>
+
+<!-- Achievements Modal -->
+<div class="achievements-modal" id="achievementsModal">
+  <div class="achievements-modal-content">
+    <span class="achievements-close-btn" id="closeAchievementsModal">
+      <i class="fas fa-times"></i>
+    </span>
+    <h2>My Achievements</h2>
+    <div class="achievements-details">
+      <p><strong>Academic:</strong> Dean's List 2021, 2024</p>
+      <p><strong>Competitions:</strong>Temple Run Challenge in Curvada</p>
+      <p><strong>Certifications:</strong>Journal Research</p>
+      <p><strong>Projects:</strong>Silent Lesson Game, Game Controller, Web Development</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  // Achievements Modal Elements
+  const achievementsModal = document.getElementById('achievementsModal');
+  const achievementsTrigger = document.getElementById('achievementsTrigger');
+  const closeAchievementsModal = document.getElementById('closeAchievementsModal');
+
+  // Open modal when clicking achievements icon
+  if (achievementsTrigger) {
+    achievementsTrigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      achievementsModal.style.display = 'block';
+    });
+  }
+
+  // Close modal
+  if (closeAchievementsModal) {
+    closeAchievementsModal.addEventListener('click', function() {
+      achievementsModal.style.display = 'none';
+    });
+  }
+
+  // Close when clicking outside modal
+  window.addEventListener('click', function(event) {
+    if (event.target === achievementsModal) {
+      achievementsModal.style.display = 'none';
+    }
+  });
+});
+</script>
+
+
+<div class="overlay-icon4" id="Memories"></div>
+<div class="memories-modal" id="memoriesModal">
+  <div class="memories-modal-content">
+    <span class="memories-close-btn" id="closeMemoriesModal">
+    </span>
+    <h2>My Memories</h2>
+    <div class="memories-details">
+      <div class="memories-gallery horizontal-scroll">
+        <div class="memory-item">
+          <img src="media/memories1.jpg" alt="Memory 1">
+          <p><b>BSIT LGU MEETING</b></p>
+        </div>
+        <div class="memory-item">
+          <img src="media/memories2.jpg" alt="Memory 2">
+          <p><b>Waterfalls Hiking</b></p>
+        </div>
+        <div class="memory-item">
+          <img src="media/memories3.jpg" alt="Memory 3">
+          <p><b>Hairrcut</b></p>
+        </div>
+        <div class="memory-item">
+          <img src="media/memories4.jpg" alt="Memory 3">
+          <p><b>Silly Days</b></p>
+      </div>
+        <div class="memory-item">
+          <img src="media/memories5.jpg" alt="Memory 3">
+          <p><b>School Workshop</b></p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Memories Modal Elements
+  const memoriesModal = document.getElementById('memoriesModal');
+  const memoriesTrigger = document.getElementById('Memories');
+  const closeMemoriesModal = document.getElementById('closeMemoriesModal');
+
+  // Open modal when clicking memories icon
+  if (memoriesTrigger) {
+    memoriesTrigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      memoriesModal.style.display = 'block';
+    });
+  }
+
+  // Close modal
+  if (closeMemoriesModal) {
+    closeMemoriesModal.addEventListener('click', function() {
+      memoriesModal.style.display = 'none';
+    });
+  }
+
+  // Close when clicking outside modal
+  window.addEventListener('click', function(event) {
+    if (event.target === memoriesModal) {
+      memoriesModal.style.display = 'none';
+    }
+  });
+});
+</script>
+
+<script src="JeremiahEscubido1.js"></script>  
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+// Buttons
+.btn-primary {
+  background-color: #00c97a;
+  color: #000;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 10px 28px;
+  transition: 0.3s ease;
+  &:hover {
+    background-color: #009e5f;
+    border-color: #009e5f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 201, 122, 0.4);
+  }
+}
+
+.btn-outline-primary {
+  border-color: #009e5f;
+  color: #00c97a;
+  border-radius: 50px;
+  padding: 10px 28px;
+  $transition: all 0.3s ease;   
+  &:hover {
+    background-color: #00c97a;
+    color: #000;
+    transform: translateY(-2px);
+  }
+}
+
+// Navbar
+.navbar {
+  background-color: rgba(13, 13, 13, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 201, 122, 0.15);
+  padding: 16px 0;
+  .navbar-brand {
+    color: #f0f0f0 !important;
+    font-weight: 700;
+    font-size: 1.3rem;
+    span { color: #00c97a; }
+  }
+  .nav-link {
+    color: #aaaaaa !important;
+    font-weight: 500;
+    margin: 0 6px;
+    transition: 0.3s ease;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #00c97a;
+      transition: 0.3s ease;
+    }
+    &:hover {
+      color: #00c97a !important;
+      &::after { width: 100%; }
+    }
+  }
+  .navbar-toggler {
+    border-color: rgba(0, 201, 122, 0.4);
+    .navbar-toggler-icon { filter: invert(1); }
+  }
+}
+
+// Cards
+.card {
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  color: #f0f0f0;
+  transition: 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  &:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0, 201, 122, 0.35);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+  .card-title { color: #f0f0f0; font-weight: 700; }
+  .card-text  { color: #aaaaaa; font-size: 0.9rem; }
+}
+
+// Badges
+.badge {
+  &.bg-primary {
+    background-color: rgba(0, 201, 122, 0.15) !important;
+    color: #00c97a;
+    border: 1px solid rgba(0, 201, 122, 0.3);
+    font-weight: 500;
+  }
+}
+
+// Progress bars
+.progress {
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 50px;
+  height: 8px;
+  .progress-bar {
+    background: linear-gradient(90deg, #00c97a, #009e5f);
+    border-radius: 50px;
+  }
+}

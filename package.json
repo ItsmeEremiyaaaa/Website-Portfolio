@@ -1,0 +1,20 @@
+{
+  "name": "website-portfolio-main",
+  "version": "1.0.0",
+  "description": "",
+  "main": "JeremiahEscubido1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass --watch sass/main.scss:JeremiahEscubido1.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "sass": "^1.57.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8"
+  }
+}

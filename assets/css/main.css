@@ -3,6 +3,22 @@
    Plain CSS, no framework. Tokens → base → layout → components → sections.
    ========================================================================== */
 
+/* ── Fonts (self-hosted Geist, Latin subset, SIL OFL — see assets/fonts) ── */
+@font-face {
+  font-family: "Geist";
+  src: url("../fonts/geist-latin.woff2") format("woff2");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("../fonts/geist-mono-latin.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ── Tokens ─────────────────────────────────────────────────────────────── */
 :root {
   /* Dark is the default identity; light is defined below. */
@@ -111,7 +127,7 @@ img, video { height: auto; }
 ul, ol { padding: 0; list-style: none; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
-h1, h2, h3 { font-weight: 600; line-height: 1.15; text-wrap: balance; }
+h1, h2, h3, h4 { font-weight: 600; line-height: 1.15; text-wrap: balance; }
 p { text-wrap: pretty; }
 
 ::selection { background: var(--accent); color: var(--accent-ink); }
@@ -600,11 +616,95 @@ p { text-wrap: pretty; }
   transition: transform 600ms var(--ease);
 }
 
+/* Work groups */
+.work-group + .work-group { margin-top: clamp(56px, 8vw, 88px); }
+.group-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.group-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Application cards (no screenshots, so the structure carries the card) */
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.app-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+.app-card:hover { transform: translateY(-3px); }
+.app-card .project-title { font-size: 1.375rem; }
+.app-kind {
+  margin-top: 4px;
+  font-size: 0.9375rem;
+  color: var(--accent-text);
+}
+.roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: var(--r);
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+.roles::before {
+  content: attr(data-label);
+  width: 100%;
+  margin-bottom: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+.roles li {
+  padding: 4px 10px;
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+.app-card .tags { margin-top: auto; padding-top: 20px; }
+
+.work-more { margin-top: 40px; text-align: center; }
+
+@media (max-width: 1024px) {
+  .app-grid { grid-template-columns: 1fr; }
+  .app-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 32px; }
+  .app-card > * { grid-column: 1; }
+  .app-card .roles, .app-card .tags { grid-column: 2; }
+  .app-card .roles { grid-row: 1 / span 3; align-self: start; margin-top: 0; }
+  .app-card .tags { grid-row: 4 / span 2; align-self: end; }
+}
+@media (max-width: 640px) {
+  .app-grid { gap: 16px; }
+  .app-card { display: flex; padding: 20px; }
+  .app-card .roles { margin-top: 20px; align-self: stretch; }
+  .app-card .tags { align-self: stretch; }
+}
+
 /* Featured project */
 .project-featured {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  margin-bottom: 24px;
 }
 .project-featured .project-body { padding: clamp(24px, 4vw, 44px); }
 .project-featured .project-title { font-size: clamp(1.375rem, 2.4vw, 1.75rem); }
@@ -721,7 +821,6 @@ p { text-wrap: pretty; }
 }
 @media (max-width: 640px) {
   .project-grid { grid-template-columns: 1fr; gap: 16px; }
-  .project-featured { margin-bottom: 16px; }
   .project-facts div { grid-template-columns: 1fr; gap: 2px; }
   .project-card .project-body { padding: 20px; }
 }
@@ -1017,6 +1116,8 @@ p { text-wrap: pretty; }
 .cl-arrow { transition: transform var(--dur) var(--ease); }
 .contact-links a:hover { color: var(--text); }
 .contact-links a:hover .cl-arrow { transform: translate(2px, -2px); color: var(--accent-text); }
+.cl-arrow-down { rotate: 90deg; }
+.contact-links a:hover .cl-arrow-down { transform: translate(2px, 0); }
 
 @media (max-width: 860px) {
   .contact-inner { grid-template-columns: 1fr; }

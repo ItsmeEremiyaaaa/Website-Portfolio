@@ -6,9 +6,9 @@ Personal portfolio of Jeremiah Falcon Escubido, BSIT student at St. Mary's Colle
 
 ## What's inside
 
-- **Selected work**: published research (AJESS, 2025), an isometric game prototype built in Godot, this site, and a video edit
+- **Selected work**: GradeHub, RecipesPOS, and GABAY (applications); published research (AJESS, 2025); an isometric game prototype built in Godot, this site, and a video edit
 - **About, stack, journey**: education, recognition, and the tools I use
-- **Contact**: email, LinkedIn, and GitHub
+- **Contact**: email, LinkedIn, GitHub, ORCID, and a downloadable CV
 
 ## Built with
 
@@ -20,6 +20,9 @@ assets/css/main.css styles (design tokens, light/dark themes)
 assets/js/main.js   nav, theme toggle, reveal animations, video previews, photo viewer
 assets/img/         optimized WebP images
 assets/video/       compressed project videos
+assets/fonts/       self-hosted Geist fonts (Latin subset, SIL OFL)
+assets/Escubido_Jeremiah_Resume.pdf  downloadable CV
+404.html            custom not-found page
 media/              original source media (not loaded by the site)
 ```
 

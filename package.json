@@ -1,10 +1,11 @@
 {
   "name": "website-portfolio",
   "version": "2.0.0",
-  "description": "Personal portfolio of Jeremiah Falcon Escubido — plain HTML, CSS and JavaScript.",
+  "description": "Personal portfolio of Jeremiah Falcon Escubido \u2014 plain HTML, CSS and JavaScript.",
   "private": true,
   "scripts": {
-    "start": "npx --yes http-server -c-1 -p 8080 ."
+    "start": "npx --yes http-server -c-1 -p 8080 .",
+    "stamp": "node scripts/stamp-assets.mjs"
   },
   "author": "Jeremiah Falcon Escubido",
   "license": "ISC"

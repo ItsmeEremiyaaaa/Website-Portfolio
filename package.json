@@ -1,20 +1,11 @@
 {
-  "name": "website-portfolio-main",
-  "version": "1.0.0",
-  "description": "",
-  "main": "JeremiahEscubido1.js",
+  "name": "website-portfolio",
+  "version": "2.0.0",
+  "description": "Personal portfolio of Jeremiah Falcon Escubido — plain HTML, CSS and JavaScript.",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "sass": "sass --watch sass/main.scss:JeremiahEscubido1.css"
+    "start": "npx --yes http-server -c-1 -p 8080 ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {
-    "sass": "^1.57.1"
-  },
-  "dependencies": {
-    "bootstrap": "^5.3.8"
-  }
+  "author": "Jeremiah Falcon Escubido",
+  "license": "ISC"
 }

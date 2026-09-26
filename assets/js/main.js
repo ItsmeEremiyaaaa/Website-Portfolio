@@ -91,14 +91,59 @@
     var revealObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          revealObserver.unobserve(entry.target);
+          var el = entry.target;
+          el.classList.add('is-visible');
+          revealObserver.unobserve(el);
+          // Once the entrance finishes, hand transitions back to the element (hover, tilt).
+          el.addEventListener('transitionend', function done(e) {
+            if (e.target !== el || e.propertyName !== 'opacity' || el.classList.contains('stagger')) return;
+            el.removeEventListener('transitionend', done);
+            el.classList.remove('reveal', 'is-visible');
+          });
         }
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
     reveals.forEach(function (el) { revealObserver.observe(el); });
   } else {
     reveals.forEach(function (el) { el.classList.add('is-visible'); });
+  }
+
+  /* ── Staggered children ───────────────────────────────────────────────
+     Sibling cards cascade in, and lists marked .stagger reveal item by item. */
+  document.querySelectorAll('.reveal').forEach(function (el) {
+    var i = 0, prev = el.previousElementSibling;
+    while (prev) { if (prev.classList.contains('reveal')) i++; prev = prev.previousElementSibling; }
+    if (i) el.style.setProperty('--rd', Math.min(i, 4) * 80 + 'ms');
+  });
+  document.querySelectorAll('.stagger').forEach(function (list) {
+    Array.prototype.forEach.call(list.children, function (child, i) { child.style.setProperty('--i', i); });
+  });
+
+  /* ── 3D tilt with light glare (mouse / trackpad only) ────────────────── */
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  if (finePointer.matches && !reduceMotion.matches) {
+    document.querySelectorAll('.tilt').forEach(function (el) {
+      var max = el.classList.contains('about-portrait') ? 8 : 5;
+      var frame = 0;
+      el.addEventListener('pointermove', function (e) {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(function () {
+          var r = el.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+          el.style.setProperty('--ry', ((px - 0.5) * max * 2).toFixed(2) + 'deg');
+          el.style.setProperty('--rx', ((0.5 - py) * max * 2).toFixed(2) + 'deg');
+          el.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+          el.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+          el.classList.add('is-tilting');
+        });
+      });
+      el.addEventListener('pointerleave', function () {
+        cancelAnimationFrame(frame);
+        el.classList.remove('is-tilting');
+        el.style.setProperty('--rx', '0deg');
+        el.style.setProperty('--ry', '0deg');
+      });
+    });
   }
 
   /* ── Project videos ───────────────────────────────────────────────────── */

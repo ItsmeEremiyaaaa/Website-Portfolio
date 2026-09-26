@@ -17,7 +17,8 @@ Plain HTML, CSS, and JavaScript. No framework or build step.
 ```
 index.html          page markup
 assets/css/main.css styles (design tokens, light/dark themes)
-assets/js/main.js   nav, theme toggle, reveal animations, video previews, photo viewer
+assets/js/main.js   nav, theme toggle, reveals, 3D tilt, video previews, photo viewer
+assets/js/iso-scene.js  interactive isometric island in the hero (Canvas 2D)
 assets/img/         optimized WebP images
 assets/video/       compressed project videos
 assets/fonts/       self-hosted Geist fonts (Latin subset, SIL OFL)

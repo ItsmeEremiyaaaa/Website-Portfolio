@@ -29,6 +29,7 @@
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/main.css">
+  <script src="assets/js/iso-scene.js" defer></script>
 
   <script>
     // Apply the saved theme before first paint to avoid a flash.
@@ -140,7 +141,13 @@
     <div class="hero-grid-bg" aria-hidden="true"></div>
     <div class="container hero-inner">
       <div class="hero-copy">
-        <p class="hero-kicker">Hi, I'm Jeremiah Escubido</p>
+        <div class="hero-id">
+          <img class="hero-avatar" src="assets/img/portrait-360.webp" width="360" height="362" alt="" fetchpriority="high">
+          <div>
+            <p class="hero-kicker">Hi, I'm Jeremiah Escubido</p>
+            <p class="hero-status"><span class="status-dot" aria-hidden="true"></span> Open to internship &amp; OJT</p>
+          </div>
+        </div>
         <h1 class="hero-title" id="hero-title">
           BSIT student &amp; full&#8209;stack developer building practical software <span class="text-muted">for the web, desktop, and AR.</span>
         </h1>
@@ -177,15 +184,15 @@
         </ul>
       </div>
 
-      <figure class="hero-portrait enter" style="--d:1">
-        <div class="portrait-frame">
-          <img src="assets/img/portrait.webp" srcset="assets/img/portrait-360.webp 360w, assets/img/portrait.webp 720w"
-               sizes="(max-width: 860px) 72px, 340px" width="720" height="723"
-               alt="Pixel-art portrait of Jeremiah Escubido wearing round glasses and a school polo" fetchpriority="high">
+      <figure class="hero-scene enter" style="--d:1">
+        <div class="scene-frame">
+          <canvas class="iso-scene" role="img"
+                  aria-label="Animated isometric voxel island with grass, sand, water, and trees, inspired by my Godot game prototype"></canvas>
         </div>
-        <figcaption class="portrait-caption">
-          <span class="status-dot" aria-hidden="true"></span>
-          Open to internship &amp; OJT
+        <figcaption class="scene-caption">
+          <span>Live isometric world, drawn with Canvas</span>
+          <span class="scene-hint scene-hint-hover">Hover to shape the terrain</span>
+          <span class="scene-hint scene-hint-touch">Tap to shape the terrain</span>
         </figcaption>
       </figure>
     </div>
@@ -204,7 +211,7 @@
       <div class="work-group">
         <h3 class="group-title reveal">Applications</h3>
         <div class="app-grid">
-          <article class="project app-card reveal" aria-labelledby="p-gradehub">
+          <article class="project app-card reveal tilt" aria-labelledby="p-gradehub">
             <p class="project-meta"><span class="badge">Web app</span><span>Full-stack</span></p>
             <h4 class="project-title" id="p-gradehub">GradeHub</h4>
             <p class="app-kind">Student grade management system</p>
@@ -222,7 +229,7 @@
             </ul>
           </article>
 
-          <article class="project app-card reveal" aria-labelledby="p-pos">
+          <article class="project app-card reveal tilt" aria-labelledby="p-pos">
             <p class="project-meta"><span class="badge">Desktop app</span><span>Java</span></p>
             <h4 class="project-title" id="p-pos">RecipesPOS</h4>
             <p class="app-kind">Point-of-sale system</p>
@@ -240,7 +247,7 @@
             </ul>
           </article>
 
-          <article class="project app-card reveal" aria-labelledby="p-gabay">
+          <article class="project app-card reveal tilt" aria-labelledby="p-gabay">
             <p class="project-meta"><span class="badge badge-accent">In progress</span><span>Mobile · AR</span></p>
             <h4 class="project-title" id="p-gabay">GABAY</h4>
             <p class="app-kind">Augmented-reality campus navigation</p>
@@ -317,7 +324,7 @@
       <div class="work-group">
         <h3 class="group-title reveal">Games, web &amp; media</h3>
         <div class="project-grid">
-          <article class="project project-card reveal" aria-labelledby="p-game">
+          <article class="project project-card reveal tilt" aria-labelledby="p-game">
             <div class="project-media media-video">
               <video class="js-inview-video" muted loop playsinline preload="none" width="1280" height="720"
                      poster="assets/img/isometric-game-720.webp" aria-label="Gameplay footage of the isometric game prototype running in Godot">
@@ -343,7 +350,7 @@
             </div>
           </article>
 
-          <article class="project project-card reveal" aria-labelledby="p-site">
+          <article class="project project-card reveal tilt" aria-labelledby="p-site">
             <div class="project-media">
               <img src="assets/img/portfolio-preview-720.webp" srcset="assets/img/portfolio-preview-720.webp 720w, assets/img/portfolio-preview.webp 1280w"
                    sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) 50vw, 360px"
@@ -371,7 +378,7 @@
             </div>
           </article>
 
-          <article class="project project-card reveal" aria-labelledby="p-edit">
+          <article class="project project-card reveal tilt" aria-labelledby="p-edit">
             <div class="project-media media-video">
               <video class="js-click-video" playsinline preload="none" width="960" height="540"
                      poster="assets/img/motion-edit-720.webp" aria-label="Anime action edit, 48 seconds, with sound">
@@ -413,6 +420,11 @@
       <header class="section-head reveal">
         <p class="eyebrow">About</p>
         <h2 class="section-title" id="about-title">I build things from the ground up and care how people use them.</h2>
+        <figure class="about-portrait tilt">
+          <img src="assets/img/portrait.webp" srcset="assets/img/portrait-360.webp 360w, assets/img/portrait.webp 720w"
+               sizes="(max-width: 860px) 60vw, 320px" width="720" height="723" loading="lazy" decoding="async"
+               alt="Pixel-art portrait of Jeremiah Escubido wearing round glasses and a school polo">
+        </figure>
       </header>
 
       <div class="about-body reveal">
@@ -447,7 +459,7 @@
         <p class="section-desc">Grouped by what I use them for, from coursework and my own projects.</p>
       </header>
 
-      <dl class="stack reveal">
+      <dl class="stack reveal stagger">
         <div class="stack-row">
           <dt>Languages</dt>
           <dd><ul class="chips"><li>TypeScript</li><li>JavaScript</li><li>PHP</li><li>Java</li><li>Python</li><li>C#</li><li>C++</li><li>GDScript</li></ul></dd>
@@ -498,7 +510,7 @@
         </p>
       </header>
 
-      <ol class="timeline reveal">
+      <ol class="timeline reveal stagger">
         <li class="timeline-item">
           <p class="timeline-when">2024 – 2026</p>
           <div class="timeline-what">
@@ -558,7 +570,7 @@
         <p class="section-desc">Program events, recognition, presentations, and a few moments in between.</p>
       </header>
 
-      <ul class="gallery reveal" aria-label="Photo gallery">
+      <ul class="gallery reveal stagger" aria-label="Photo gallery">
         <li><button type="button" data-full="assets/img/life-8.webp"><img src="assets/img/life-8-sm.webp" srcset="assets/img/life-8-sm.webp 640w, assets/img/life-8.webp 1400w" sizes="(max-width: 640px) 100vw, 50vw" width="640" height="480" loading="lazy" decoding="async" alt="Presenting in a computer lab during a BSIT session"></button></li>
         <li><button type="button" data-full="assets/img/life-9.webp"><img src="assets/img/life-9-sm.webp" srcset="assets/img/life-9-sm.webp 640w, assets/img/life-9.webp 1400w" sizes="(max-width: 640px) 50vw, 25vw" width="640" height="480" loading="lazy" decoding="async" alt="Receiving an achievement certificate and medal with faculty"></button></li>
         <li><button type="button" data-full="assets/img/life-6.webp"><img src="assets/img/life-6-sm.webp" srcset="assets/img/life-6-sm.webp 640w, assets/img/life-6.webp 1400w" sizes="(max-width: 640px) 50vw, 25vw" width="640" height="427" loading="lazy" decoding="async" alt="BSIT students on stage at a program event"></button></li>

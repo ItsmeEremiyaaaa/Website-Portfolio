@@ -395,8 +395,8 @@ p { text-wrap: pretty; }
 
 .hero-inner {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
-  gap: clamp(40px, 7vw, 96px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
+  gap: clamp(40px, 6vw, 80px);
   align-items: center;
 }
 
@@ -404,7 +404,6 @@ p { text-wrap: pretty; }
   font-family: var(--font-mono);
   font-size: 0.875rem;
   color: var(--accent-text);
-  margin-bottom: 20px;
 }
 
 .hero-title {
@@ -458,42 +457,85 @@ p { text-wrap: pretty; }
   margin-left: -14px;
 }
 
-.hero-portrait { justify-self: end; width: 100%; }
-.portrait-frame {
-  aspect-ratio: 1;
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
-  box-shadow: var(--shadow);
-}
-.portrait-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  image-rendering: pixelated;
-}
-.portrait-caption {
+/* Identity row: avatar + name + availability */
+.hero-id {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 14px;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.hero-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  object-fit: cover;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+.hero-id .hero-kicker { margin-bottom: 2px; }
+.hero-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  color: var(--text-muted);
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+}
+
+/* Isometric scene */
+.hero-scene { width: 100%; }
+.scene-frame {
+  position: relative;
+  aspect-ratio: 1 / 0.86;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(70% 55% at 50% 58%, var(--accent-soft), transparent 70%),
+    var(--surface);
+  overflow: hidden;
+}
+.scene-frame::after {
+  /* faint dotted floor so the island reads as sitting in space */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--grid-line) 1px, transparent 1px);
+  background-size: 18px 18px;
+  -webkit-mask-image: radial-gradient(60% 50% at 50% 60%, #000, transparent);
+  mask-image: radial-gradient(60% 50% at 50% 60%, #000, transparent);
+  pointer-events: none;
+}
+.iso-scene {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+.scene-caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+}
+.scene-hint { color: var(--text-muted); }
+.scene-hint-touch { display: none; }
+@media (hover: none) {
+  .scene-hint-hover { display: none; }
+  .scene-hint-touch { display: inline; }
 }
 
 @media (max-width: 860px) {
   .hero-inner { grid-template-columns: 1fr; }
-  .hero-portrait {
-    order: -1;
-    justify-self: start;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .portrait-frame { width: 72px; border-radius: 12px; flex-shrink: 0; }
-  .portrait-caption { margin-top: 0; }
+  .hero-scene { max-width: 520px; }
+  .scene-frame { aspect-ratio: 1 / 0.8; }
 }
 
 @media (max-width: 520px) {
@@ -648,7 +690,6 @@ p { text-wrap: pretty; }
   flex-direction: column;
   padding: 24px;
 }
-.app-card:hover { transform: translateY(-3px); }
 .app-card .project-title { font-size: 1.375rem; }
 .app-kind {
   margin-top: 4px;
@@ -759,7 +800,6 @@ p { text-wrap: pretty; }
   gap: 24px;
 }
 .project-card { display: flex; flex-direction: column; }
-.project-card:hover { transform: translateY(-3px); }
 .project-card .project-media {
   aspect-ratio: 16 / 10;
   border-bottom: 1px solid var(--border);
@@ -826,6 +866,22 @@ p { text-wrap: pretty; }
 }
 
 /* ── About ──────────────────────────────────────────────────────────────── */
+.about-portrait {
+  width: min(320px, 70%);
+  margin-top: 36px;
+  aspect-ratio: 1;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.about-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
 .about {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -1141,6 +1197,56 @@ p { text-wrap: pretty; }
 .footer-inner .text-link { font-size: 0.875rem; color: var(--text-muted); }
 
 /* ── Motion ─────────────────────────────────────────────────────────────── */
+/* 3D tilt + glare (driven by --rx/--ry/--gx/--gy from main.js) */
+.tilt {
+  position: relative;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition:
+    transform 500ms var(--ease),
+    border-color 250ms var(--ease),
+    box-shadow 250ms var(--ease);
+  will-change: transform;
+}
+.tilt.is-tilting { transition-duration: 120ms, 250ms, 250ms; }
+.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%),
+              color-mix(in srgb, var(--text) 9%, transparent), transparent 60%);
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+  pointer-events: none;
+}
+.tilt.is-tilting::after { opacity: 1; }
+.tilt.is-tilting { box-shadow: var(--shadow); }
+
+/* Lists that reveal item by item (--i set in main.js) */
+.js .reveal.stagger { opacity: 1; transform: none; }
+.js .reveal.stagger > * {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.js .reveal.stagger.is-visible > * {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 600ms var(--ease) calc(var(--i, 0) * 60ms + 80ms),
+    transform 600ms var(--ease) calc(var(--i, 0) * 60ms + 80ms),
+    background-color var(--dur) var(--ease);
+}
+
+/* Timeline connector draws downward as items appear */
+.js .timeline.reveal .timeline-item::before {
+  transform: scaleY(0);
+  transform-origin: top;
+}
+.js .timeline.reveal.is-visible .timeline-item::before {
+  transform: scaleY(1);
+  transition: transform 700ms var(--ease) calc(var(--i, 0) * 60ms + 300ms);
+}
 /* Content is only hidden when JS is available to reveal it again. */
 .js .enter {
   opacity: 0;
@@ -1164,7 +1270,9 @@ p { text-wrap: pretty; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .js .enter, .js .reveal { opacity: 1; transform: none; animation: none; }
+  .js .enter, .js .reveal, .js .reveal.stagger > * { opacity: 1; transform: none; animation: none; }
+  .js .timeline.reveal .timeline-item::before { transform: none; }
+  .tilt { transform: none; }
   .status-dot::after { display: none; }
 }
 

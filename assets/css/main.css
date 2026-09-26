@@ -294,6 +294,8 @@ p { text-wrap: pretty; }
   -webkit-backdrop-filter: saturate(180%) blur(14px);
   backdrop-filter: saturate(180%) blur(14px);
 }
+/* Solid while the menu is open so page text doesn't show behind the links */
+.site-header.menu-open { background: var(--bg); }
 
 .nav {
   height: var(--nav-h);

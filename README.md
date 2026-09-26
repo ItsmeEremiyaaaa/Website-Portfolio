@@ -37,4 +37,7 @@ Then open http://localhost:8080.
 
 ## Deploy
 
+After changing any CSS or JS file, run `npm run stamp` before committing. It adds a content fingerprint (`?v=…`) to the asset links so visitors never get a stale cached stylesheet with new HTML.
+
+
 GitHub Pages builds from the `master` branch (root folder). Every change merged into `master` goes live automatically.

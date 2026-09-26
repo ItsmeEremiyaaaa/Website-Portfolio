@@ -34,7 +34,15 @@
   var menuBtn = document.querySelector('.menu-toggle');
   var menu = document.getElementById('mobile-menu');
 
-  function onScroll() { header.classList.toggle('is-scrolled', window.scrollY > 8); }
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+      ticking = false;
+    });
+  }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 

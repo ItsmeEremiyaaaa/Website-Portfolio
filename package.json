@@ -1,12 +1,17 @@
 {
   "name": "website-portfolio",
   "version": "2.0.0",
-  "description": "Personal portfolio of Jeremiah Falcon Escubido \u2014 plain HTML, CSS and JavaScript.",
+  "description": "Personal portfolio of Jeremiah Falcon Escubido \u2014 HTML, CSS and JavaScript, with a three.js hero scene.",
   "private": true,
   "scripts": {
     "start": "npx --yes http-server -c-1 -p 8080 .",
-    "stamp": "node scripts/stamp-assets.mjs"
+    "stamp": "node scripts/stamp-assets.mjs",
+    "build": "esbuild src/hero-3d.js --bundle --minify --format=esm --target=es2020 --legal-comments=eof --outfile=assets/js/hero-3d.js && node scripts/stamp-assets.mjs"
   },
   "author": "Jeremiah Falcon Escubido",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "three": "^0.186.1"
+  }
 }

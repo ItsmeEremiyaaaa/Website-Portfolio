@@ -28,8 +28,7 @@
 
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=cf6acfed">
-  <script src="assets/js/iso-scene.js?v=07b67014" defer></script>
+  <link rel="stylesheet" href="assets/css/main.css?v=71c8b943">
 
   <script>
     // Apply the saved theme before first paint to avoid a flash.
@@ -42,7 +41,7 @@
       } catch (e) {}
     })();
   </script>
-  <script src="assets/js/main.js?v=dd76c1e4" defer></script>
+  <script src="assets/js/main.js?v=8c06f585" defer></script>
 
   <script type="application/ld+json">
   {
@@ -184,17 +183,10 @@
         </ul>
       </div>
 
-      <figure class="hero-scene enter" style="--d:1">
-        <div class="scene-frame">
-          <canvas class="iso-scene" role="img"
-                  aria-label="Animated isometric voxel island with grass, sand, water, and trees, inspired by my Godot game prototype"></canvas>
-        </div>
-        <figcaption class="scene-caption">
-          <span>Live isometric world, drawn with Canvas</span>
-          <span class="scene-hint scene-hint-hover">Hover to shape the terrain</span>
-          <span class="scene-hint scene-hint-touch">Tap to shape the terrain</span>
-        </figcaption>
-      </figure>
+      <div class="hero-visual enter" style="--d:1" aria-hidden="true">
+        <div class="hero-glow"></div>
+        <canvas class="hero-3d" data-src="assets/js/hero-3d.js?v=8dcce7b0"></canvas>
+      </div>
     </div>
   </section>
 
@@ -211,7 +203,7 @@
       <div class="work-group">
         <h3 class="group-title reveal">Applications</h3>
         <div class="app-grid">
-          <article class="project app-card reveal tilt" aria-labelledby="p-gradehub">
+          <article class="project app-card reveal depth tilt" aria-labelledby="p-gradehub">
             <p class="project-meta"><span class="badge">Web app</span><span>Full-stack</span></p>
             <h4 class="project-title" id="p-gradehub">GradeHub</h4>
             <p class="app-kind">Student grade management system</p>
@@ -229,7 +221,7 @@
             </ul>
           </article>
 
-          <article class="project app-card reveal tilt" aria-labelledby="p-pos">
+          <article class="project app-card reveal depth tilt" aria-labelledby="p-pos">
             <p class="project-meta"><span class="badge">Desktop app</span><span>Java</span></p>
             <h4 class="project-title" id="p-pos">RecipesPOS</h4>
             <p class="app-kind">Point-of-sale system</p>
@@ -247,7 +239,7 @@
             </ul>
           </article>
 
-          <article class="project app-card reveal tilt" aria-labelledby="p-gabay">
+          <article class="project app-card reveal depth tilt" aria-labelledby="p-gabay">
             <p class="project-meta"><span class="badge badge-accent">In progress</span><span>Mobile · AR</span></p>
             <h4 class="project-title" id="p-gabay">GABAY</h4>
             <p class="app-kind">Augmented-reality campus navigation</p>
@@ -270,7 +262,7 @@
       <!-- Research -->
       <div class="work-group">
         <h3 class="group-title reveal">Research</h3>
-        <article class="project project-featured reveal" aria-labelledby="p-research">
+        <article class="project project-featured reveal depth" aria-labelledby="p-research">
           <div class="project-body">
             <p class="project-meta">
               <span class="badge badge-accent">Published</span>
@@ -310,7 +302,7 @@
             </div>
           </div>
           <div class="project-media">
-            <div class="browser">
+            <div class="browser" data-depth>
               <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>doi.org/10.9734/ajess/2025/v51i62032</em></div>
               <img src="assets/img/research.webp" srcset="assets/img/research-700.webp 700w, assets/img/research.webp 1351w"
                    sizes="(max-width: 860px) calc(100vw - 72px), 520px" width="1351" height="635" loading="lazy" decoding="async"
@@ -324,7 +316,7 @@
       <div class="work-group">
         <h3 class="group-title reveal">Games, web &amp; media</h3>
         <div class="project-grid">
-          <article class="project project-card reveal tilt" aria-labelledby="p-game">
+          <article class="project project-card reveal depth tilt" aria-labelledby="p-game">
             <div class="project-media media-video">
               <video class="js-inview-video" muted loop playsinline preload="none" width="1280" height="720"
                      poster="assets/img/isometric-game-720.webp" aria-label="Gameplay footage of the isometric game prototype running in Godot">
@@ -350,7 +342,7 @@
             </div>
           </article>
 
-          <article class="project project-card reveal tilt" aria-labelledby="p-site">
+          <article class="project project-card reveal depth tilt" aria-labelledby="p-site">
             <div class="project-media">
               <img src="assets/img/portfolio-preview-720.webp" srcset="assets/img/portfolio-preview-720.webp 720w, assets/img/portfolio-preview.webp 1280w"
                    sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) 50vw, 360px"
@@ -378,7 +370,7 @@
             </div>
           </article>
 
-          <article class="project project-card reveal tilt" aria-labelledby="p-edit">
+          <article class="project project-card reveal depth tilt" aria-labelledby="p-edit">
             <div class="project-media media-video">
               <video class="js-click-video" playsinline preload="none" width="960" height="540"
                      poster="assets/img/motion-edit-720.webp" aria-label="Anime action edit, 48 seconds, with sound">

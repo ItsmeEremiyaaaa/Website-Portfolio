@@ -12,13 +12,14 @@ Personal portfolio of Jeremiah Falcon Escubido, BSIT student at St. Mary's Colle
 
 ## Built with
 
-Plain HTML, CSS, and JavaScript. No framework or build step.
+Plain HTML, CSS, and JavaScript, no framework. The 3D hero uses three.js, bundled with esbuild.
 
 ```
 index.html          page markup
 assets/css/main.css styles (design tokens, light/dark themes)
 assets/js/main.js   nav, theme toggle, reveals, 3D tilt, video previews, photo viewer
-assets/js/iso-scene.js  interactive isometric island in the hero (Canvas 2D)
+assets/js/hero-3d.js    3D hero scene (bundled from src/hero-3d.js with three.js)
+src/hero-3d.js      source for the 3D laptop scene
 assets/img/         optimized WebP images
 assets/video/       compressed project videos
 assets/fonts/       self-hosted Geist fonts (Latin subset, SIL OFL)
@@ -30,8 +31,11 @@ media/              original source media (not loaded by the site)
 ## Run locally
 
 ```bash
+npm install   # only needed to rebuild the 3D scene
 npm start
 ```
+
+After editing `src/hero-3d.js`, run `npm run build`. It bundles the scene and refreshes the asset fingerprints.
 
 Then open http://localhost:8080.
 

@@ -6,7 +6,7 @@ Personal portfolio of Jeremiah Falcon Escubido, BSIT student at St. Mary's Colle
 
 ## What's inside
 
-- **Selected work**: GradeHub, RecipesPOS, and GABAY (applications); published research (AJESS, 2025); an isometric game prototype built in Godot, this site, and a video edit
+- **Selected work**: Basket GO, GradeHub, and GABAY (applications); published research (AJESS, 2025); an isometric game prototype built in Godot, this site, and a video edit
 - **About, stack, journey**: education, recognition, and the tools I use
 - **Contact**: email, LinkedIn, GitHub, ORCID, and a downloadable CV
 

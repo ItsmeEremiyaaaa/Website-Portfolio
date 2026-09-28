@@ -38,6 +38,7 @@
   --nav-bg:       rgba(10, 10, 11, 0.72);
   --shadow:       0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 32px -12px rgba(0, 0, 0, 0.6);
   --grid-line:    rgba(255, 255, 255, 0.045);
+  --hero-poster:  url("../img/hero-3d-dark.webp");
 
   --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -74,6 +75,7 @@
   --nav-bg:       rgba(250, 250, 250, 0.78);
   --shadow:       0 1px 2px rgba(10, 10, 11, 0.04), 0 12px 32px -16px rgba(10, 10, 11, 0.18);
   --grid-line:    rgba(10, 10, 11, 0.05);
+  --hero-poster:  url("../img/hero-3d-light.webp");
   color-scheme: light;
 }
 
@@ -95,6 +97,7 @@
     --nav-bg:       rgba(250, 250, 250, 0.78);
     --shadow:       0 1px 2px rgba(10, 10, 11, 0.04), 0 12px 32px -16px rgba(10, 10, 11, 0.18);
     --grid-line:    rgba(10, 10, 11, 0.05);
+    --hero-poster:  url("../img/hero-3d-light.webp");
     color-scheme: light;
   }
 }
@@ -397,8 +400,8 @@ p { text-wrap: pretty; }
 
 .hero-inner {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
-  gap: clamp(40px, 6vw, 80px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+  gap: clamp(24px, 4vw, 56px);
   align-items: center;
 }
 
@@ -485,59 +488,45 @@ p { text-wrap: pretty; }
   color: var(--text-subtle);
 }
 
-/* Isometric scene */
-.hero-scene { width: 100%; }
-.scene-frame {
+/* 3D hero (three.js scene loaded after the page) */
+.hero-visual {
   position: relative;
-  aspect-ratio: 1 / 0.86;
-  border-radius: var(--r-lg);
-  border: 1px solid var(--border);
-  background:
-    radial-gradient(70% 55% at 50% 58%, var(--accent-soft), transparent 70%),
-    var(--surface);
-  overflow: hidden;
+  aspect-ratio: 1 / 0.9;
+  margin-inline: -4%;
+  width: 108%;
 }
-.scene-frame::after {
-  /* faint dotted floor so the island reads as sitting in space */
-  content: "";
+.hero-glow {
   position: absolute;
-  inset: 0;
-  background-image: radial-gradient(var(--grid-line) 1px, transparent 1px);
-  background-size: 18px 18px;
-  -webkit-mask-image: radial-gradient(60% 50% at 50% 60%, #000, transparent);
-  mask-image: radial-gradient(60% 50% at 50% 60%, #000, transparent);
+  inset: 12% 8% 6%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--accent-soft), transparent);
+  filter: blur(20px);
   pointer-events: none;
 }
-.iso-scene {
+.hero-3d {
   position: relative;
-  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
-  cursor: crosshair;
-  touch-action: pan-y;
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 900ms var(--ease), transform 1200ms var(--ease);
 }
-.scene-caption {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 4px 16px;
-  margin-top: 12px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--text-subtle);
+/* Still image of the scene: shows instantly, and stays where 3D can't run */
+.hero-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--hero-poster) center / contain no-repeat;
+  transition: opacity 700ms var(--ease);
 }
-.scene-hint { color: var(--text-muted); }
-.scene-hint-touch { display: none; }
-@media (hover: none) {
-  .scene-hint-hover { display: none; }
-  .scene-hint-touch { display: inline; }
-}
+.hero-visual.is-ready::before { opacity: 0; }
+.hero-visual.is-ready .hero-3d { opacity: 1; transform: none; }
+.hero-visual.no-webgl .hero-3d { display: none; }
 
 @media (max-width: 860px) {
   .hero-inner { grid-template-columns: 1fr; }
-  .hero-scene { max-width: 520px; }
-  .scene-frame { aspect-ratio: 1 / 0.8; }
+  .hero-visual { width: 100%; margin-inline: 0; max-width: 560px; aspect-ratio: 1 / 0.78; margin-top: -8px; }
 }
 
 @media (max-width: 520px) {
@@ -770,7 +759,6 @@ p { text-wrap: pretty; }
   box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.5);
   transition: transform 500ms var(--ease);
 }
-.project-featured:hover .browser { transform: translateY(-4px); }
 .browser-bar {
   display: flex;
   align-items: center;
@@ -1225,12 +1213,35 @@ p { text-wrap: pretty; }
 .tilt.is-tilting::after { opacity: 1; }
 .tilt.is-tilting { box-shadow: var(--shadow); }
 
+/* Cards rise into place from behind the page */
+.js .reveal.depth {
+  opacity: 0;
+  transform: perspective(1200px) translate3d(0, 56px, -160px) rotateX(18deg);
+  transform-origin: 50% 100%;
+  transition:
+    opacity 900ms var(--ease) var(--rd, 0ms),
+    transform 1200ms var(--ease) var(--rd, 0ms);
+}
+.js .reveal.depth.is-visible { opacity: 1; transform: none; }
+
+/* Scroll-linked rotation (--p set in main.js: -1 below, 0 centred, 1 above) */
+[data-depth] {
+  transform: perspective(1400px)
+             rotateY(calc(var(--p, 0) * -16deg))
+             rotateX(calc(var(--p, 0) * 8deg))
+             translateZ(calc(var(--p, 0) * var(--p, 0) * -60px));
+  transition: transform 120ms linear;
+  will-change: transform;
+}
+
 /* Lists that reveal item by item (--i set in main.js) */
 .js .reveal.stagger { opacity: 1; transform: none; }
 .js .reveal.stagger > * {
   opacity: 0;
   transform: translateY(10px);
 }
+.gallery { perspective: 1200px; }
+.js .gallery.reveal.stagger > * { transform: translate3d(0, 30px, -80px) rotateX(20deg); }
 .js .reveal.stagger.is-visible > * {
   opacity: 1;
   transform: none;
@@ -1274,7 +1285,9 @@ p { text-wrap: pretty; }
   }
   .js .enter, .js .reveal, .js .reveal.stagger > * { opacity: 1; transform: none; animation: none; }
   .js .timeline.reveal .timeline-item::before { transform: none; }
-  .tilt { transform: none; }
+  .tilt, [data-depth] { transform: none; }
+  .js .reveal.depth, .js .gallery.reveal.stagger > * { transform: none; }
+  .hero-3d { transform: none; }
   .status-dot::after { display: none; }
 }
 

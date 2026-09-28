@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 
 const pages = ['index.html', '404.html'];
-const pattern = /((?:href|src)=")((?:\/Website-Portfolio\/)?(assets\/(?:css|js)\/[\w.-]+\.(?:css|js)))(?:\?v=[\w]+)?(")/g;
+const pattern = /((?:href|src|data-src)=")((?:\/Website-Portfolio\/)?(assets\/(?:css|js)\/[\w.-]+\.(?:css|js)))(?:\?v=[\w]+)?(")/g;
 
 for (const page of pages) {
   const html = readFileSync(page, 'utf8');

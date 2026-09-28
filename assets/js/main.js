@@ -250,6 +250,57 @@
     });
   }
 
+  /* ── Hero 3D scene (loaded after the page, only where WebGL works) ───── */
+  var hero3d = document.querySelector('.hero-3d');
+  if (hero3d) {
+    // Needs hardware-accelerated WebGL; software renderers (no GPU) would make the page sluggish.
+    var supportsWebGL = (function () {
+      try {
+        var c = document.createElement('canvas');
+        var gl = c.getContext('webgl2') || c.getContext('webgl');
+        if (!gl) return false;
+        var info = gl.getExtension('WEBGL_debug_renderer_info');
+        var name = String(gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER));
+        var ext = gl.getExtension('WEBGL_lose_context');
+        if (ext) ext.loseContext();
+        return !/swiftshader|llvmpipe|softpipe|software|basic render/i.test(name);
+      } catch (e) { return false; }
+    })();
+    var loadScene = function () {
+      import(new URL(hero3d.dataset.src, document.baseURI).href).catch(function () {
+        hero3d.parentElement.classList.add('no-webgl');
+      });
+    };
+    if (!supportsWebGL) {
+      hero3d.parentElement.classList.add('no-webgl');
+    } else if (document.readyState === 'complete') {
+      loadScene();
+    } else {
+      window.addEventListener('load', loadScene, { once: true });
+    }
+  }
+
+  /* ── Scroll-linked 3D (elements with data-depth) ─────────────────────── */
+  var depthEls = document.querySelectorAll('[data-depth]');
+  if (depthEls.length && !reduceMotion.matches) {
+    var depthTicking = false;
+    var updateDepth = function () {
+      var vh = window.innerHeight;
+      depthEls.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        // -1 when entering from below, 0 at the viewport centre, 1 when leaving at the top
+        var p = ((r.top + r.height / 2) - vh / 2) / (vh / 2 + r.height / 2);
+        el.style.setProperty('--p', Math.max(-1, Math.min(1, p)).toFixed(3));
+      });
+      depthTicking = false;
+    };
+    window.addEventListener('scroll', function () {
+      if (!depthTicking) { depthTicking = true; requestAnimationFrame(updateDepth); }
+    }, { passive: true });
+    window.addEventListener('resize', updateDepth);
+    updateDepth();
+  }
+
   /* ── Footer year ──────────────────────────────────────────────────────── */
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();

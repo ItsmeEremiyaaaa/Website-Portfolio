@@ -100,6 +100,8 @@
 }
 .cx-dots b:first-child { margin-left: 0; }
 .cx-dots .cx-dot-you { background: #e2553a; color: #fff; }
+.cx-dots .cx-dot-more { background: var(--ink); color: var(--cream); width: 26px; border-radius: 999px; }
+.cx-count { font-variant-numeric: tabular-nums; }
 .cx-hint { display: none; }
 .cx-editing .cx-hint { display: inline; }
 

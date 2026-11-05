@@ -108,3 +108,65 @@
 @media (max-width: 900px) { .cx-editing .cx-hint { display: none; } }
 @media (max-width: 719px) { .cx-bar, .cx-insp, .cx-cur, .cx-sel, .cx-you { display: none !important; } }
 @media print { .cx-layer, .cx-bar, .cx-insp { display: none !important; } }
+
+/* ── Speech bubbles (cursors and you) ───────────────────────────────────── */
+.cx-say {
+  position: absolute; left: 15px; top: 40px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  padding: 7px 11px; border-radius: 4px 14px 14px 14px; background: var(--bc, #fff); color: #1e060e;
+  font: 500 12.5px/1.2 var(--font-sans); box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .5);
+  opacity: 0; scale: .7; transform-origin: 0 0; transition: opacity 200ms, scale 260ms var(--ease);
+}
+.cx-say.is-on { opacity: 1; scale: 1; }
+.cx-you .cx-say-you { --bc: #e2553a; color: #fff; left: 14px; top: 42px; }
+
+/* ── Scribbles: hand-drawn underline / circle ───────────────────────────── */
+.cx-mark { position: absolute; left: 0; top: 0; overflow: visible; transition: opacity 400ms; }
+.cx-mark path { fill: none; stroke-width: 3.2; stroke-linecap: round; vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1; stroke-dashoffset: 1; animation: cx-draw 520ms var(--ease) forwards; }
+.cx-mark.is-out { opacity: 0; }
+@keyframes cx-draw { to { stroke-dashoffset: 0; } }
+
+/* ── Comment pins ───────────────────────────────────────────────────────── */
+.cx-pin { position: absolute; left: 0; top: 0; display: flex; align-items: flex-start; gap: 6px; opacity: 0; transition: opacity 250ms; }
+.cx-pin.is-on { opacity: 1; }
+.cx-pin b {
+  flex: none; width: 30px; height: 30px; border-radius: 50% 50% 50% 4px; background: var(--pc); color: #1e060e;
+  display: grid; place-items: center; font: 600 12px var(--font-sans); border: 2px solid #fff; box-shadow: 0 8px 18px -8px rgba(0,0,0,.5);
+  scale: 0; transition: scale 300ms var(--ease);
+}
+.cx-pin.is-on b { scale: 1; }
+.cx-pin span {
+  max-width: 200px; padding: 8px 11px; border-radius: 4px 12px 12px 12px; background: #fff; color: #2a0f18;
+  font: 12.5px/1.35 var(--font-sans); box-shadow: 0 12px 28px -12px rgba(0,0,0,.45);
+  translate: -6px 0; opacity: 0; transition: opacity 250ms 120ms, translate 300ms var(--ease) 120ms;
+}
+.cx-pin span strong { font-weight: 600; margin-right: 4px; }
+.cx-pin.is-on span { translate: 0 0; opacity: 1; }
+
+/* ── Cursor chat input ──────────────────────────────────────────────────── */
+.cx-chat { position: fixed; left: 0; top: 0; z-index: 440; }
+.cx-chat[hidden] { display: none; }
+.cx-chat input {
+  width: 220px; padding: 9px 13px; border: 0; border-radius: 4px 16px 16px 16px; background: #e2553a; color: #fff;
+  font: 500 13px var(--font-sans); box-shadow: 0 14px 30px -12px rgba(0,0,0,.5); outline: none;
+}
+.cx-chat input::placeholder { color: rgba(255,255,255,.75); }
+.cx-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.cx-tip { color: var(--text-muted); }
+.cx-tip kbd { font: 500 11px var(--font-mono); padding: 1px 6px; border: 1px solid var(--border-strong); border-radius: 4px; background: var(--paper); color: var(--ink); }
+.cx-editing .cx-tip { display: none; }
+
+/* ── Toys: draggable stickers and chips ─────────────────────────────────── */
+.cx-toy { cursor: grab; touch-action: none; transition: transform 650ms cubic-bezier(.34, 1.56, .64, 1); }
+.cx-toy.is-held { cursor: grabbing; transition: none; z-index: 5; scale: 1.08; }
+
+/* Magnetic buttons ease back when released */
+.btn, .icon-btn { transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), transform 220ms var(--ease); }
+
+/* Easter egg wobble */
+.cx-wobble { animation: cx-wobble 900ms var(--ease); }
+@keyframes cx-wobble {
+  20% { transform: rotate(-12deg) scale(1.15); } 40% { transform: rotate(8deg) scale(1.1); }
+  60% { transform: rotate(-6deg) scale(1.05); } 80% { transform: rotate(3deg); } 100% { transform: rotate(-4deg); }
+}
+@media (max-width: 900px) { .cx-tip { display: none; } }

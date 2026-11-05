@@ -104,6 +104,14 @@
     });
   }
   var swarmOn = true;
+  var attract = null;   // { x, y, until } — the swarm rushes to where you click
+  var particles = [];   // short-lived confetti cursors
+  function burst(x, y, n) {
+    for (var k = 0; k < n; k++) {
+      var ang = rand(0, Math.PI * 2), sp = rand(2.5, 6.5);
+      particles.push({ x: x, y: y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - 1.5, s: rand(.6, 1), c: pick(SWARM_COLORS), life: 1 });
+    }
+  }
   function drawArrow(x, y, s, c) {
     ctx.save();
     ctx.translate(x, y); ctx.scale(s, s);
@@ -120,9 +128,14 @@
     swarm.forEach(function (p) {
       p.a += rand(-.25, .25);
       p.vx += Math.cos(p.a) * .03; p.vy += Math.sin(p.a) * .03;
+      if (attract && performance.now() < attract.until) {
+        var ax = attract.x - p.x, ay = attract.y - p.y, ad = Math.hypot(ax, ay) || 1;
+        p.vx += ax / ad * .35; p.vy += ay / ad * .35;
+      }
       var dx = p.x - mouse.x, dy = p.y - mouse.y, d = Math.hypot(dx, dy);
       if (d < 140 && d > 0) { var f = (140 - d) / 140 * .9; p.vx += dx / d * f; p.vy += dy / d * f; }
-      var sp = Math.hypot(p.vx, p.vy), max = d < 140 ? 4.5 : .9;
+      var rushing = attract && performance.now() < attract.until;
+      var sp = Math.hypot(p.vx, p.vy), max = rushing ? 7 : d < 140 ? 4.5 : .9;
       if (sp > max) { p.vx *= max / sp; p.vy *= max / sp; }
       p.x += p.vx; p.y += p.vy;
       if (p.x < -20) p.x = W + 10; if (p.x > W + 20) p.x = -10;
@@ -131,7 +144,31 @@
       if (p.next < 0) { p.next = rand(4000, 11000); ring(p.x + 2, p.y + 2, p.c); }
       drawArrow(p.x, p.y, p.s, p.c);
     });
+    if (attract && performance.now() >= attract.until) {
+      // Arrived: scatter outward from the click point.
+      swarm.forEach(function (p) {
+        var dx = p.x - attract.x, dy = p.y - attract.y, d = Math.hypot(dx, dy) || 1;
+        if (d < 220) { p.vx += dx / d * 5; p.vy += dy / d * 5; }
+      });
+      ring(attract.x, attract.y, '#ffffff');
+      attract = null;
+    }
+    particles = particles.filter(function (q) { return q.life > 0; });
+    particles.forEach(function (q) {
+      q.vy += .12; q.vx *= .985; q.x += q.vx; q.y += q.vy; q.life -= dt / 1100;
+      ctx.globalAlpha = Math.max(0, q.life);
+      drawArrow(q.x, q.y, q.s, q.c);
+      ctx.globalAlpha = 1;
+    });
   }
+
+  // Buttons and links pop a burst of tiny cursors; clicking empty space calls the swarm over.
+  document.addEventListener('click', function (e) {
+    if (!swarmOn || window.__cxEditing) return;
+    if (e.target.closest('.cx-bar, .cx-insp, .cx-chat, .lightbox')) return;
+    if (e.target.closest('a, button')) { burst(e.clientX, e.clientY, 16); return; }
+    if (!e.target.closest('input, textarea, [data-cx-name], img')) attract = { x: e.clientX, y: e.clientY, until: performance.now() + 650 };
+  });
 
   if (!full) {
     var lastM = performance.now();
@@ -200,29 +237,43 @@
     this.y = innerHeight * (((i % 5) + 1) / 6);
     this.tx = this.x; this.ty = this.y;
     this.anchor = null; this.done = null; this.busy = false; this.tilt = null;
+    this.speed = 0.2; this.limit = 1600;
   }
   Bot.prototype.go = function (x, y) {
     var self = this;
     this.anchor = null; this.tx = x; this.ty = y;
-    return Promise.race([new Promise(function (r) { self.done = r; }), wait(1600)]);
+    return Promise.race([new Promise(function (r) { self.done = r; }), wait(this.limit)]);
   };
   // Follow a point inside an element (fractions of its box) so the target tracks the page while scrolling.
   Bot.prototype.follow = function (el, fx, fy) {
     var self = this;
     this.anchor = { el: el, fx: fx, fy: fy };
-    return Promise.race([new Promise(function (r) { self.done = r; }), wait(1600)]);
+    return Promise.race([new Promise(function (r) { self.done = r; }), wait(this.limit)]);
+  };
+  Bot.prototype.say = function (text, ms) {
+    var b = this.bubble;
+    if (!b) { b = this.bubble = document.createElement('span'); b.className = 'cx-say'; this.el.appendChild(b); }
+    b.textContent = text;
+    b.style.setProperty('--bc', this.color);
+    b.classList.add('is-on');
+    clearTimeout(this.sayT);
+    this.sayT = setTimeout(function () { b.classList.remove('is-on'); }, ms || 2600);
   };
   Bot.prototype.step = function () {
-    if (this.anchor) {
+    if (this.followMouse && mouse.x > -500) {
+      this.anchor = null;
+      this.tx = clamp(mouse.x + this.followMouse.dx, 6, innerWidth - 24);
+      this.ty = clamp(mouse.y + this.followMouse.dy, 6, innerHeight - 70);
+    } else if (this.anchor) {
       var r = this.anchor.el.getBoundingClientRect();
       this.tx = clamp(r.left + r.width * this.anchor.fx, 6, innerWidth - 24);
       this.ty = clamp(r.top + r.height * this.anchor.fy, 6, innerHeight - 70);
     }
-    this.x += (this.tx - this.x) * 0.16;
-    this.y += (this.ty - this.y) * 0.16;
+    this.x += (this.tx - this.x) * this.speed;
+    this.y += (this.ty - this.y) * this.speed;
     this.el.style.transform = 'translate(' + this.x + 'px,' + this.y + 'px)';
     if (this.tilt) this.tilt.dispatchEvent(new PointerEvent('pointermove', { clientX: this.x, clientY: this.y, bubbles: true }));
-    if (this.done && Math.hypot(this.tx - this.x, this.ty - this.y) < 3) { var d = this.done; this.done = null; d(); }
+    if (this.done && Math.hypot(this.tx - this.x, this.ty - this.y) < 4) { var d = this.done; this.done = null; d(); }
     drawSel(this.sel);
   };
   Bot.prototype.click = function () {
@@ -246,8 +297,9 @@
       return Math.hypot(a.x - r0.left, a.y - r0.top) - Math.hypot(b.x - r0.left, b.y - r0.top);
     })[0];
     bot.busy = true;
+    bot.speed = 0.36; bot.limit = 650;   // building is quick, like a designer on a deadline
     return new Promise(function (resolve) {
-      var safety = setTimeout(resolve, 2200);
+      var safety = setTimeout(resolve, 1300);
       (async function () {
         await bot.follow(el, 0, 0);
         bot.click();
@@ -256,9 +308,9 @@
         bot.sel.mode = 'fit';
         bot.click();
         clearTimeout(safety); resolve();
-        await wait(650);
+        await wait(380);
         bot.sel.target = null; bot.anchor = null;
-        await bot.wander();
+        bot.speed = 0.2; bot.limit = 1600;
         bot.busy = false;
       })();
     });
@@ -344,17 +396,127 @@
     busyEls.delete(roleEl);
   }
 
+  /* Comments, scribbles, pins and following you */
+  var LINES = {
+    any: ['Love this', 'Clean spacing', 'Ship it', 'Hire Doy?', 'So smooth', 'Nice type', 'Looks legit', 'This slaps', 'Approved', 'Saving this'],
+    project: ['Tried it, works', 'Great idea', 'Demo please', 'Real users!', 'Proud of this one'],
+    photo: ['Good times', 'Cute pic', 'Squad', 'Core memory'],
+    you: ['Hi there', 'Following you', 'Where to next?', 'Scroll down', 'Check the work']
+  };
+  var marks = [];
+  function addMark(el, color, kind, ms) {
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'cx-mark cx-mark-' + kind);
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', kind === 'circle'
+      ? 'M52 4 C 84 3, 99 26, 97 52 C 95 80, 70 97, 46 96 C 18 95, 2 74, 4 47 C 6 22, 28 6, 58 8'
+      : 'M2 60 C 18 40, 30 80, 48 58 S 78 40, 98 56');
+    path.setAttribute('pathLength', '1');
+    path.style.stroke = color;
+    svg.appendChild(path);
+    layer.appendChild(svg);
+    var m = { el: el, svg: svg, kind: kind };
+    marks.push(m);
+    setTimeout(function () { svg.classList.add('is-out'); }, ms - 400);
+    setTimeout(function () { svg.remove(); marks.splice(marks.indexOf(m), 1); }, ms);
+    return m;
+  }
+  function drawMarks() {
+    marks.forEach(function (m) {
+      var r = m.el.getBoundingClientRect(), x, y, w, h;
+      if (m.kind === 'circle') { x = r.left - 12; y = r.top - 10; w = r.width + 24; h = r.height + 20; }
+      else { x = r.left - 4; y = r.bottom - 6; w = Math.min(r.width, 420) + 8; h = 16; }
+      m.svg.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      m.svg.style.width = w + 'px'; m.svg.style.height = h + 'px';
+    });
+  }
+  var pins = [];
+  function addPin(el, bot, text, ms) {
+    var pin = document.createElement('div');
+    pin.className = 'cx-pin';
+    pin.style.setProperty('--pc', bot.color);
+    pin.innerHTML = '<b>' + bot.name[0] + '</b><span><strong>' + bot.name + '</strong> ' + text + '</span>';
+    layer.appendChild(pin);
+    var p = { el: el, node: pin };
+    pins.push(p);
+    requestAnimationFrame(function () { pin.classList.add('is-on'); });
+    setTimeout(function () { pin.classList.remove('is-on'); }, ms - 300);
+    setTimeout(function () { pin.remove(); pins.splice(pins.indexOf(p), 1); }, ms);
+  }
+  function drawPins() {
+    pins.forEach(function (p) {
+      var r = p.el.getBoundingClientRect();
+      p.node.style.transform = 'translate(' + clamp(r.right - 16, 8, innerWidth - 240) + 'px,' + clamp(r.top - 16, 70, innerHeight - 80) + 'px)';
+    });
+  }
+  var visible = function (sel) {
+    return Array.prototype.filter.call(document.querySelectorAll(sel), function (el) { return !pending(el) && inView(el) && !busyEls.has(el); });
+  };
+
+  async function doScribble(bot) {
+    var circleTargets = visible('.badge, .tags li, .chips li, .art-chip, .timeline-when, .sticker');
+    var lineTargets = visible('.project-kind, .hero-phrase, .section-title, .project-title, .timeline-item h3');
+    var circle = Math.random() < .5 && circleTargets.length;
+    var list = circle ? circleTargets : lineTargets;
+    if (!list.length) return bot.wander();
+    var el = pick(list);
+    busyEls.add(el);
+    var r = el.getBoundingClientRect();
+    await bot.go(circle ? r.right + 4 : r.left, circle ? r.top : r.bottom);
+    bot.click();
+    addMark(el, bot.color, circle ? 'circle' : 'line', 3200);
+    if (circle) await bot.follow(el, 0.5, 1.05); else await bot.follow(el, 1, 1);
+    if (Math.random() < .5) bot.say(pick(LINES.any));
+    await wait(700);
+    busyEls.delete(el);
+  }
+  async function doPin(bot) {
+    var list = visible('.project, .gallery li, .hero-photo, .qr-card, .stack-row, .timeline-item');
+    if (!list.length) return bot.wander();
+    var el = pick(list);
+    await bot.follow(el, rand(.6, .95), rand(.05, .3));
+    bot.click();
+    var bank = el.closest('.gallery') ? LINES.photo : el.classList.contains('project') ? LINES.project : LINES.any;
+    addPin(el, bot, pick(bank), 3800);
+    await wait(900);
+  }
+  async function doSay(bot) {
+    await bot.wander();
+    bot.say(pick(LINES.any));
+    await wait(1200);
+  }
+  var followers = 0;
+  async function doFollow(bot) {
+    if (followers >= 2 || mouse.x < -500) return doSay(bot);
+    followers++;
+    bot.followMouse = { dx: rand(-70, -30) * (Math.random() < .5 ? 1 : -1.6), dy: rand(24, 60) };
+    bot.say(pick(LINES.you), 2400);
+    await wait(rand(3200, 4800));
+    bot.followMouse = null;
+    followers--;
+    await bot.wander();
+  }
+
+  var lastScroll = 0;
+  addEventListener('scroll', function () { lastScroll = performance.now(); }, { passive: true });
   async function idle(bot) {
     await wait(rand(2500, 4000));
     for (;;) {
       await wait(rand(1400, 3400));
       if (!api.enabled || bot.busy || document.hidden || editMode) continue;
+      if (performance.now() - lastScroll < 1400) continue;
       bot.busy = true;
       var roll = Math.random();
       try {
-        if (roll < 0.48) await doEdit(bot);
-        else if (roll < 0.7) await doTilt(bot);
-        else if (roll < 0.84) await doType(bot);
+        if (roll < 0.30) await doEdit(bot);
+        else if (roll < 0.44) await doTilt(bot);
+        else if (roll < 0.52) await doType(bot);
+        else if (roll < 0.66) await doScribble(bot);
+        else if (roll < 0.78) await doPin(bot);
+        else if (roll < 0.86) await doFollow(bot);
+        else if (roll < 0.94) await doSay(bot);
         else await bot.wander();
       } catch (e) { /* keep the loop alive */ }
       bot.sel.target = null;
@@ -475,6 +637,7 @@
     '<b class="cx-dot-you">Y</b></span>' +
     '<span class="cx-count">' + (BOTS.length + 1) + ' editing</span>' +
     '<span class="cx-hint">Click anything to restyle it, drag to move</span>' +
+    '<span class="cx-tip">Press <kbd>/</kbd> to chat</span>' +
     '<button type="button" class="cx-edit" aria-pressed="false">Edit mode</button>' +
     '<button type="button" class="cx-reset-all" hidden>Reset</button>' +
     '<button type="button" class="cx-toggle"></button>';
@@ -483,6 +646,7 @@
 
   function setEdit(on) {
     editMode = on;
+    window.__cxEditing = on;
     document.documentElement.classList.toggle('cx-editing', on);
     editBtn.setAttribute('aria-pressed', String(on));
     editBtn.textContent = on ? 'Done editing' : 'Edit mode';
@@ -506,6 +670,112 @@
   });
   setBots(store.get('cursors') !== 'off');
 
+  /* ── Cursor chat: press / to type a message next to your cursor ────────── */
+  var chat = document.createElement('div');
+  chat.className = 'cx-chat';
+  chat.hidden = true;
+  chat.innerHTML = '<label class="cx-sr" for="cx-chat-input">Say something</label><input id="cx-chat-input" type="text" maxlength="60" autocomplete="off" placeholder="Say something…">';
+  document.body.appendChild(chat);
+  var chatInput = chat.querySelector('input');
+  var youSay = document.createElement('span');
+  youSay.className = 'cx-say cx-say-you';
+  you.appendChild(youSay);
+  var REPLIES = ['Hi!', 'Same here', 'Agreed', 'Haha', 'Welcome!', 'Thanks for visiting', 'Hello from Bansalan', 'Nice to meet you'];
+  function openChat() {
+    if (editMode) return;
+    chat.hidden = false; chatInput.value = ''; chatInput.focus();
+  }
+  function closeChat() { chat.hidden = true; chatInput.blur(); }
+  function placeChat() {
+    if (chat.hidden) return;
+    chat.style.transform = 'translate(' + clamp(mouse.x + 16, 8, innerWidth - 240) + 'px,' + clamp(mouse.y + 40, 8, innerHeight - 60) + 'px)';
+  }
+  chatInput.addEventListener('keydown', function (e) {
+    e.stopPropagation();
+    if (e.key === 'Escape') { closeChat(); return; }
+    if (e.key !== 'Enter') return;
+    var text = chatInput.value.trim();
+    closeChat();
+    if (!text) return;
+    youSay.textContent = text;
+    youSay.classList.add('is-on');
+    clearTimeout(youSay.t);
+    youSay.t = setTimeout(function () { youSay.classList.remove('is-on'); }, 4200);
+    // A nearby cursor comes over and replies.
+    var helper = bots.filter(function (b) { return !b.busy; })[0];
+    if (helper && api.enabled) {
+      helper.busy = true;
+      helper.go(clamp(mouse.x + 60, 20, innerWidth - 140), clamp(mouse.y - 30, 80, innerHeight - 100)).then(function () {
+        helper.say(pick(REPLIES), 2600);
+        return wait(2600);
+      }).then(function () { helper.busy = false; });
+    }
+  });
+  chatInput.addEventListener('blur', function () { setTimeout(closeChat, 100); });
+
+  var keyBuf = '';
+  document.addEventListener('keydown', function (e) {
+    var typing = e.target.closest && e.target.closest('input, textarea, [contenteditable]');
+    if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === '/') { e.preventDefault(); openChat(); return; }
+    // Easter egg: type "doy" and every cursor rushes to the name.
+    keyBuf = (keyBuf + e.key.toLowerCase()).slice(-3);
+    if (keyBuf === 'doy') gather();
+  });
+  function gather() {
+    var name = document.querySelector('.hero-title .hl');
+    if (!name || !api.enabled) return;
+    name.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(function () {
+      name.classList.remove('cx-wobble'); void name.offsetWidth; name.classList.add('cx-wobble');
+      var r = name.getBoundingClientRect();
+      burst(r.left + r.width / 2, r.top + r.height / 2, 40);
+      bots.forEach(function (b, i) {
+        var ang = i / bots.length * Math.PI * 2;
+        b.followMouse = null;
+        b.go(r.left + r.width / 2 + Math.cos(ang) * (r.width * .5 + 130), r.top + r.height / 2 + Math.sin(ang) * (r.height * .5 + 90));
+        setTimeout(function () { b.say(i % 2 ? 'Doy!' : 'Hi Doy!', 2000); }, 500 + i * 60);
+      });
+    }, 500);
+  }
+
+  /* ── Drag the stickers and floating chips (they spring back) ──────────── */
+  document.querySelectorAll('.sticker, .art-chip').forEach(function (el) {
+    el.classList.add('cx-toy');
+    el.addEventListener('pointerdown', function (e) {
+      if (editMode || e.button !== 0) return;
+      e.preventDefault(); e.stopPropagation();
+      var sx = e.clientX, sy = e.clientY;
+      el.classList.add('is-held');
+      el.setPointerCapture(e.pointerId);
+      function move(ev) { el.style.transform = 'translate(' + (ev.clientX - sx) + 'px,' + (ev.clientY - sy) + 'px)'; }
+      function up() {
+        el.classList.remove('is-held');
+        el.style.transform = '';
+        el.removeEventListener('pointermove', move);
+        el.removeEventListener('pointerup', up);
+        el.removeEventListener('pointercancel', up);
+        var r = el.getBoundingClientRect();
+        burst(r.left + r.width / 2, r.top + r.height / 2, 8);
+      }
+      el.addEventListener('pointermove', move);
+      el.addEventListener('pointerup', up);
+      el.addEventListener('pointercancel', up);
+    });
+  });
+
+  /* ── Magnetic buttons ─────────────────────────────────────────────────── */
+  var magnets = document.querySelectorAll('.btn, .icon-btn');
+  addEventListener('pointermove', function (e) {
+    if (editMode) return;
+    magnets.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      var cx = r.left + r.width / 2, cy = r.top + r.height / 2, dx = e.clientX - cx, dy = e.clientY - cy;
+      var near = Math.abs(dx) < r.width / 2 + 40 && Math.abs(dy) < r.height / 2 + 30;
+      el.style.transform = near ? 'translate(' + (dx * .18).toFixed(1) + 'px,' + (dy * .28).toFixed(1) + 'px)' : '';
+    });
+  }, { passive: true });
+
   /* ── Frame loop ───────────────────────────────────────────────────────── */
   var last = performance.now();
   (function frame(now) {
@@ -514,6 +784,9 @@
     you.style.transform = 'translate(' + mouse.x + 'px,' + mouse.y + 'px)';
     drawSel(userSel);
     placeInspector();
+    drawMarks();
+    drawPins();
+    placeChat();
     requestAnimationFrame(frame);
   })(last);
 

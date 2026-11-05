@@ -7,9 +7,15 @@ Personal portfolio of Jeremiah Falcon Escubido (Doy), BSIT student at St. Mary's
 ## What's inside
 
 - **Intro**: a maroon loader that counts to 100% and wipes away (once per visit)
-- **About**: cream hero with a torn coral photo panel
-- **Selected work**: StudyQuest, BansaRide, GABAY, and published research (AJESS, 2025)
-- **Stack, journey, campus life, contact**: tools, education and recognition, a photo wall, and a GitHub QR card
+- **About Doy**: torn coral panel with a photo deck you can shuffle, and a name that bounces on hover
+- **Work slides**: scrolling down slides the projects sideways, each with a playable phone demo:
+  a StudyQuest quiz with timer and XP, a BansaRide route with passenger toggles, and a GABAY AR view
+  where you pick a destination; plus the published research
+- **By the numbers**: flip cards
+- **Toolbox**: filter tools by shelf and hover one to see where I used it
+- **Journey**: a drag-to-scroll slider of milestones
+- **Camera roll**: swipe photos away like a deck, click to view
+- **Contact**: pick a topic and the email subject fills itself, plus a GitHub QR card
 
 ## Live cursors
 
@@ -30,7 +36,7 @@ Plain HTML, CSS and JavaScript, no framework.
 index.html               page markup
 assets/css/main.css      styles (tokens, maroon and cream sections)
 assets/css/cursors.css   live cursors overlay
-assets/js/main.js        intro, menu, reveals, tilt, photo viewer, copy email
+assets/js/main.js        intro, slides, demos, flip cards, toolbox, journey, photo roll, contact
 assets/js/cursors.js     live cursors and edit mode
 assets/img/              optimized WebP images and the GitHub QR code
 assets/fonts/            self-hosted Caveat Brush and Geist (SIL OFL)

@@ -39,22 +39,27 @@
     ['.hero-title .hl', 'Name', 'text'],
     ['.kicker', 'Kicker', 'text'],
     ['.hero-actions .btn', 'Button', 'fill'],
-    ['.hero-photo', 'Photo', 'box'],
+    ['.photo-deck', 'Photo deck', 'box'],
     ['.sticker', 'Sticker', 'fill'],
     ['.eyebrow', 'Eyebrow', 'text'],
     ['.section-title', 'Section title', 'text'],
-    ['.project-title', 'Project title', 'text'],
+    ['.slide-title', 'Project title', 'text'],
+    ['.phone', 'Phone mockup', 'box'],
     ['.art-chip', 'Chip', 'fill'],
     ['.badge', 'Badge', 'fill'],
     ['.tags li', 'Tag', 'fill'],
-    ['.chips li', 'Chip', 'fill'],
-    ['.stack-row dt', 'Label', 'text'],
-    ['.timeline-when', 'Year', 'text'],
-    ['.gallery li', 'Photo', 'box'],
+    ['.fact', 'Flip card', 'box'],
+    ['.tool', 'Tool', 'fill'],
+    ['.tool-info', 'Info card', 'box'],
+    ['.jcard', 'Milestone', 'box'],
+    ['.jcard-year', 'Year', 'text'],
+    ['.roll', 'Photo roll', 'box'],
+    ['.topics button', 'Topic', 'fill'],
     ['.contact-title', 'Heading', 'text'],
     ['.qr-card', 'QR card', 'box'],
     ['.collage', 'Photo', 'box']
   ];
+
 
   var store = {
     get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -164,7 +169,7 @@
 
   // Buttons and links pop a burst of tiny cursors; clicking empty space calls the swarm over.
   document.addEventListener('click', function (e) {
-    if (!swarmOn || window.__cxEditing) return;
+    if (!e.isTrusted || !swarmOn || window.__cxEditing) return;
     if (e.target.closest('.cx-bar, .cx-insp, .cx-chat, .lightbox')) return;
     if (e.target.closest('a, button')) { burst(e.clientX, e.clientY, 16); return; }
     if (!e.target.closest('input, textarea, [data-cx-name], img')) attract = { x: e.clientX, y: e.clientY, until: performance.now() + 650 };
@@ -399,7 +404,7 @@
   /* Comments, scribbles, pins and following you */
   var LINES = {
     any: ['Love this', 'Clean spacing', 'Ship it', 'Hire Doy?', 'So smooth', 'Nice type', 'Looks legit', 'This slaps', 'Approved', 'Saving this'],
-    project: ['Tried it, works', 'Great idea', 'Demo please', 'Real users!', 'Proud of this one'],
+    project: ['Tried the demo!', 'Great idea', 'It actually works', 'Real users!', 'Play the quiz', 'So playable'],
     photo: ['Good times', 'Cute pic', 'Squad', 'Core memory'],
     you: ['Hi there', 'Following you', 'Where to next?', 'Scroll down', 'Check the work']
   };
@@ -456,8 +461,8 @@
   };
 
   async function doScribble(bot) {
-    var circleTargets = visible('.badge, .tags li, .chips li, .art-chip, .timeline-when, .sticker');
-    var lineTargets = visible('.project-kind, .hero-phrase, .section-title, .project-title, .timeline-item h3');
+    var circleTargets = visible('.badge, .tags li, .tool, .art-chip, .jcard-year, .sticker, .topics button');
+    var lineTargets = visible('.project-kind, .hero-phrase, .section-title, .slide-title, .jcard h3, .tool-info-name');
     var circle = Math.random() < .5 && circleTargets.length;
     var list = circle ? circleTargets : lineTargets;
     if (!list.length) return bot.wander();
@@ -473,14 +478,27 @@
     busyEls.delete(el);
   }
   async function doPin(bot) {
-    var list = visible('.project, .gallery li, .hero-photo, .qr-card, .stack-row, .timeline-item');
+    var list = visible('.slide-art, .fact, .jcard, .roll, .qr-card, .photo-deck, .tool-info, .tool-board');
     if (!list.length) return bot.wander();
     var el = pick(list);
     await bot.follow(el, rand(.6, .95), rand(.05, .3));
     bot.click();
-    var bank = el.closest('.gallery') ? LINES.photo : el.classList.contains('project') ? LINES.project : LINES.any;
+    var bank = (el.matches('.roll, .photo-deck')) ? LINES.photo : el.classList.contains('slide-art') ? LINES.project : LINES.any;
     addPin(el, bot, pick(bank), 3800);
     await wait(900);
+  }
+  // Press buttons inside the visible phone demos, flip cards, filter the toolbox.
+  async function doPlay(bot) {
+    var list = visible('.sq-opts button, .br-seg button, .br-swap, .gb-places button, .fact, .tool');
+    if (!list.length) return doSay(bot);
+    var el = pick(list);
+    await bot.follow(el, rand(.3, .7), rand(.3, .7));
+    bot.click();
+    if (el.classList.contains('tool')) el.dispatchEvent(new PointerEvent('pointerenter'));
+    else el.click();
+    if (Math.random() < .4) bot.say(pick(['Fun!', 'Let me try', 'Ooh', 'Nice demo', 'Again!']));
+    await wait(900);
+    if (el.classList.contains('fact')) { await wait(1400); el.click(); }
   }
   async function doSay(bot) {
     await bot.wander();
@@ -510,7 +528,8 @@
       bot.busy = true;
       var roll = Math.random();
       try {
-        if (roll < 0.30) await doEdit(bot);
+        if (roll < 0.22) await doEdit(bot);
+        else if (roll < 0.34) await doPlay(bot);
         else if (roll < 0.44) await doTilt(bot);
         else if (roll < 0.52) await doType(bot);
         else if (roll < 0.66) await doScribble(bot);

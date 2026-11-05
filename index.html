@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jeremiah Escubido — Developer &amp; BSIT Student</title>
-  <meta name="description" content="Portfolio of Jeremiah Falcon Escubido (Doy), a 4th-year BSIT student in Bansalan, Davao del Sur building mobile apps, web systems and an AR campus navigation app. Open to internship and OJT opportunities.">
+  <meta name="description" content="Interactive portfolio of Jeremiah Falcon Escubido (Doy), a 4th-year BSIT student in Bansalan, Davao del Sur. Play with StudyQuest, BansaRide and GABAY demos. Open to internship and OJT opportunities.">
   <meta name="author" content="Jeremiah Falcon Escubido">
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#4a1826">
@@ -27,7 +27,7 @@
 
   <link rel="preload" href="assets/fonts/caveat-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=97896357">
+  <link rel="stylesheet" href="assets/css/main.css?v=805d200f">
   <link rel="stylesheet" href="assets/css/cursors.css?v=3236df09">
 
   <script>
@@ -40,8 +40,8 @@
       if (!seen && !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('has-intro');
     })();
   </script>
-  <script src="assets/js/cursors.js?v=3c10f72d" defer></script>
-  <script src="assets/js/main.js?v=2b4737c2" defer></script>
+  <script src="assets/js/cursors.js?v=56d24ef8" defer></script>
+  <script src="assets/js/main.js?v=eecb62a7" defer></script>
 
   <script type="application/ld+json">
   {
@@ -112,7 +112,7 @@
     <a class="brand" href="#top" aria-label="Jeremiah Escubido, back to top">doy<span>.</span></a>
     <ul class="nav-links">
       <li><a href="#work">Work</a></li>
-      <li><a href="#stack">Stack</a></li>
+      <li><a href="#toolbox">Toolbox</a></li>
       <li><a href="#journey">Journey</a></li>
       <li><a href="#life">Life</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -130,7 +130,7 @@
   <div class="mobile-menu" id="mobile-menu" hidden>
     <ul class="wrap">
       <li><a href="#work">Work</a></li>
-      <li><a href="#stack">Stack</a></li>
+      <li><a href="#toolbox">Toolbox</a></li>
       <li><a href="#journey">Journey</a></li>
       <li><a href="#life">Life</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -140,35 +140,41 @@
 
 <main id="main">
 
-  <!-- ─── Hero: About Doy ────────────────────────────────────── -->
+  <!-- ─── Hero ───────────────────────────────────────────────── -->
   <section class="hero" aria-labelledby="hero-title">
-    <div class="hero-copy wrap-left">
-      <p class="kicker reveal">Jeremiah Falcon Escubido · BSIT 4A</p>
-      <h1 class="hero-title reveal" id="hero-title">About <span class="hl">Doy</span></h1>
-      <p class="hero-role reveal">Developer building <span class="hero-phrase">mobile, web and AR apps</span> for the people around me.</p>
+    <div class="hero-copy">
+      <p class="kicker reveal">Jeremiah Falcon Escubido · BSIT 4A · SMCBI</p>
+      <h1 class="hero-title reveal" id="hero-title" aria-label="About Doy">
+        <span aria-hidden="true">About</span> <span class="hl" aria-hidden="true"><span class="ltr">D</span><span class="ltr">o</span><span class="ltr">y</span></span>
+      </h1>
+      <p class="hero-role reveal">I build <span class="hero-phrase">mobile, web and AR apps</span> for the people around me.</p>
       <p class="hero-lede reveal">
-        I'm a fourth-year BSIT student at St. Mary's College of Bansalan in Davao del Sur. I led the team behind
-        StudyQuest, built BansaRide for commuters in my town, and I'm finishing GABAY, an AR campus navigator, as my capstone.
-        I've also published research on ICT in education.
+        Fourth-year BSIT student in Bansalan, Davao del Sur. Project leader of StudyQuest, maker of BansaRide,
+        and finishing GABAY, an AR campus navigator, as my capstone.
       </p>
       <div class="hero-actions reveal">
-        <a class="btn btn-maroon" href="#work">See my work <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
-        <a class="btn btn-line" href="assets/Escubido_Jeremiah_Resume.pdf" download><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> Download CV</a>
+        <a class="btn btn-maroon" href="#work">Play with my work <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+        <a class="btn btn-line" href="#contact">Say hi</a>
       </div>
-      <ul class="hero-facts reveal" aria-label="Highlights">
-        <li><span class="status-dot" aria-hidden="true"></span> Open to internship &amp; OJT</li>
-        <li>4× Dean's Lister</li>
-        <li>Published researcher, 2025</li>
-      </ul>
+      <p class="hero-status reveal"><span class="status-dot" aria-hidden="true"></span> Open to internship &amp; OJT</p>
     </div>
 
     <div class="hero-panel">
-      <figure class="hero-photo tilt reveal">
-        <img src="assets/img/portrait.webp" srcset="assets/img/portrait-360.webp 360w, assets/img/portrait.webp 720w"
-             sizes="(max-width: 900px) 70vw, 420px" width="720" height="723" fetchpriority="high"
-             alt="Jeremiah Escubido in a school polo and round glasses">
-        <figcaption>Doy · Bansalan, Davao del Sur</figcaption>
-      </figure>
+      <div class="photo-deck reveal" id="hero-deck" role="group" aria-label="Photos of Doy. Click to shuffle.">
+        <figure class="deck-photo">
+          <img src="assets/img/life-9-sm.webp" width="640" height="480" alt="Receiving an achievement certificate and medal with faculty">
+          <figcaption>Recognition day</figcaption>
+        </figure>
+        <figure class="deck-photo">
+          <img src="assets/img/life-8-sm.webp" width="640" height="480" alt="Presenting in a computer lab during a BSIT session">
+          <figcaption>Presenting in the lab</figcaption>
+        </figure>
+        <figure class="deck-photo">
+          <img src="assets/img/portrait.webp" srcset="assets/img/portrait-360.webp 360w, assets/img/portrait.webp 720w" sizes="380px" width="720" height="723" fetchpriority="high" alt="Jeremiah Escubido in a school polo and round glasses">
+          <figcaption>Doy · Bansalan, Davao del Sur</figcaption>
+        </figure>
+      </div>
+      <button class="deck-hint" type="button" id="hero-shuffle">Shuffle photos</button>
       <span class="sticker sticker-a" aria-hidden="true">&gt;</span>
       <span class="sticker sticker-b" aria-hidden="true">&lt;</span>
       <span class="sticker sticker-c" aria-hidden="true">AR</span>
@@ -176,194 +182,303 @@
     </div>
   </section>
 
-  <!-- ─── Work ───────────────────────────────────────────────── -->
-  <section class="section maroon" id="work" aria-labelledby="work-title">
-    <div class="wrap">
-      <header class="section-head reveal">
-        <p class="eyebrow">01 · Selected work</p>
-        <h2 class="section-title" id="work-title">Things I've built.</h2>
-        <p class="section-desc">Three apps people actually use, and the research behind how students learn with technology.</p>
-      </header>
-
-      <div class="projects">
-        <article class="project reveal" aria-labelledby="p-studyquest">
-          <div class="project-art art-orange tilt" aria-hidden="true">
-            <svg class="art-icon"><use href="#i-star"/></svg>
-            <span class="art-chip c1">+120 XP</span>
-            <span class="art-chip c2">7-day streak</span>
-            <span class="art-chip c3">0:20</span>
+  <!-- ─── Work: horizontal slides driven by scroll ───────────── -->
+  <section class="work maroon" id="work" aria-labelledby="work-title" aria-roledescription="carousel">
+    <div class="work-pin">
+      <div class="work-sticky">
+        <header class="work-head wrap">
+          <div>
+            <p class="eyebrow">01 · Selected work</p>
+            <h2 class="section-title" id="work-title">Things I've built.</h2>
           </div>
-          <div class="project-body">
-            <p class="project-meta"><span class="badge">Mobile app</span><span>Project leader · Team of 6</span></p>
-            <h3 class="project-title" id="p-studyquest">StudyQuest</h3>
-            <p class="project-kind">Gamified quiz app</p>
-            <p class="project-desc">
-              Quizzes that play like a game: XP and levels, daily streaks, 32 badges, friends and quiz leaderboards,
-              and a 20-second timer on every question, in English or Tagalog. Shipped as an Android APK for a school
-              beta test and showcased at TechCase.
-            </p>
-            <ul class="tags" aria-label="Technologies"><li>React Native</li><li>Expo</li><li>Firebase</li><li>Cloud Functions</li><li>i18next</li></ul>
-            <div class="project-links">
-              <a class="btn btn-sm btn-cream" href="https://studyquest-a547c.web.app" target="_blank" rel="noopener">Try the web version <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+          <div class="work-controls">
+            <span class="work-count" aria-live="polite"><b id="work-now">01</b> / 04</span>
+            <button class="icon-btn" type="button" id="work-prev" aria-label="Previous project"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+            <button class="icon-btn" type="button" id="work-next" aria-label="Next project"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+          </div>
+        </header>
+
+        <div class="work-track" id="work-track">
+
+          <!-- Slide 1: StudyQuest -->
+          <article class="slide" aria-roledescription="slide" aria-labelledby="s-studyquest">
+            <div class="slide-art art-orange">
+              <div class="phone" aria-label="Playable StudyQuest demo">
+                <div class="phone-screen sq">
+                  <div class="sq-top"><span>Hi, Doy!</span><span class="sq-pill" id="sq-streak">7-day streak</span></div>
+                  <div class="sq-xp"><span id="sq-xpbar"></span></div>
+                  <p class="sq-lvl">Level 4 · <b id="sq-xp">340</b> XP</p>
+                  <div class="sq-card">
+                    <div class="sq-timer"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15"/><circle id="sq-ring" cx="18" cy="18" r="15"/></svg><span id="sq-sec">20</span></div>
+                    <p class="sq-q" id="sq-q">Which HTML tag makes a link?</p>
+                    <div class="sq-opts" id="sq-opts"></div>
+                  </div>
+                  <p class="sq-msg" id="sq-msg" aria-live="polite">Tap an answer to play</p>
+                </div>
+              </div>
+              <span class="art-chip c1">+20 XP</span>
+              <span class="art-chip c2">32 badges</span>
             </div>
-          </div>
-        </article>
-
-        <article class="project project-flip reveal" aria-labelledby="p-bansaride">
-          <div class="project-art art-blue tilt" aria-hidden="true">
-            <svg class="art-icon"><use href="#i-route"/></svg>
-            <span class="art-chip c1">Tricycle · ₱ fare</span>
-            <span class="art-chip c2">96 routes</span>
-            <span class="art-chip c3">Works offline</span>
-          </div>
-          <div class="project-body">
-            <p class="project-meta"><span class="badge">Mobile &amp; web app</span><span>PWA · Android</span></p>
-            <h3 class="project-title" id="p-bansaride">BansaRide</h3>
-            <p class="project-kind">Ride and fare guide for Bansalan</p>
-            <p class="project-desc">
-              Shows where to catch a tricycle, pedicab, bus or van in Bansalan, what the ride costs for students,
-              seniors, PWD and adults, and where the drivers' groups wait. About 96 real road routes on a map that
-              keeps working without signal, plus rider-reported fares and ride alerts.
-            </p>
-            <ul class="tags" aria-label="Technologies"><li>React</li><li>Vite</li><li>Leaflet</li><li>OpenStreetMap</li><li>Supabase</li><li>Capacitor</li></ul>
-            <div class="project-links">
-              <a class="btn btn-sm btn-cream" href="https://github.com/ItsmeEremiyaaaa/BansaRide" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> Source code <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+            <div class="slide-body">
+              <p class="slide-num">01</p>
+              <p class="project-meta"><span class="badge">Mobile app</span><span>Project leader · Team of 6</span></p>
+              <h3 class="slide-title" id="s-studyquest">StudyQuest</h3>
+              <p class="project-kind">Gamified quiz app</p>
+              <p class="project-desc">Quizzes that play like a game: XP and levels, daily streaks, 32 badges, friends and quiz leaderboards, and a 20-second timer on every question, in English or Tagalog. Shipped as an Android APK for a school beta test and showcased at TechCase.</p>
+              <ul class="tags" aria-label="Technologies"><li>React Native</li><li>Expo</li><li>Firebase</li><li>Cloud Functions</li><li>i18next</li></ul>
+              <div class="project-links"><a class="btn btn-sm btn-cream" href="https://studyquest-a547c.web.app" target="_blank" rel="noopener">Try the web version <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
             </div>
-          </div>
-        </article>
+          </article>
 
-        <article class="project reveal" aria-labelledby="p-gabay">
-          <div class="project-art art-mint tilt" aria-hidden="true">
-            <svg class="art-icon"><use href="#i-pin"/></svg>
-            <span class="art-chip c1">Library · 24 m</span>
-            <span class="art-chip c2">Where to?</span>
-            <span class="art-chip c3">Capstone</span>
-          </div>
-          <div class="project-body">
-            <p class="project-meta"><span class="badge badge-accent">Capstone</span><span>Mobile · AR</span></p>
-            <h3 class="project-title" id="p-gabay">GABAY</h3>
-            <p class="project-kind">Virtual campus navigation using augmented reality</p>
-            <p class="project-desc">
-              An AR wayfinding app for St. Mary's College of Bansalan. Floating signs for each campus location bob
-              and fade with distance, a 3D pin marks the destination, and a "Where to?" search lists every place on
-              campus. Onboarding and UI designed in Figma.
-            </p>
-            <ul class="tags" aria-label="Technologies"><li>Unity</li><li>C#</li><li>MultiSet SDK</li><li>Supabase</li><li>Figma</li></ul>
-          </div>
-        </article>
-
-        <article class="project project-flip reveal" aria-labelledby="p-research">
-          <div class="project-art art-shot tilt">
-            <img src="assets/img/research.webp" srcset="assets/img/research-700.webp 700w, assets/img/research.webp 1351w"
-                 sizes="(max-width: 900px) 90vw, 520px" width="1351" height="635" loading="lazy" decoding="async"
-                 alt="Journal article page listing Jeremiah Falcon Escubido as first author">
-          </div>
-          <div class="project-body">
-            <p class="project-meta"><span class="badge badge-accent">Published</span><span>June 2025</span></p>
-            <h3 class="project-title" id="p-research">ICT Integration &amp; Student Performance</h3>
-            <p class="project-kind">Asian Journal of Education and Social Studies · Vol. 51, Issue 6</p>
-            <p class="project-desc">
-              A correlational study of how ICT integration in teaching and learning relates to the perceived academic
-              performance of college students in Bansalan. First-listed co-author, with Alexis Dale Laborte and Karen N. Bangcas.
-            </p>
-            <ul class="tags" aria-label="Methods"><li>Quantitative research</li><li>Correlational analysis</li><li>Academic writing</li></ul>
-            <div class="project-links">
-              <a class="btn btn-sm btn-cream" href="https://doi.org/10.9734/ajess/2025/v51i62032" target="_blank" rel="noopener">Read the paper <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
-              <a class="text-link" href="https://orcid.org/0009-0007-5341-8733" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-orcid"/></svg> ORCID</a>
+          <!-- Slide 2: BansaRide -->
+          <article class="slide" aria-roledescription="slide" aria-labelledby="s-bansaride">
+            <div class="slide-art art-blue">
+              <div class="phone" aria-label="Interactive BansaRide demo">
+                <div class="phone-screen br">
+                  <svg class="br-map" viewBox="0 0 200 300" aria-hidden="true">
+                    <path class="br-road" d="M-10 60 L210 90 M40 -10 L70 310 M-10 200 L210 170 M150 -10 L130 310 M-10 260 L120 300"/>
+                    <path class="br-route" id="br-route" d="M58 70 C 90 110, 150 95, 142 160 S 80 230, 104 262"/>
+                    <circle class="br-dot a" cx="58" cy="70" r="7"/><circle class="br-dot b" cx="104" cy="262" r="7"/>
+                  </svg>
+                  <div class="br-sheet">
+                    <p class="br-route-name" id="br-name">Public Market → Bus Terminal</p>
+                    <p class="br-sub" id="br-sub">Tricycle or pedicab · fare shown for a student</p>
+                    <div class="br-seg" role="group" aria-label="Passenger type">
+                      <button type="button" aria-pressed="true" data-p="student">Student</button>
+                      <button type="button" aria-pressed="false" data-p="senior">Senior</button>
+                      <button type="button" aria-pressed="false" data-p="adult">Adult</button>
+                    </div>
+                    <button class="br-swap" type="button" id="br-swap">Try another route</button>
+                  </div>
+                </div>
+              </div>
+              <span class="art-chip c1">96 routes</span>
+              <span class="art-chip c2">Works offline</span>
             </div>
-          </div>
-        </article>
+            <div class="slide-body">
+              <p class="slide-num">02</p>
+              <p class="project-meta"><span class="badge">Mobile &amp; web app</span><span>PWA · Android</span></p>
+              <h3 class="slide-title" id="s-bansaride">BansaRide</h3>
+              <p class="project-kind">Ride and fare guide for Bansalan</p>
+              <p class="project-desc">Shows where to catch a tricycle, pedicab, bus or van in Bansalan, what the ride costs for students, seniors, PWD and adults, and where the drivers' groups wait. About 96 real road routes on a map that keeps working without signal, plus rider-reported fares and ride alerts.</p>
+              <ul class="tags" aria-label="Technologies"><li>React</li><li>Vite</li><li>Leaflet</li><li>OpenStreetMap</li><li>Supabase</li><li>Capacitor</li></ul>
+              <div class="project-links"><a class="btn btn-sm btn-cream" href="https://github.com/ItsmeEremiyaaaa/BansaRide" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> Source code <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
+            </div>
+          </article>
+
+          <!-- Slide 3: GABAY -->
+          <article class="slide" aria-roledescription="slide" aria-labelledby="s-gabay">
+            <div class="slide-art art-mint">
+              <div class="phone" aria-label="Interactive GABAY demo">
+                <div class="phone-screen gb">
+                  <div class="gb-scene" aria-hidden="true">
+                    <span class="gb-floor"></span>
+                    <span class="gb-sign" id="gb-sign"><b id="gb-place">Library</b><small id="gb-dist">Ahead</small></span>
+                    <span class="gb-pin"></span>
+                  </div>
+                  <div class="gb-panel">
+                    <p class="gb-label">Where to?</p>
+                    <div class="gb-places" role="group" aria-label="Pick a destination">
+                      <button type="button" aria-pressed="true">Library</button>
+                      <button type="button" aria-pressed="false">Registrar</button>
+                      <button type="button" aria-pressed="false">Chapel</button>
+                      <button type="button" aria-pressed="false">IT Lab</button>
+                    </div>
+                  </div>
+                  <span class="gb-demo">Demo</span>
+                </div>
+              </div>
+              <span class="art-chip c1">AR signs</span>
+              <span class="art-chip c2">Capstone</span>
+            </div>
+            <div class="slide-body">
+              <p class="slide-num">03</p>
+              <p class="project-meta"><span class="badge badge-accent">Capstone</span><span>Mobile · AR</span></p>
+              <h3 class="slide-title" id="s-gabay">GABAY</h3>
+              <p class="project-kind">Virtual campus navigation using augmented reality</p>
+              <p class="project-desc">An AR wayfinding app for St. Mary's College of Bansalan. Floating signs for each campus location bob and fade with distance, a 3D pin marks the destination, and a "Where to?" search lists every place on campus. Onboarding and UI designed in Figma.</p>
+              <ul class="tags" aria-label="Technologies"><li>Unity</li><li>C#</li><li>MultiSet SDK</li><li>Supabase</li><li>Figma</li></ul>
+            </div>
+          </article>
+
+          <!-- Slide 4: Research -->
+          <article class="slide" aria-roledescription="slide" aria-labelledby="s-research">
+            <div class="slide-art art-paper">
+              <div class="browser">
+                <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>doi.org/10.9734/ajess/2025/v51i62032</em></div>
+                <img src="assets/img/research.webp" srcset="assets/img/research-700.webp 700w, assets/img/research.webp 1351w" sizes="(max-width: 900px) 90vw, 560px" width="1351" height="635" loading="lazy" decoding="async" alt="Journal article page listing Jeremiah Falcon Escubido as first author">
+              </div>
+              <span class="art-chip c1">Published 2025</span>
+              <span class="art-chip c2">First author</span>
+            </div>
+            <div class="slide-body">
+              <p class="slide-num">04</p>
+              <p class="project-meta"><span class="badge badge-accent">Published</span><span>June 2025</span></p>
+              <h3 class="slide-title" id="s-research">ICT &amp; Student Performance</h3>
+              <p class="project-kind">Asian Journal of Education and Social Studies · Vol. 51, Issue 6</p>
+              <p class="project-desc">A correlational study of how ICT integration in teaching and learning relates to the perceived academic performance of college students in Bansalan. First-listed co-author, with Alexis Dale Laborte and Karen N. Bangcas.</p>
+              <ul class="tags" aria-label="Methods"><li>Quantitative research</li><li>Correlational analysis</li><li>Academic writing</li></ul>
+              <div class="project-links"><a class="btn btn-sm btn-cream" href="https://doi.org/10.9734/ajess/2025/v51i62032" target="_blank" rel="noopener">Read the paper <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="work-progress wrap" aria-hidden="true"><span id="work-bar"></span></div>
+        <div class="work-dots" id="work-dots" role="tablist" aria-label="Choose a project">
+          <button type="button" role="tab" aria-selected="true">StudyQuest</button>
+          <button type="button" role="tab" aria-selected="false">BansaRide</button>
+          <button type="button" role="tab" aria-selected="false">GABAY</button>
+          <button type="button" role="tab" aria-selected="false">Research</button>
+        </div>
       </div>
-
-      <p class="work-more reveal"><a class="text-link" href="https://github.com/ItsmeEremiyaaaa" target="_blank" rel="noopener">More on GitHub <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></p>
     </div>
   </section>
 
-  <!-- ─── Stack ──────────────────────────────────────────────── -->
-  <section class="section cream" id="stack" aria-labelledby="stack-title">
-    <div class="wrap stack-wrap">
-      <header class="section-head reveal">
-        <p class="eyebrow">02 · Stack</p>
-        <h2 class="section-title" id="stack-title">What I work with.</h2>
-        <p class="section-desc">Grouped by what I use them for, from coursework and my own projects.</p>
-      </header>
-      <dl class="stack reveal stagger">
-        <div class="stack-row"><dt>Mobile &amp; AR</dt><dd><ul class="chips"><li>React Native</li><li>Expo</li><li>Unity</li><li>C#</li><li>Capacitor</li><li>MultiSet SDK</li></ul></dd></div>
-        <div class="stack-row"><dt>Web</dt><dd><ul class="chips"><li>React</li><li>TypeScript</li><li>Vite</li><li>Laravel</li><li>Inertia.js</li><li>Tailwind CSS</li><li>Leaflet</li></ul></dd></div>
-        <div class="stack-row"><dt>Back end &amp; data</dt><dd><ul class="chips"><li>Firebase</li><li>Supabase</li><li>PHP</li><li>MySQL</li><li>JSON APIs</li></ul></dd></div>
-        <div class="stack-row"><dt>Languages</dt><dd><ul class="chips"><li>JavaScript</li><li>TypeScript</li><li>PHP</li><li>Java</li><li>Python</li><li>C#</li><li>C++</li></ul></dd></div>
-        <div class="stack-row"><dt>Design &amp; tools</dt><dd><ul class="chips"><li>Figma</li><li>Git</li><li>GitHub</li><li>VS Code</li><li>Adobe</li><li>Video editing</li></ul></dd></div>
-        <div class="stack-row"><dt>Ways of working</dt><dd><ul class="chips"><li>Team leadership</li><li>Research writing</li><li>Public speaking</li><li>Mentoring</li></ul></dd></div>
-      </dl>
-    </div>
-  </section>
-
-  <!-- ─── Journey ────────────────────────────────────────────── -->
-  <section class="section cream-2" id="journey" aria-labelledby="journey-title">
-    <div class="wrap journey">
-      <header class="section-head reveal">
-        <p class="eyebrow">03 · Journey</p>
-        <h2 class="section-title" id="journey-title">Education &amp; recognition.</h2>
-        <p class="section-desc"><a class="text-link" href="assets/Escubido_Jeremiah_Resume.pdf" download><svg class="icon icon-sm" aria-hidden="true"><use href="#i-download"/></svg> Download my CV (PDF)</a></p>
-      </header>
-      <ol class="timeline reveal stagger">
-        <li class="timeline-item">
-          <p class="timeline-when">2024 – 2026</p>
-          <div><h3>BS Information Technology</h3><p class="timeline-org">St. Mary's College of Bansalan, Inc. · 4th year</p><p>Web and mobile applications, system integration, AR development, computer graphics, and ICT research. Active in SITeS.</p></div>
-        </li>
-        <li class="timeline-item">
-          <p class="timeline-when">Oct 2026</p>
-          <div><h3>TechCase showcase</h3><p class="timeline-org">StudyQuest booth</p><p>Presented StudyQuest as developer and project leader at the school's technology showcase.</p></div>
-        </li>
-        <li class="timeline-item">
-          <p class="timeline-when">Jun 2025</p>
-          <div><h3>Published research article</h3><p class="timeline-org">Asian Journal of Education and Social Studies</p><p>Co-authored a study on ICT integration and perceived student performance among college students in Bansalan.</p></div>
-        </li>
-        <li class="timeline-item">
-          <p class="timeline-when">4×</p>
-          <div><h3>Dean's List</h3><p class="timeline-org">BSIT program</p><p>Recognized four times for academic performance.</p></div>
-        </li>
-        <li class="timeline-item">
-          <p class="timeline-when">2018 – 2023</p>
-          <div><h3>BS Information Technology</h3><p class="timeline-org">STI College of Novaliches</p><p>Research, on-the-job training, systems, web development, security, and IT innovation.</p></div>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- ─── Life ───────────────────────────────────────────────── -->
-  <section class="section maroon" id="life" aria-labelledby="life-title">
+  <!-- ─── By the numbers: flip cards ─────────────────────────── -->
+  <section class="section cream numbers" aria-labelledby="numbers-title">
     <div class="wrap">
       <header class="section-head reveal">
-        <p class="eyebrow">04 · Beyond the code</p>
-        <h2 class="section-title" id="life-title">Campus life &amp; my people.</h2>
-        <p class="section-desc">Program events, recognition, presentations, and a few moments in between.</p>
+        <p class="eyebrow">02 · By the numbers</p>
+        <h2 class="section-title" id="numbers-title">Flip a card.</h2>
       </header>
-      <ul class="gallery reveal stagger" aria-label="Photo gallery">
-        <li><button type="button" data-full="assets/img/life-8.webp"><img src="assets/img/life-8-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="Presenting in a computer lab during a BSIT session"></button></li>
-        <li><button type="button" data-full="assets/img/life-9.webp"><img src="assets/img/life-9-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="Receiving an achievement certificate and medal with faculty"></button></li>
-        <li><button type="button" data-full="assets/img/life-6.webp"><img src="assets/img/life-6-sm.webp" width="640" height="427" loading="lazy" decoding="async" alt="BSIT students on stage at a program event"></button></li>
-        <li><button type="button" data-full="assets/img/life-10.webp"><img src="assets/img/life-10-sm.webp" width="640" height="643" loading="lazy" decoding="async" alt="Classmates holding certificates at an awarding"></button></li>
-        <li><button type="button" data-full="assets/img/life-1.webp"><img src="assets/img/life-1-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="BSIT students gathered outdoors on campus for a meeting"></button></li>
-        <li><button type="button" data-full="assets/img/life-7.webp"><img src="assets/img/life-7-sm.webp" width="640" height="427" loading="lazy" decoding="async" alt="Group photo after a cultural dance performance"></button></li>
-        <li><button type="button" data-full="assets/img/life-5.webp"><img src="assets/img/life-5-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="Friends walking together after a school workshop"></button></li>
-        <li><button type="button" data-full="assets/img/life-2.webp"><img src="assets/img/life-2-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="Hiking with friends on a trail to a waterfall"></button></li>
-      </ul>
+      <div class="facts">
+        <button class="fact reveal" type="button" aria-pressed="false">
+          <span class="fact-front"><b>4×</b><span>Dean's Lister</span></span>
+          <span class="fact-back">Recognized four times for academic performance in the BSIT program.</span>
+        </button>
+        <button class="fact reveal" type="button" aria-pressed="false">
+          <span class="fact-front"><b>6</b><span>teammates led</span></span>
+          <span class="fact-back">Project leader and developer of StudyQuest, shown at the TechCase showcase.</span>
+        </button>
+        <button class="fact reveal" type="button" aria-pressed="false">
+          <span class="fact-front"><b>96</b><span>real routes</span></span>
+          <span class="fact-back">Road routes mapped in BansaRide, so riders in Bansalan know where to wait and what to pay.</span>
+        </button>
+        <button class="fact reveal" type="button" aria-pressed="false">
+          <span class="fact-front"><b>2025</b><span>published</span></span>
+          <span class="fact-back">First-listed author of a study on ICT integration and student performance.</span>
+        </button>
+      </div>
     </div>
   </section>
 
-  <!-- ─── Contact ────────────────────────────────────────────── -->
+  <!-- ─── Toolbox: filter + "where I used it" ────────────────── -->
+  <section class="section cream-2" id="toolbox" aria-labelledby="toolbox-title">
+    <div class="wrap toolbox">
+      <header class="section-head reveal">
+        <p class="eyebrow">03 · Toolbox</p>
+        <h2 class="section-title" id="toolbox-title">Pick a shelf.</h2>
+        <p class="section-desc">Filter my tools, then hover or tap one to see where I used it.</p>
+      </header>
+      <div class="tool-filters reveal" role="group" aria-label="Filter tools">
+        <button type="button" aria-pressed="true" data-f="all">All</button>
+        <button type="button" aria-pressed="false" data-f="mobile">Mobile &amp; AR</button>
+        <button type="button" aria-pressed="false" data-f="web">Web</button>
+        <button type="button" aria-pressed="false" data-f="data">Back end &amp; data</button>
+        <button type="button" aria-pressed="false" data-f="design">Design &amp; tools</button>
+      </div>
+      <div class="tool-board reveal">
+        <ul class="tools" id="tools">
+          <li><button type="button" class="tool" data-c="mobile" data-u="StudyQuest">React Native</button></li>
+          <li><button type="button" class="tool" data-c="mobile" data-u="StudyQuest">Expo</button></li>
+          <li><button type="button" class="tool" data-c="mobile" data-u="GABAY">Unity</button></li>
+          <li><button type="button" class="tool" data-c="mobile" data-u="GABAY">C#</button></li>
+          <li><button type="button" class="tool" data-c="mobile" data-u="GABAY">MultiSet SDK</button></li>
+          <li><button type="button" class="tool" data-c="mobile" data-u="BansaRide (Android app)">Capacitor</button></li>
+          <li><button type="button" class="tool" data-c="web" data-u="BansaRide, GradeHub">React</button></li>
+          <li><button type="button" class="tool" data-c="web" data-u="GradeHub, StudyQuest">TypeScript</button></li>
+          <li><button type="button" class="tool" data-c="web" data-u="BansaRide">Vite</button></li>
+          <li><button type="button" class="tool" data-c="web" data-u="BansaRide (maps)">Leaflet</button></li>
+          <li><button type="button" class="tool" data-c="web" data-u="GradeHub">Laravel</button></li>
+          <li><button type="button" class="tool" data-c="web" data-u="GradeHub">Inertia.js</button></li>
+          <li><button type="button" class="tool" data-c="web" data-u="This portfolio">HTML &amp; CSS</button></li>
+          <li><button type="button" class="tool" data-c="data" data-u="StudyQuest">Firebase</button></li>
+          <li><button type="button" class="tool" data-c="data" data-u="StudyQuest (leaderboards, reset emails)">Cloud Functions</button></li>
+          <li><button type="button" class="tool" data-c="data" data-u="BansaRide, GABAY">Supabase</button></li>
+          <li><button type="button" class="tool" data-c="data" data-u="GradeHub">PHP</button></li>
+          <li><button type="button" class="tool" data-c="data" data-u="Coursework and web systems">MySQL</button></li>
+          <li><button type="button" class="tool" data-c="design" data-u="GABAY screens and onboarding">Figma</button></li>
+          <li><button type="button" class="tool" data-c="design" data-u="Every project">Git &amp; GitHub</button></li>
+          <li><button type="button" class="tool" data-c="design" data-u="Every project">VS Code</button></li>
+          <li><button type="button" class="tool" data-c="design" data-u="Graphics and video edits">Adobe</button></li>
+        </ul>
+        <aside class="tool-info" aria-live="polite">
+          <p class="tool-info-label">Used in</p>
+          <p class="tool-info-name" id="tool-name">Hover a tool</p>
+          <p class="tool-info-use" id="tool-use">I'll show you where it shows up in my work.</p>
+          <p class="tool-count"><b id="tool-count">22</b> tools on this shelf</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Journey: swipeable slides ──────────────────────────── -->
+  <section class="section cream" id="journey" aria-labelledby="journey-title">
+    <div class="wrap">
+      <header class="section-head section-head-row reveal">
+        <div>
+          <p class="eyebrow">04 · Journey</p>
+          <h2 class="section-title" id="journey-title">Swipe through the years.</h2>
+        </div>
+        <div class="work-controls">
+          <button class="icon-btn" type="button" id="j-prev" aria-label="Previous milestone"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <button class="icon-btn" type="button" id="j-next" aria-label="Next milestone"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+        </div>
+      </header>
+    </div>
+    <ol class="journey-track reveal" id="journey-track" aria-label="Milestones">
+      <li class="jcard"><p class="jcard-year">2018–23</p><h3>BS Information Technology</h3><p class="jcard-org">STI College of Novaliches</p><p>Research, on-the-job training, systems, web development, security, and IT innovation.</p></li>
+      <li class="jcard"><p class="jcard-year">2024</p><h3>BSIT at SMCBI</h3><p class="jcard-org">St. Mary's College of Bansalan, Inc.</p><p>Continued BSIT in Bansalan and became active in SITeS, the program's student society.</p></li>
+      <li class="jcard"><p class="jcard-year">4×</p><h3>Dean's List</h3><p class="jcard-org">BSIT program</p><p>Recognized four times for academic performance.</p></li>
+      <li class="jcard"><p class="jcard-year">2025</p><h3>Published research</h3><p class="jcard-org">Asian Journal of Education and Social Studies</p><p>Co-authored a study on ICT integration and perceived student performance in Bansalan.</p></li>
+      <li class="jcard"><p class="jcard-year">Oct '26</p><h3>TechCase showcase</h3><p class="jcard-org">StudyQuest booth</p><p>Presented StudyQuest as developer and project leader at the school's technology showcase.</p></li>
+      <li class="jcard jcard-now"><p class="jcard-year">Now</p><h3>GABAY &amp; graduation</h3><p class="jcard-org">4th year · Capstone</p><p>Finishing GABAY and looking for an internship or OJT placement.</p></li>
+    </ol>
+  </section>
+
+  <!-- ─── Life: swipe deck ───────────────────────────────────── -->
+  <section class="section maroon" id="life" aria-labelledby="life-title">
+    <div class="wrap life">
+      <header class="section-head reveal">
+        <p class="eyebrow">05 · Beyond the code</p>
+        <h2 class="section-title" id="life-title">Swipe my camera roll.</h2>
+        <p class="section-desc">Drag the top photo away, or use the buttons. Click a photo to see it bigger.</p>
+        <div class="deck-actions">
+          <button class="btn btn-sm btn-ghost" type="button" id="roll-prev"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg> Back</button>
+          <button class="btn btn-sm btn-cream" type="button" id="roll-next">Next photo <svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+          <span class="deck-count" id="roll-count" aria-live="polite">1 / 8</span>
+        </div>
+      </header>
+      <div class="roll reveal" id="roll">
+        <figure class="roll-card" data-full="assets/img/life-8.webp"><img src="assets/img/life-8-sm.webp" width="640" height="480" alt="Presenting in a computer lab during a BSIT session" draggable="false"><figcaption>Presenting in the lab</figcaption></figure>
+        <figure class="roll-card" data-full="assets/img/life-9.webp"><img src="assets/img/life-9-sm.webp" width="640" height="480" alt="Receiving an achievement certificate and medal with faculty" draggable="false"><figcaption>Recognition day</figcaption></figure>
+        <figure class="roll-card" data-full="assets/img/life-6.webp"><img src="assets/img/life-6-sm.webp" width="640" height="427" alt="BSIT students on stage at a program event" draggable="false"><figcaption>On stage with BSIT</figcaption></figure>
+        <figure class="roll-card" data-full="assets/img/life-10.webp"><img src="assets/img/life-10-sm.webp" width="640" height="643" alt="Classmates holding certificates at an awarding" draggable="false"><figcaption>Certificates in hand</figcaption></figure>
+        <figure class="roll-card" data-full="assets/img/life-1.webp"><img src="assets/img/life-1-sm.webp" width="640" height="480" alt="BSIT students gathered outdoors on campus for a meeting" draggable="false"><figcaption>Campus meet-up</figcaption></figure>
+        <figure class="roll-card" data-full="assets/img/life-7.webp"><img src="assets/img/life-7-sm.webp" width="640" height="427" alt="Group photo after a cultural dance performance" draggable="false"><figcaption>After the dance number</figcaption></figure>
+        <figure class="roll-card" data-full="assets/img/life-5.webp"><img src="assets/img/life-5-sm.webp" width="640" height="480" alt="Friends walking together after a school workshop" draggable="false"><figcaption>Workshop walk</figcaption></figure>
+        <figure class="roll-card" data-full="assets/img/life-2.webp"><img src="assets/img/life-2-sm.webp" width="640" height="480" alt="Hiking with friends on a trail to a waterfall" draggable="false"><figcaption>Waterfall hike</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Contact: message builder ───────────────────────────── -->
   <section class="section maroon contact" id="contact" aria-labelledby="contact-title">
     <div class="wrap contact-inner">
       <div class="contact-copy reveal">
-        <p class="eyebrow">05 · Contact</p>
+        <p class="eyebrow">06 · Contact</p>
         <h2 class="contact-title" id="contact-title">See you<br>on GitHub.</h2>
-        <p class="section-desc">
-          I'm open to internships and OJT, freelance projects, and collaborations. Email is the best way to reach me,
-          or scan the card to follow my work.
-        </p>
+        <p class="section-desc">Pick what it's about and I'll know before I open it.</p>
+        <div class="topics" role="radiogroup" aria-label="What's it about?">
+          <button type="button" role="radio" aria-checked="true" data-s="Internship opportunity">Internship</button>
+          <button type="button" role="radio" aria-checked="false" data-s="OJT placement">OJT</button>
+          <button type="button" role="radio" aria-checked="false" data-s="Freelance project">Freelance</button>
+          <button type="button" role="radio" aria-checked="false" data-s="Let's collaborate">Collab</button>
+          <button type="button" role="radio" aria-checked="false" data-s="Just saying hi">Just hi</button>
+        </div>
+        <p class="topic-preview">Subject: <span id="topic-subject">Internship opportunity — from your portfolio</span></p>
         <div class="contact-actions">
-          <a class="btn btn-cream" href="mailto:jeremiahescubido05@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> Email me</a>
+          <a class="btn btn-cream" id="mail-btn" href="mailto:jeremiahescubido05@gmail.com?subject=Internship%20opportunity%20%E2%80%94%20from%20your%20portfolio"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> Email me</a>
           <button class="btn btn-ghost copy-email" type="button" data-email="jeremiahescubido05@gmail.com">
             <svg class="icon icon-copy" aria-hidden="true"><use href="#i-copy"/></svg>
             <svg class="icon icon-check" aria-hidden="true"><use href="#i-check"/></svg>
@@ -374,6 +489,7 @@
           <li><a href="mailto:jeremiahescubido05@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>jeremiahescubido05@gmail.com</a></li>
           <li><a href="https://www.linkedin.com/in/jeremiah-escubido" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg>LinkedIn</a></li>
           <li><a href="https://orcid.org/0009-0007-5341-8733" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-orcid"/></svg>ORCID</a></li>
+          <li><a href="assets/Escubido_Jeremiah_Resume.pdf" download><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>CV (PDF)</a></li>
         </ul>
       </div>
 
@@ -393,17 +509,15 @@
 
 <footer class="site-footer maroon">
   <div class="wrap footer-inner">
-    <p>© <span id="year">2026</span> Jeremiah Falcon Escubido · Designed and built by hand in Bansalan.</p>
+    <p>© <span id="year">2026</span> Jeremiah Falcon Escubido · Designed and built by hand in Bansalan. Psst: type <kbd>doy</kbd>.</p>
     <a class="text-link" href="#top">Back to top <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
   </div>
 </footer>
 
-<!-- Gallery lightbox -->
+<!-- Photo viewer -->
 <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
   <figure><img src="" alt=""><figcaption></figcaption></figure>
   <button class="icon-btn lb-close" type="button" aria-label="Close photo viewer"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
-  <button class="icon-btn lb-prev" type="button" aria-label="Previous photo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
-  <button class="icon-btn lb-next" type="button" aria-label="Next photo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
 </dialog>
 
 </body>

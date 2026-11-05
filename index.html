@@ -27,7 +27,7 @@
 
   <link rel="preload" href="assets/fonts/caveat-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=b8903e4c">
+  <link rel="stylesheet" href="assets/css/main.css?v=1145214c">
   <link rel="stylesheet" href="assets/css/cursors.css?v=3ad10ca4">
 
   <script>
@@ -40,8 +40,8 @@
       if (!seen && !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('has-intro');
     })();
   </script>
-  <script src="assets/js/cursors.js?v=06901b39" defer></script>
-  <script src="assets/js/main.js?v=1cafba59" defer></script>
+  <script src="assets/js/cursors.js?v=df809864" defer></script>
+  <script src="assets/js/main.js?v=b29c468a" defer></script>
 
   <script type="application/ld+json">
   {
@@ -266,38 +266,42 @@
             </div>
           </article>
 
-          <!-- Slide 3: GABAY -->
+          <!-- Slide 3: GABAY (real app screens) -->
           <article class="slide" aria-roledescription="slide" aria-labelledby="s-gabay">
-            <div class="slide-art art-mint">
-              <div class="phone" aria-label="Interactive GABAY demo">
-                <div class="phone-screen gb">
-                  <div class="gb-scene" aria-hidden="true">
-                    <span class="gb-floor"></span>
-                    <span class="gb-sign" id="gb-sign"><b id="gb-place">Library</b><small id="gb-dist">Ahead</small></span>
-                    <span class="gb-pin"></span>
-                  </div>
-                  <div class="gb-panel">
-                    <p class="gb-label">Where to?</p>
-                    <div class="gb-places" role="group" aria-label="Pick a destination">
-                      <button type="button" aria-pressed="true">Library</button>
-                      <button type="button" aria-pressed="false">Registrar</button>
-                      <button type="button" aria-pressed="false">Chapel</button>
-                      <button type="button" aria-pressed="false">IT Lab</button>
-                    </div>
-                  </div>
-                  <span class="gb-demo">Demo</span>
+            <div class="slide-art art-gabay">
+              <div class="phone phone-real" aria-label="GABAY app screens. Tap the phone for the next screen.">
+                <div class="phone-screen gb-real" id="gb-real" role="button" tabindex="0">
+                    <img class="gb-shot is-on" src="assets/img/gabay-splash.webp" width="480" height="1067" loading="lazy" decoding="async" alt="GABAY splash screen with the logo and the tagline Find your way, instantly">
+                    <img class="gb-shot" src="assets/img/gabay-onboard-1.webp" width="480" height="1067" loading="lazy" decoding="async" alt="Onboarding screen: Find your way around SMCBI, AR-powered campus navigation">
+                    <img class="gb-shot" src="assets/img/gabay-onboard-2.webp" width="480" height="1067" loading="lazy" decoding="async" alt="Onboarding screen: Follow the blue path, real-time AR arrows turn by turn">
+                    <img class="gb-shot" src="assets/img/gabay-onboard-3.webp" width="480" height="1067" loading="lazy" decoding="async" alt="Onboarding screen: Every office instantly found, with an illustration of the campus">
+                    <img class="gb-shot" src="assets/img/gabay-role.webp" width="480" height="1067" loading="lazy" decoding="async" alt="Role picker: Personnel, Student or Visitor">
+                    <img class="gb-shot" src="assets/img/gabay-where-to.webp" width="480" height="1067" loading="lazy" decoding="async" alt="Where to? list of campus places with distances, like Guidance Office, Registrar and School Chapel">
+                    <img class="gb-shot" src="assets/img/gabay-localizing.webp" width="480" height="1067" loading="lazy" decoding="async" alt="Camera view of a campus hallway while the app localizes: Look forward and move device slowly">
+                    <img class="gb-shot" src="assets/img/gabay-ar-sign.webp" width="480" height="1067" loading="lazy" decoding="async" alt="Live AR view of a campus corridor with a floating sign for the BSIT Program Office, Immaculate Conception Building">
+                  <span class="gb-step" id="gb-step" aria-live="polite">1 / 8 · Splash</span>
                 </div>
               </div>
-              <span class="art-chip c1">AR signs</span>
-              <span class="art-chip c2">Capstone</span>
+              <div class="gb-tabs" role="group" aria-label="Jump to a screen">
+                <button type="button" aria-pressed="true" data-i="0">Splash</button>
+                <button type="button" aria-pressed="false" data-i="1">Welcome</button>
+                <button type="button" aria-pressed="false" data-i="2">AR path</button>
+                <button type="button" aria-pressed="false" data-i="3">Campus map</button>
+                <button type="button" aria-pressed="false" data-i="4">Pick a role</button>
+                <button type="button" aria-pressed="false" data-i="5">Where to?</button>
+                <button type="button" aria-pressed="false" data-i="6">Localizing</button>
+                <button type="button" aria-pressed="false" data-i="7">AR sign</button>
+              </div>
+              <img class="gb-logo" src="assets/img/gabay-logo.webp" width="177" height="200" alt="GABAY logo">
             </div>
             <div class="slide-body">
               <p class="slide-num">03</p>
-              <p class="project-meta"><span class="badge badge-accent">Capstone</span><span>Mobile · AR</span></p>
+              <p class="project-meta"><span class="badge badge-accent">Capstone</span><span>Mobile · AR · Real screens</span></p>
               <h3 class="slide-title" id="s-gabay">GABAY</h3>
-              <p class="project-kind">Virtual campus navigation using augmented reality</p>
-              <p class="project-desc">An AR wayfinding app for St. Mary's College of Bansalan. Floating signs for each campus location bob and fade with distance, a 3D pin marks the destination, and a "Where to?" search lists every place on campus. Onboarding and UI designed in Figma.</p>
+              <p class="project-kind">Find your way, instantly. AR campus navigation for SMCBI</p>
+              <p class="project-desc">Pick who you are (personnel, student or visitor), search "Where to?" across offices like the Registrar, Clinic, Guidance Office and every program office, and see how far each one is. After a quick scan of the hallway, floating AR signs and a blue path guide you there, turn by turn.</p>
               <ul class="tags" aria-label="Technologies"><li>Unity</li><li>C#</li><li>MultiSet SDK</li><li>Supabase</li><li>Figma</li></ul>
+              <p class="slide-hint">Tap the phone, or pick a screen, to walk through the app.</p>
             </div>
           </article>
 
@@ -432,7 +436,7 @@
       <li class="jcard"><p class="jcard-year">4×</p><h3>Dean's List</h3><p class="jcard-org">BSIT program</p><p>Recognized four times for academic performance.</p></li>
       <li class="jcard"><p class="jcard-year">2025</p><h3>Published research</h3><p class="jcard-org">Asian Journal of Education and Social Studies</p><p>Co-authored a study on ICT integration and perceived student performance in Bansalan.</p></li>
       <li class="jcard"><p class="jcard-year">Oct '26</p><h3>TechCase showcase</h3><p class="jcard-org">StudyQuest booth</p><p>Presented StudyQuest as developer and project leader at the school's technology showcase.</p></li>
-      <li class="jcard jcard-now"><p class="jcard-year">Now</p><h3>GABAY &amp; graduation</h3><p class="jcard-org">4th year · Capstone</p><p>Finishing GABAY and looking for an internship or OJT placement.</p></li>
+      <li class="jcard jcard-now"><img class="jcard-logo" src="assets/img/gabay-logo.webp" width="177" height="200" loading="lazy" alt="GABAY logo"><p class="jcard-year">Now</p><h3>GABAY &amp; graduation</h3><p class="jcard-org">4th year · Capstone</p><p>Finishing GABAY and looking for an internship or OJT placement.</p></li>
     </ol>
   </section>
 

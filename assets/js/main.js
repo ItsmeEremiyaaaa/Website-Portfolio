@@ -312,22 +312,31 @@
     $('#br-swap').addEventListener('click', function () { r = (r + 1) % ROUTES.length; draw(); });
   })();
 
-  /* ── Demo 3: GABAY destination picker ─────────────────────────────────── */
+  /* ── Demo 3: GABAY — walk through the real app screens ─────────────── */
   (function () {
-    var places = $$('.gb-places button'); if (!places.length) return;
-    var sign = $('#gb-sign'), place = $('#gb-place'), dist = $('#gb-dist'), pin = $('.gb-pin');
-    var HINTS = ['Ahead', 'Turn left', 'Up the stairs', 'On your right'];
-    places.forEach(function (b, i) {
-      b.addEventListener('click', function () {
-        places.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-        sign.classList.add('is-swap');
-        setTimeout(function () {
-          place.textContent = b.textContent; dist.textContent = HINTS[i % HINTS.length];
-          sign.classList.remove('is-swap');
-          pin.classList.add('is-drop'); void pin.offsetWidth; pin.classList.remove('is-drop');
-        }, 220);
-      });
-    });
+    var screen = $('#gb-real'); if (!screen) return;
+    var shots = $$('.gb-shot', screen), tabs = $$('.gb-tabs button'), step = $('#gb-step');
+    var i = 0, auto = null;
+    function show(k) {
+      i = (k + shots.length) % shots.length;
+      shots.forEach(function (s, n) { s.classList.toggle('is-on', n === i); });
+      tabs.forEach(function (t, n) { t.setAttribute('aria-pressed', String(n === i)); });
+      step.textContent = (i + 1) + ' / ' + shots.length + ' · ' + tabs[i].textContent;
+    }
+    function stop() { clearInterval(auto); auto = null; }
+    function play() { if (!auto && !reduceMotion.matches) auto = setInterval(function () { show(i + 1); }, 2600); }
+    screen.addEventListener('click', function () { stop(); show(i + 1); });
+    screen.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); stop(); show(i + 1); } });
+    tabs.forEach(function (t, n) { t.addEventListener('click', function () { stop(); show(n); }); });
+    // Plays on its own while visible, until someone takes over.
+    var touched = false;
+    screen.addEventListener('pointerdown', function () { touched = true; });
+    tabs.forEach(function (t) { t.addEventListener('pointerdown', function () { touched = true; }); });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting && !touched) play(); else stop(); });
+      }, { threshold: .6 }).observe(screen);
+    }
   })();
 
   /* ── Flip cards ───────────────────────────────────────────────────────── */

@@ -516,7 +516,7 @@
   }
   // Press buttons inside the visible phone demos, flip cards, filter the toolbox.
   async function doPlay(bot) {
-    var list = visible('.sq-opts button, .br-seg button, .br-swap, .gb-places button, .fact, .tool');
+    var list = visible('.sq-opts button, .br-seg button, .br-swap, .gb-tabs button, .fact, .tool');
     if (!list.length) return doSay(bot);
     var el = pick(list);
     await bot.follow(el, rand(.3, .7), rand(.3, .7));

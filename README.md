@@ -16,7 +16,10 @@ Personal portfolio of Jeremiah Falcon Escubido (Doy), BSIT student at St. Mary's
 `assets/js/cursors.js` draws a swarm of tiny cursors that scatter from your mouse, plus three named
 cursors (Designer, Developer, Recruiter) that drag a frame over each block as it scrolls in, tilt the
 cards, restyle headings and chips, and retype the hero line. Their edits undo themselves.
-**Edit mode** (bottom bar) lets visitors click any element to recolor, resize, rotate or drag it.
+They also leave comment pins, scribble underlines and circles, chat, and sometimes follow your cursor.
+Visitors can press `/` to chat (a cursor replies), drag the stickers and chips, click empty space to call
+the swarm, and type `doy` for a surprise. **Edit mode** (bottom bar) lets visitors click any element to
+recolor, resize, rotate or drag it.
 Named cursors and edit mode run on desktop only; everything is off with reduced motion.
 
 ## Built with

@@ -91,7 +91,7 @@
         var cursors = window.PortfolioCursors;
         if (cursors && cursors.enabled) cursors.construct(el).then(function () { show(el); });
         else show(el);
-        setTimeout(next, 140);
+        setTimeout(next, 60);
       })();
     }
     var observer = new IntersectionObserver(function (entries) {

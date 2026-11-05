@@ -17,10 +17,18 @@
   var full = fine.matches && wide.matches; // named cursors + edit mode only on desktop
 
   /* ── Settings ─────────────────────────────────────────────────────────── */
+  // Ten named cursors work on the page at once. Add, remove or rename them here.
   var BOTS = [
-    { name: 'Designer', color: '#8cc8ff' },
+    { name: 'Designer',  color: '#8cc8ff' },
     { name: 'Developer', color: '#ff8fb8' },
-    { name: 'Recruiter', color: '#ffc24b' }
+    { name: 'Recruiter', color: '#ffc24b' },
+    { name: 'Client',    color: '#a9ecd0' },
+    { name: 'Tester',    color: '#c9b6ff' },
+    { name: 'Mentor',    color: '#ffb49b' },
+    { name: 'Adviser',   color: '#7fe0e6' },
+    { name: 'Classmate', color: '#f5e27a' },
+    { name: 'PM',        color: '#ff9e6b' },
+    { name: 'Intern',    color: '#d8f08a' }
   ];
   var SWARM_COLORS = ['#8cc8ff', '#ff8fb8', '#ffc24b', '#a9ecd0', '#ffb49b', '#ffffff', '#c9b6ff'];
   var SWATCHES = ['#e2553a', '#4a1826', '#8cc8ff', '#ff8fb8', '#ffc24b', '#a9ecd0', '#c9b6ff'];
@@ -189,7 +197,7 @@
     this.sel = makeSel(cfg.color);
     this.sel.bot = this;
     this.x = i % 2 ? innerWidth + 40 : -40;
-    this.y = innerHeight * (0.25 + i * 0.25);
+    this.y = innerHeight * (((i % 5) + 1) / 6);
     this.tx = this.x; this.ty = this.y;
     this.anchor = null; this.done = null; this.busy = false; this.tilt = null;
   }
@@ -462,8 +470,10 @@
   bar.setAttribute('aria-label', 'Live cursors');
   bar.innerHTML =
     '<span class="cx-dots" aria-hidden="true">' +
-    BOTS.map(function (b) { return '<b style="background:' + b.color + '">' + b.name[0] + '</b>'; }).join('') +
+    BOTS.slice(0, 4).map(function (b) { return '<b style="background:' + b.color + '">' + b.name[0] + '</b>'; }).join('') +
+    (BOTS.length > 4 ? '<b class="cx-dot-more">+' + (BOTS.length - 4) + '</b>' : '') +
     '<b class="cx-dot-you">Y</b></span>' +
+    '<span class="cx-count">' + (BOTS.length + 1) + ' editing</span>' +
     '<span class="cx-hint">Click anything to restyle it, drag to move</span>' +
     '<button type="button" class="cx-edit" aria-pressed="false">Edit mode</button>' +
     '<button type="button" class="cx-reset-all" hidden>Reset</button>' +
@@ -509,7 +519,11 @@
 
   // Named cursors start working once the intro has wiped away.
   var started = false;
-  function start() { if (started) return; started = true; bots.forEach(idle); }
+  function start() {
+    if (started) return;
+    started = true;
+    bots.forEach(function (b, i) { setTimeout(function () { idle(b); }, i * 450); });
+  }
   document.addEventListener('intro:done', start);
   setTimeout(start, 4000);
 })();

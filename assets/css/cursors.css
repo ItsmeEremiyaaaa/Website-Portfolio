@@ -102,4 +102,4 @@
 .cx-editing .cx-hint { display: inline; }
 
 @media (max-width: 900px) { .cx-editing .cx-hint { display: none; } }
-@media print { .cx-layer, .cx-bar, .cx-insp { display: none !important; } }
+@media print, (max-width: 719px) { .cx-layer, .cx-bar, .cx-insp { display: none !important; } }

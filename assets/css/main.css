@@ -21,23 +21,23 @@
 
 /* ── Tokens ─────────────────────────────────────────────────────────────── */
 :root {
-  /* Dark is the default identity; light is defined below. */
-  --bg:           #0a0a0b;
-  --bg-alt:       #0e0e10;
-  --surface:      #131316;
-  --surface-2:    #19191d;
-  --border:       rgba(255, 255, 255, 0.08);
-  --border-strong:rgba(255, 255, 255, 0.14);
-  --text:         #ededef;
-  --text-muted:   #a1a1aa;
-  --text-subtle:  #71717a;
-  --accent:       #00d982;
-  --accent-text:  #34e3a0;
-  --accent-soft:  rgba(0, 217, 130, 0.12);
-  --accent-ink:   #03140c;
-  --nav-bg:       rgba(10, 10, 11, 0.72);
-  --shadow:       0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 32px -12px rgba(0, 0, 0, 0.6);
-  --grid-line:    rgba(255, 255, 255, 0.045);
+  /* Maroon is the default identity; light is defined below. */
+  --bg:           #2a0f18;
+  --bg-alt:       #321320;
+  --surface:      #3b1724;
+  --surface-2:    #461d2c;
+  --border:       rgba(255, 228, 232, 0.10);
+  --border-strong:rgba(255, 228, 232, 0.18);
+  --text:         #f8ede8;
+  --text-muted:   #d6b8be;
+  --text-subtle:  #a8858e;
+  --accent:       #ff9472;
+  --accent-text:  #ffb49b;
+  --accent-soft:  rgba(255, 148, 114, 0.14);
+  --accent-ink:   #2a0f18;
+  --nav-bg:       rgba(42, 15, 24, 0.74);
+  --shadow:       0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 14px 34px -12px rgba(10, 0, 4, 0.65);
+  --grid-line:    rgba(255, 228, 232, 0.05);
   --hero-poster:  url("../img/hero-3d-dark.webp");
 
   --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -59,47 +59,24 @@
 }
 
 :root[data-theme="light"] {
-  --bg:           #fafafa;
-  --bg-alt:       #f4f4f5;
+  --bg:           #fbf6f4;
+  --bg-alt:       #f5ece9;
   --surface:      #ffffff;
-  --surface-2:    #f4f4f5;
-  --border:       rgba(10, 10, 11, 0.09);
-  --border-strong:rgba(10, 10, 11, 0.16);
-  --text:         #0a0a0b;
-  --text-muted:   #52525b;
-  --text-subtle:  #71717a;
-  --accent:       #00a866;
-  --accent-text:  #007a4a;
-  --accent-soft:  rgba(0, 168, 102, 0.1);
+  --surface-2:    #f5ece9;
+  --border:       rgba(58, 14, 28, 0.10);
+  --border-strong:rgba(58, 14, 28, 0.18);
+  --text:         #2a0f18;
+  --text-muted:   #6b4a53;
+  --text-subtle:  #8f6f77;
+  --accent:       #9b2c4a;
+  --accent-text:  #8a2340;
+  --accent-soft:  rgba(155, 44, 74, 0.10);
   --accent-ink:   #ffffff;
-  --nav-bg:       rgba(250, 250, 250, 0.78);
-  --shadow:       0 1px 2px rgba(10, 10, 11, 0.04), 0 12px 32px -16px rgba(10, 10, 11, 0.18);
-  --grid-line:    rgba(10, 10, 11, 0.05);
+  --nav-bg:       rgba(251, 246, 244, 0.80);
+  --shadow:       0 1px 2px rgba(58, 14, 28, 0.05), 0 12px 32px -16px rgba(58, 14, 28, 0.22);
+  --grid-line:    rgba(58, 14, 28, 0.05);
   --hero-poster:  url("../img/hero-3d-light.webp");
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg:           #fafafa;
-    --bg-alt:       #f4f4f5;
-    --surface:      #ffffff;
-    --surface-2:    #f4f4f5;
-    --border:       rgba(10, 10, 11, 0.09);
-    --border-strong:rgba(10, 10, 11, 0.16);
-    --text:         #0a0a0b;
-    --text-muted:   #52525b;
-    --text-subtle:  #71717a;
-    --accent:       #00a866;
-    --accent-text:  #007a4a;
-    --accent-soft:  rgba(0, 168, 102, 0.1);
-    --accent-ink:   #ffffff;
-    --nav-bg:       rgba(250, 250, 250, 0.78);
-    --shadow:       0 1px 2px rgba(10, 10, 11, 0.04), 0 12px 32px -16px rgba(10, 10, 11, 0.18);
-    --grid-line:    rgba(10, 10, 11, 0.05);
-    --hero-poster:  url("../img/hero-3d-light.webp");
-    color-scheme: light;
-  }
 }
 
 /* ── Base ───────────────────────────────────────────────────────────────── */
@@ -114,7 +91,7 @@ html {
 }
 
 body {
-  background: var(--bg);
+  background: radial-gradient(110% 70% at 85% 0%, color-mix(in srgb, var(--accent) 9%, var(--bg)), var(--bg) 60%) no-repeat, var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -676,6 +653,8 @@ p { text-wrap: pretty; }
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
 }
+.app-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1024px) { .app-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .project-app { margin-bottom: 24px; }
 .project-app .project-title { font-size: clamp(1.375rem, 2.4vw, 1.75rem); }
 @media (max-width: 640px) { .project-app { margin-bottom: 16px; } }

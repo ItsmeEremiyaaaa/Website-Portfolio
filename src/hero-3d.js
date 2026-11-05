@@ -37,13 +37,12 @@ function start(canvas) {
   camera.lookAt(0, 0.55, 0);
 
   /* ── Theme ────────────────────────────────────────────────────────────── */
-  const isLight = () => root.dataset.theme
-    ? root.dataset.theme === 'light'
-    : window.matchMedia('(prefers-color-scheme: light)').matches;
+  // Maroon (dark) is the default; light only when the visitor picks it.
+  const isLight = () => root.dataset.theme === 'light';
 
   const palette = () => isLight()
-    ? { body: '#c9ccd3', deck: '#b7bac2', keys: '#e9eaee', accent: '#00a866', cap: '#f4f4f5', shadow: 0.22 }
-    : { body: '#3a3c44', deck: '#2c2e35', keys: '#1d1e23', accent: '#00d982', cap: '#26272d', shadow: 0.55 };
+    ? { body: '#c9ccd3', deck: '#b7bac2', keys: '#e9eaee', accent: '#9b2c4a', cap: '#f4f4f5', shadow: 0.22 }
+    : { body: '#4a2a33', deck: '#3a1f27', keys: '#22121a', accent: '#ff9472', cap: '#311a22', shadow: 0.55 };
 
   /* ── Materials ────────────────────────────────────────────────────────── */
   const mBody = new MeshStandardMaterial({ metalness: 0.75, roughness: 0.32 });
@@ -122,7 +121,7 @@ function start(canvas) {
   /* ── Floating keycaps ─────────────────────────────────────────────────── */
   const capGeo = new RoundedBoxGeometry(0.62, 0.3, 0.62, 3, 0.09);
   const caps = [
-    { label: '</>', pos: [-2.2, 1.7, 0.2], mat: mAccent, ink: '#04150d' },
+    { label: '</>', pos: [-2.2, 1.7, 0.2], mat: mAccent, ink: '#2a0f18' },
     { label: '{ }', pos: [2.05, 2.3, -0.6], mat: mCap },
     { label: 'AR', pos: [1.95, 0.25, 1.1], mat: mCap }
   ].map((c, i) => {
@@ -153,7 +152,7 @@ function start(canvas) {
   const key = new DirectionalLight(0xffffff, 1.6);
   key.position.set(-3, 6, 5);
   scene.add(key);
-  const rim = new PointLight(0x00d982, 14, 12, 2);
+  const rim = new PointLight(0xff9472, 14, 12, 2);
   rim.position.set(2.5, 2.5, -2.5);
   scene.add(rim);
 
@@ -329,7 +328,7 @@ function makeScreenTexture() {
       y += 60;
     });
     if (blink || shown < total) {
-      g.fillStyle = '#00d982';
+      g.fillStyle = '#ff9472';
       g.fillRect(cx + 4, cy - 28, 16, 36);
     }
     texture.needsUpdate = true;
@@ -342,7 +341,7 @@ function makeLabelTexture(text, ink) {
   const c = document.createElement('canvas');
   c.width = c.height = 256;
   const g = c.getContext('2d');
-  g.fillStyle = ink || '#00b36b';
+  g.fillStyle = ink || '#b8435f';
   g.font = '600 104px "Geist Mono", ui-monospace, monospace';
   g.textAlign = 'center';
   g.textBaseline = 'middle';

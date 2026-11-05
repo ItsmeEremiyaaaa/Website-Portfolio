@@ -234,7 +234,9 @@
     this.name = cfg.name; this.color = cfg.color;
     this.el = document.createElement('div');
     this.el.className = 'cx-cur';
-    this.el.innerHTML = arrow(cfg.color) + '<span class="cx-tag" style="background:' + cfg.color + '">' + cfg.name + '</span>';
+    // Collapsed to a small initial; the full name slides out only while the cursor is doing something.
+    this.el.innerHTML = arrow(cfg.color) + '<span class="cx-tag" style="background:' + cfg.color + '"><b>' + cfg.name[0] +
+      '</b><span class="cx-full">' + cfg.name.slice(1) + '</span></span>';
     layer.appendChild(this.el);
     this.sel = makeSel(cfg.color);
     this.sel.bot = this;
@@ -246,7 +248,7 @@
   }
   Bot.prototype.go = function (x, y) {
     var self = this;
-    this.anchor = null; this.tx = x; this.ty = y;
+    this.anchor = null; this.tx = safeX(x); this.ty = safeY(y);
     return Promise.race([new Promise(function (r) { self.done = r; }), wait(this.limit)]);
   };
   // Follow a point inside an element (fractions of its box) so the target tracks the page while scrolling.
@@ -259,20 +261,37 @@
     var b = this.bubble;
     if (!b) { b = this.bubble = document.createElement('span'); b.className = 'cx-say'; this.el.appendChild(b); }
     b.textContent = text;
+    this.name_((ms || 2600) + 200);
     b.style.setProperty('--bc', this.color);
     b.classList.add('is-on');
     clearTimeout(this.sayT);
     this.sayT = setTimeout(function () { b.classList.remove('is-on'); }, ms || 2600);
   };
+  // Cursors live in the visible content area: below the sticky nav, above the bottom bar.
+  var TOP = 76, BOTTOM = 96;
+  var safeY = function (y) { return clamp(y, TOP, innerHeight - BOTTOM); };
+  var safeX = function (x) { return clamp(x, 12, innerWidth - 40); };
   Bot.prototype.step = function () {
     if (this.followMouse && mouse.x > -500) {
       this.anchor = null;
-      this.tx = clamp(mouse.x + this.followMouse.dx, 6, innerWidth - 24);
-      this.ty = clamp(mouse.y + this.followMouse.dy, 6, innerHeight - 70);
+      this.tx = safeX(mouse.x + this.followMouse.dx);
+      this.ty = safeY(mouse.y + this.followMouse.dy);
     } else if (this.anchor) {
       var r = this.anchor.el.getBoundingClientRect();
-      this.tx = clamp(r.left + r.width * this.anchor.fx, 6, innerWidth - 24);
-      this.ty = clamp(r.top + r.height * this.anchor.fy, 6, innerHeight - 70);
+      // The thing it was working on scrolled away: let go instead of sticking to the screen edge.
+      if (r.bottom < TOP || r.top > innerHeight - BOTTOM) {
+        this.anchor = null;
+        this.sel.target = null;
+        this.tx = safeX(this.x + rand(-120, 120));
+        this.ty = rand(TOP + 40, innerHeight - BOTTOM - 40);
+        if (this.done) { var d0 = this.done; this.done = null; d0(); }
+      } else {
+        this.tx = safeX(r.left + r.width * this.anchor.fx);
+        this.ty = safeY(r.top + r.height * this.anchor.fy);
+      }
+    } else if (this.ty < TOP || this.ty > innerHeight - BOTTOM) {
+      // A straggler left parked out of the content area drifts back in.
+      this.ty = rand(TOP + 40, innerHeight - BOTTOM - 40);
     }
     this.x += (this.tx - this.x) * this.speed;
     this.y += (this.ty - this.y) * this.speed;
@@ -281,14 +300,21 @@
     if (this.done && Math.hypot(this.tx - this.x, this.ty - this.y) < 4) { var d = this.done; this.done = null; d(); }
     drawSel(this.sel);
   };
+  Bot.prototype.name_ = function (ms) {
+    var el = this.el;
+    el.classList.add('is-named');
+    clearTimeout(this.nameT);
+    this.nameT = setTimeout(function () { el.classList.remove('is-named'); }, ms || 1400);
+  };
   Bot.prototype.click = function () {
     var el = this.el;
+    this.name_();
     el.classList.add('is-down');
     setTimeout(function () { el.classList.remove('is-down'); }, 160);
     ring(this.x + 2, this.y + 2, this.color);
   };
   Bot.prototype.wander = function () {
-    return this.go(clamp(this.x + rand(-280, 280), 40, innerWidth - 120), clamp(this.y + rand(-200, 200), 90, innerHeight - 120));
+    return this.go(clamp(this.x + rand(-280, 280), 40, innerWidth - 120), clamp(this.y + rand(-200, 200), TOP + 30, innerHeight - BOTTOM - 30));
   };
   var bots = BOTS.map(function (c, i) { return new Bot(c, i); });
 
@@ -546,7 +572,7 @@
   /* ── Your cursor tag ──────────────────────────────────────────────────── */
   var you = document.createElement('div');
   you.className = 'cx-you';
-  you.innerHTML = '<span class="cx-tag">You</span>';
+  you.innerHTML = '';
   layer.appendChild(you);
   addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse' && e.isTrusted) you.classList.add('is-on'); }, { passive: true });
   document.documentElement.addEventListener('mouseleave', function () { you.classList.remove('is-on'); });

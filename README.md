@@ -24,7 +24,9 @@ cursors (Designer, Developer, Recruiter) that drag a frame over each block as it
 cards, restyle headings and chips, and retype the hero line. Their edits undo themselves.
 They also leave comment pins, scribble underlines and circles, chat, and sometimes follow your cursor.
 Visitors can press `/` to chat (a cursor replies), drag the stickers and chips, click empty space to call
-the swarm, and type `doy` for a surprise. **Edit mode** (bottom bar) lets visitors click any element to
+the swarm, press `1`–`5` for reactions, press `P` (or Draw) to sketch on the page, click a letter of
+JEREMIAH in the bar to call that cursor, click "11 editing" to gather everyone, and type `doy` or `hire`
+for a surprise. **Edit mode** (bottom bar) lets visitors click any element to
 recolor, resize, rotate or drag it.
 Named cursors and edit mode run on desktop only; everything is off with reduced motion.
 

@@ -141,6 +141,10 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 .hero-title { font-family: var(--font-display); font-weight: 400; color: var(--maroon); font-size: clamp(4rem, 9.5vw, 8.4rem); line-height: .88; }
 .hero-title .hl { color: var(--coral); display: inline-block; transform: rotate(-4deg); }
 .ltr { display: inline-block; transition: transform 500ms var(--spring); }
+.ltr { cursor: pointer; }
+.ltr.is-spin { animation: ltr-spin 700ms var(--spring); }
+@keyframes ltr-spin { from { transform: rotate(-360deg) scale(.6); } }
+.scroll-progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: linear-gradient(90deg, var(--coral), var(--sun)); transform-origin: left; transform: scaleX(0); }
 .ltr.is-pop { transform: translateY(-0.18em) rotate(-8deg) scale(1.12); transition-duration: 160ms; }
 .hero-role { font-size: clamp(1.15rem, 1.9vw, 1.4rem); font-weight: 500; max-width: 30ch; text-wrap: balance; }
 .hero-phrase { color: var(--maroon-3); box-shadow: inset 0 -0.45em 0 rgba(255, 180, 155, .55); }

@@ -19,7 +19,7 @@
     { name: 'Developer', color: '#FF6FA8' },
     { name: 'Recruiter', color: '#FFC24B' }
   ];
-  var SWATCHES = ['#00d982', '#4DA3FF', '#FF6FA8', '#FFC24B', '#B69CFF', '#FF8A5B'];
+  var SWATCHES = ['#ff9472', '#4DA3FF', '#FF6FA8', '#FFC24B', '#B69CFF', '#FF8A5B'];
   var PHRASES = ['for the web, desktop, and AR.', 'with Laravel, React, and Java.', 'that people actually use.'];
   // [selector, label shown on the selection box, kind]
   var EDITABLE = [
@@ -167,7 +167,7 @@
 
   /* ── Construct: a bot drags a frame over an element as it scrolls in ──── */
   api.construct = function (el) {
-    if (!api.enabled || document.hidden) return Promise.resolve();
+    if (!api.enabled || document.hidden || !wide.matches) return Promise.resolve();
     var r0 = el.getBoundingClientRect();
     var free = bots.filter(function (b) { return !b.busy; });
     if (!free.length) return Promise.resolve();

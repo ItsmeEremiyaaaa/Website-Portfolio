@@ -10,13 +10,13 @@
   var systemLight = window.matchMedia('(prefers-color-scheme: light)');
 
   function currentTheme() {
-    return root.dataset.theme || (systemLight.matches ? 'light' : 'dark');
+    return root.dataset.theme || 'dark';
   }
   function syncThemeUI() {
     var theme = currentTheme();
     themeBtn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
     var meta = document.querySelectorAll('meta[name="theme-color"]');
-    meta.forEach(function (m) { m.setAttribute('content', theme === 'dark' ? '#0a0a0b' : '#fafafa'); });
+    meta.forEach(function (m) { m.setAttribute('content', theme === 'dark' ? '#2a0f18' : '#fbf6f4'); });
   }
   if (themeBtn) {
     themeBtn.addEventListener('click', function () {

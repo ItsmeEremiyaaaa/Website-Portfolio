@@ -7,8 +7,7 @@
   <meta name="description" content="Portfolio of Jeremiah Falcon Escubido, a 4th-year BSIT student in Davao, Philippines building full-stack web apps with React, Laravel and PHP, desktop systems in Java, an AR campus navigation app, and published research. Open to internship and OJT opportunities.">
   <meta name="author" content="Jeremiah Falcon Escubido">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#2a0f18">
 
   <link rel="canonical" href="https://itsmeeremiyaaaa.github.io/Website-Portfolio/">
 
@@ -28,8 +27,8 @@
 
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=675a3408">
-  <link rel="stylesheet" href="assets/css/cursors.css?v=157459e1">
+  <link rel="stylesheet" href="assets/css/main.css?v=aea576a3">
+  <link rel="stylesheet" href="assets/css/cursors.css?v=e8f49bde">
 
   <script>
     // Apply the saved theme before first paint to avoid a flash.
@@ -42,8 +41,8 @@
       } catch (e) {}
     })();
   </script>
-  <script src="assets/js/cursors.js?v=23a3f88e" defer></script>
-  <script src="assets/js/main.js?v=53108532" defer></script>
+  <script src="assets/js/cursors.js?v=bb8db30f" defer></script>
+  <script src="assets/js/main.js?v=cdca1429" defer></script>
 
   <script type="application/ld+json">
   {
@@ -187,7 +186,7 @@
 
       <div class="hero-visual enter" style="--d:1" aria-hidden="true">
         <div class="hero-glow"></div>
-        <canvas class="hero-3d" data-src="assets/js/hero-3d.js?v=8dcce7b0"></canvas>
+        <canvas class="hero-3d" data-src="assets/js/hero-3d.js?v=c94f4c8c"></canvas>
       </div>
     </div>
   </section>
@@ -197,92 +196,80 @@
     <div class="container">
       <header class="section-head reveal">
         <p class="eyebrow">Selected work</p>
-        <h2 class="section-title" id="work-title">Apps, research, and games.</h2>
+        <h2 class="section-title" id="work-title">Apps and research.</h2>
         <p class="section-desc">What each project set out to do, what I built, and the tools I used.</p>
       </header>
 
       <!-- Applications -->
       <div class="work-group">
         <h3 class="group-title reveal">Applications</h3>
-        <article class="project project-featured project-app reveal depth" aria-labelledby="p-basketgo">
-          <div class="project-body">
-            <p class="project-meta"><span class="badge">Web app</span><span>Full-stack · Team of 2</span></p>
-            <h4 class="project-title" id="p-basketgo">Basket GO</h4>
-            <p class="app-kind">Grocery delivery platform</p>
+        <div class="app-grid app-grid-3">
+          <article class="project app-card reveal depth tilt" aria-labelledby="p-studyquest">
+            <p class="project-meta"><span class="badge">Mobile app</span><span>Project leader · Team of 6</span></p>
+            <h4 class="project-title" id="p-studyquest">StudyQuest</h4>
+            <p class="app-kind">Gamified quiz app</p>
             <p class="project-desc">
-              An e-commerce platform for a grocery store in Bansalan, Davao del Sur. Customers browse products,
-              check out, pick a delivery address on a map, and track their orders, while store staff and riders
-              work from their own dashboards.
+              Quizzes that play like a game: XP and levels, daily streaks, 32 badges, friends and quiz leaderboards,
+              and a 20-second timer on every question, in English or Tagalog. Shipped as an Android APK for a
+              school beta test and showcased at TechCase.
             </p>
             <ul class="roles" data-label="Users" aria-label="User roles">
-              <li>Customers</li>
-              <li>Admin</li>
-              <li>Riders</li>
+              <li>Students</li>
+              <li>Friends</li>
             </ul>
-            <dl class="project-facts">
-              <div>
-                <dt>Built with</dt>
-                <dd>Nicole Valdez (co-developer)</dd>
-              </div>
-              <div>
-                <dt>Features</dt>
-                <dd>Accounts &amp; profiles, product catalog, checkout, map-based delivery addresses, order history, admin and rider dashboards</dd>
-              </div>
-            </dl>
             <ul class="tags" aria-label="Technologies">
-              <li>React</li><li>TypeScript</li><li>Vite</li><li>Tailwind CSS</li><li>PHP</li><li>MySQL</li><li>Leaflet</li>
+              <li>React Native</li><li>Expo</li><li>Firebase</li><li>Cloud Functions</li><li>i18next</li>
             </ul>
             <div class="project-links">
-              <a class="btn btn-secondary btn-sm" href="https://github.com/ItsmeEremiyaaaa/Basket-GO" target="_blank" rel="noopener">
+              <a class="btn btn-secondary btn-sm" href="https://studyquest-a547c.web.app" target="_blank" rel="noopener">
+                Try the web version
+                <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="project app-card reveal depth tilt" aria-labelledby="p-bansaride">
+            <p class="project-meta"><span class="badge">Mobile &amp; web app</span><span>PWA · Android</span></p>
+            <h4 class="project-title" id="p-bansaride">BansaRide</h4>
+            <p class="app-kind">Ride and fare guide for Bansalan</p>
+            <p class="project-desc">
+              Shows where to catch a tricycle, pedicab, bus or van in Bansalan, what the ride costs for students,
+              seniors, PWD and adults, and where the drivers' groups wait. About 96 real road routes on a map that
+              keeps working without signal, plus rider-reported fares and ride alerts.
+            </p>
+            <ul class="roles" data-label="Users" aria-label="User roles">
+              <li>Riders</li>
+              <li>Drivers' groups</li>
+              <li>Admin</li>
+            </ul>
+            <ul class="tags" aria-label="Technologies">
+              <li>React</li><li>Vite</li><li>Leaflet</li><li>OpenStreetMap</li><li>Supabase</li><li>Capacitor</li>
+            </ul>
+            <div class="project-links">
+              <a class="btn btn-secondary btn-sm" href="https://github.com/ItsmeEremiyaaaa/BansaRide" target="_blank" rel="noopener">
                 <svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>
                 Source code
                 <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
               </a>
             </div>
-          </div>
-          <div class="project-media">
-            <div class="browser" data-depth>
-              <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>Basket GO — home</em></div>
-              <img src="assets/img/basket-go.webp" srcset="assets/img/basket-go-720.webp 720w, assets/img/basket-go.webp 1280w"
-                   sizes="(max-width: 860px) calc(100vw - 72px), 520px" width="1280" height="800" loading="lazy" decoding="async"
-                   alt="Basket GO home page: a green hero reading “Your favorite pantry starts here” with a grocery basket, product categories, and product cards">
-            </div>
-          </div>
-        </article>
-        <div class="app-grid">
-          <article class="project app-card reveal depth tilt" aria-labelledby="p-gradehub">
-            <p class="project-meta"><span class="badge">Web app</span><span>Full-stack</span></p>
-            <h4 class="project-title" id="p-gradehub">GradeHub</h4>
-            <p class="app-kind">Student grade management system</p>
-            <p class="project-desc">
-              An academic grading system with separate dashboards and workflows for each type of user,
-              covering course management, student enrollment, and structured academic records.
-            </p>
-            <ul class="roles" data-label="Users" aria-label="User roles">
-              <li>Registrar</li>
-              <li>Faculty</li>
-              <li>Student</li>
-            </ul>
-            <ul class="tags" aria-label="Technologies">
-              <li>Laravel</li><li>React</li><li>TypeScript</li><li>Inertia.js</li>
-            </ul>
           </article>
 
           <article class="project app-card reveal depth tilt" aria-labelledby="p-gabay">
-            <p class="project-meta"><span class="badge badge-accent">In progress</span><span>Mobile · AR</span></p>
+            <p class="project-meta"><span class="badge badge-accent">Capstone</span><span>Mobile · AR</span></p>
             <h4 class="project-title" id="p-gabay">GABAY</h4>
-            <p class="app-kind">Augmented-reality campus navigation</p>
+            <p class="app-kind">Virtual campus navigation using augmented reality</p>
             <p class="project-desc">
-              A mobile app that helps people find their way around campus, with AR-based guidance
-              and interactive location information.
+              An AR wayfinding app for St. Mary's College of Bansalan. Floating signs for each campus location
+              bob and fade with distance, a 3D pin marks the destination, and a "Where to?" search lists every
+              place on campus. Onboarding and UI designed in Figma.
             </p>
             <ul class="roles" data-label="Focus" aria-label="Focus areas">
               <li>Wayfinding</li>
               <li>AR guidance</li>
-              <li>System integration</li>
+              <li>UI design</li>
             </ul>
             <ul class="tags" aria-label="Technologies">
-              <li>Augmented reality</li><li>Mobile</li><li>Computer graphics</li>
+              <li>Unity</li><li>C#</li><li>MultiSet SDK</li><li>Supabase</li><li>Figma</li>
             </ul>
           </article>
         </div>
@@ -339,91 +326,6 @@
             </div>
           </div>
         </article>
-      </div>
-
-      <!-- Games, web & media -->
-      <div class="work-group">
-        <h3 class="group-title reveal">Games, web &amp; media</h3>
-        <div class="project-grid">
-          <article class="project project-card reveal depth tilt" aria-labelledby="p-game">
-            <div class="project-media media-video">
-              <video class="js-inview-video" muted loop playsinline preload="none" width="1280" height="720"
-                     poster="assets/img/isometric-game-720.webp" aria-label="Gameplay footage of the isometric game prototype running in Godot">
-                <source src="assets/video/isometric-game.mp4" type="video/mp4">
-              </video>
-              <button class="media-toggle" type="button" aria-label="Pause preview" hidden>
-                <svg class="icon icon-pause" aria-hidden="true"><use href="#i-pause"/></svg>
-                <svg class="icon icon-play" aria-hidden="true"><use href="#i-play"/></svg>
-              </button>
-            </div>
-            <div class="project-body">
-              <p class="project-meta"><span class="badge">Game development</span><span>Godot</span></p>
-              <h4 class="project-title" id="p-game">Isometric Game Prototype</h4>
-              <p class="project-desc">
-                A tile-based, isometric pixel-art world built and playtested in Godot: layered terrain and water,
-                foliage, a controllable character, and collision areas tuned in the engine's debug view.
-              </p>
-              <ul class="tags" aria-label="Technologies">
-                <li>Godot</li>
-                <li>GDScript</li>
-                <li>Pixel art</li>
-              </ul>
-            </div>
-          </article>
-
-          <article class="project project-card reveal depth tilt" aria-labelledby="p-site">
-            <div class="project-media">
-              <img src="assets/img/portfolio-preview-720.webp" srcset="assets/img/portfolio-preview-720.webp 720w, assets/img/portfolio-preview.webp 1280w"
-                   sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1024px) 50vw, 360px"
-                   width="1280" height="800" loading="lazy" decoding="async" alt="Screenshot of this portfolio's hero section">
-            </div>
-            <div class="project-body">
-              <p class="project-meta"><span class="badge">Web</span><span>Open source</span></p>
-              <h4 class="project-title" id="p-site">This Portfolio</h4>
-              <p class="project-desc">
-                Hand-built with semantic HTML, modern CSS, and a small amount of vanilla JavaScript, with no framework or UI library.
-                Responsive, keyboard accessible, light/dark aware, and light on mobile data.
-              </p>
-              <ul class="tags" aria-label="Technologies">
-                <li>HTML</li>
-                <li>CSS</li>
-                <li>JavaScript</li>
-              </ul>
-              <div class="project-links">
-                <a class="text-link" href="https://github.com/ItsmeEremiyaaaa/Website-Portfolio" target="_blank" rel="noopener">
-                  <svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>
-                  Source code
-                  <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
-                </a>
-              </div>
-            </div>
-          </article>
-
-          <article class="project project-card reveal depth tilt" aria-labelledby="p-edit">
-            <div class="project-media media-video">
-              <video class="js-click-video" playsinline preload="none" width="960" height="540"
-                     poster="assets/img/motion-edit-720.webp" aria-label="Anime action edit, 48 seconds, with sound">
-                <source src="assets/video/motion-edit.mp4" type="video/mp4">
-              </video>
-              <button class="media-play" type="button" aria-label="Play the video edit (with sound)">
-                <svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>
-              </button>
-            </div>
-            <div class="project-body">
-              <p class="project-meta"><span class="badge">Video editing</span><span>0:48</span></p>
-              <h4 class="project-title" id="p-edit">Anime Action Edit</h4>
-              <p class="project-desc">
-                A short-form action edit focused on pacing, transitions, and impact effects. The same eye for timing
-                and detail carries into my interface work.
-              </p>
-              <ul class="tags" aria-label="Skills">
-                <li>Video editing</li>
-                <li>Encoding</li>
-                <li>Motion</li>
-              </ul>
-            </div>
-          </article>
-        </div>
       </div>
 
       <p class="work-more reveal">
@@ -578,7 +480,7 @@
       <div class="now reveal">
         <h2 class="now-title" id="now-title"><span class="status-dot" aria-hidden="true"></span> Right now</h2>
         <ul class="now-list">
-          <li><strong>Building</strong>: GABAY, an AR campus navigation app, and Basket GO, a grocery delivery platform for a store in Bansalan.</li>
+          <li><strong>Building</strong>: GABAY, my AR campus navigation capstone, and BansaRide, a ride and fare guide for Bansalan.</li>
           <li><strong>Studying</strong>: my final year of BSIT at St. Mary's College of Bansalan.</li>
           <li><strong>Looking for</strong>: an internship or OJT placement, plus freelance projects and collaborations.</li>
         </ul>

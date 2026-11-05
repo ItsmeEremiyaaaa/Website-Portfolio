@@ -98,11 +98,11 @@
 }
 .cx-bar [hidden] { display: none; }
 .cx-dots { display: flex; }
-.cx-dots b {
-  width: 20px; height: 20px; margin-left: -6px; border-radius: 50%; border: 2px solid var(--bg);
+.cx-dots b, .cx-dots button {
+  width: 20px; height: 20px; margin-left: -4px; padding: 0; border-radius: 50%; border: 2px solid var(--bg);
   font: 600 9.5px/16px var(--font-sans); color: #0a0a0b; text-align: center;
 }
-.cx-dots b:first-child { margin-left: 0; }
+.cx-dots > :first-child { margin-left: 0; }
 .cx-dots .cx-dot-you { background: #e2553a; color: #fff; }
 .cx-dots .cx-dot-more { background: var(--ink); color: var(--cream); width: 26px; border-radius: 999px; }
 .cx-count { font-variant-numeric: tabular-nums; }
@@ -174,3 +174,30 @@
   60% { transform: rotate(-6deg) scale(1.05); } 80% { transform: rotate(3deg); } 100% { transform: rotate(-4deg); }
 }
 @media (max-width: 900px) { .cx-tip { display: none; } }
+
+/* Bar letters call their cursor over */
+.cx-dots button { transition: translate 250ms var(--spring), scale 250ms var(--spring); }
+.cx-dots button:hover { translate: 0 -5px; scale: 1.2; position: relative; z-index: 1; }
+.cx-bar .cx-count { background: none; border: 0; padding: 4px 6px; color: var(--text-muted); text-decoration: underline dotted; text-underline-offset: 3px; }
+.cx-bar .cx-count:hover { color: var(--ink); }
+
+/* Floating reactions */
+.cx-react {
+  position: absolute; font: 700 22px/1 var(--font-sans); color: var(--rc);
+  text-shadow: 0 2px 0 rgba(30, 6, 14, .6), 0 0 12px rgba(255,255,255,.25);
+  animation: cx-float 1.4s var(--ease) forwards;
+}
+@keyframes cx-float {
+  0% { opacity: 0; transform: translate(0, 0) scale(.4); }
+  15% { opacity: 1; transform: translate(calc(var(--dx) * .2), -14px) scale(1.15); }
+  100% { opacity: 0; transform: translate(var(--dx), -110px) scale(.9); }
+}
+
+/* Draw mode */
+.cx-ink { position: fixed; inset: 0; z-index: 410; pointer-events: none; touch-action: none; }
+.cx-ink.is-on { pointer-events: auto; cursor: crosshair; }
+.cx-bar .cx-draw[aria-pressed="true"] { background: #e2553a; color: #fff; border-color: transparent; }
+
+/* "hire" easter egg */
+.cx-pulse { animation: cx-pulse 1s var(--ease) 3; }
+@keyframes cx-pulse { 50% { box-shadow: 0 0 0 10px rgba(255, 180, 155, .35); scale: 1.06; } }

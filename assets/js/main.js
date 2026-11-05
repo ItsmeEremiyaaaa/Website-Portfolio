@@ -118,7 +118,26 @@
       l.classList.add('is-pop');
       setTimeout(function () { l.classList.remove('is-pop'); }, 180);
     });
+    // Click a letter of the name and it spins, with a burst of tiny cursors.
+    l.addEventListener('click', function (e) {
+      l.classList.remove('is-spin'); void l.offsetWidth; l.classList.add('is-spin');
+      var c = window.PortfolioCursors;
+      if (c && c.burst) c.burst(e.clientX, e.clientY, 14);
+    });
   });
+
+  /* ── Scroll progress line under the nav ───────────────────────────────── */
+  var progress = document.createElement('span');
+  progress.className = 'scroll-progress';
+  progress.setAttribute('aria-hidden', 'true');
+  $('.site-header').appendChild(progress);
+  var setProgress = function () {
+    var max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.transform = 'scaleX(' + (max > 0 ? scrollY / max : 0).toFixed(4) + ')';
+  };
+  addEventListener('scroll', setProgress, { passive: true });
+  addEventListener('resize', setProgress);
+  setProgress();
   var deck = $('#hero-deck');
   if (deck) {
     var photos = $$('.deck-photo', deck).reverse(); // last in markup sits on top

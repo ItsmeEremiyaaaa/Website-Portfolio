@@ -170,7 +170,7 @@
   // Buttons and links pop a burst of tiny cursors; clicking empty space calls the swarm over.
   document.addEventListener('click', function (e) {
     if (!e.isTrusted || !swarmOn || window.__cxEditing) return;
-    if (e.target.closest('.cx-bar, .cx-insp, .cx-chat, .lightbox')) return;
+    if (e.target.closest('.cx-bar, .cx-insp, .cx-chat, .cx-ink, .lightbox')) return;
     if (e.target.closest('a, button')) { burst(e.clientX, e.clientY, 16); return; }
     if (!e.target.closest('input, textarea, [data-cx-name], img')) attract = { x: e.clientX, y: e.clientY, until: performance.now() + 650 };
   });
@@ -319,6 +319,7 @@
   var bots = BOTS.map(function (c, i) { return new Bot(c, i); });
 
   /* ── Construct: drag a frame over a block as it scrolls in ────────────── */
+  api.burst = function (x, y, n) { if (swarmOn) burst(x, y, n || 16); };
   api.construct = function (el) {
     if (!api.enabled || document.hidden || !wide.matches) return Promise.resolve();
     var r0 = el.getBoundingClientRect();
@@ -528,7 +529,8 @@
   }
   async function doSay(bot) {
     await bot.wander();
-    bot.say(pick(LINES.any));
+    if (Math.random() < .4) react(bot.x + 8, bot.y - 4, pick(REACTIONS));
+    else bot.say(pick(LINES.any));
     await wait(1200);
   }
   var followers = 0;
@@ -676,13 +678,16 @@
   bar.setAttribute('role', 'toolbar');
   bar.setAttribute('aria-label', 'Live cursors');
   bar.innerHTML =
-    '<span class="cx-dots" aria-hidden="true">' +
-    BOTS.slice(0, 4).map(function (b) { return '<b style="background:' + b.color + '">' + b.name[0] + '</b>'; }).join('') +
-    (BOTS.length > 4 ? '<b class="cx-dot-more">+' + (BOTS.length - 4) + '</b>' : '') +
-    '<b class="cx-dot-you">Y</b></span>' +
-    '<span class="cx-count">' + (BOTS.length + 1) + ' editing</span>' +
+    '<span class="cx-dots" role="group" aria-label="Call a cursor over">' +
+    // The avatar dots spell the owner's name, one cursor color per letter. Click one to call that cursor.
+    'JEREMIAH'.split('').map(function (ch, i) {
+      return '<button type="button" data-bot="' + (i % BOTS.length) + '" style="background:' + BOTS[i % BOTS.length].color + '" aria-label="Call ' + BOTS[i % BOTS.length].name + '">' + ch + '</button>';
+    }).join('') +
+    '</span>' +
+    '<button type="button" class="cx-count" title="Gather every cursor around you">' + (BOTS.length + 1) + ' editing</button>' +
     '<span class="cx-hint">Click anything to restyle it, drag to move</span>' +
-    '<span class="cx-tip">Press <kbd>/</kbd> to chat</span>' +
+    '<span class="cx-tip"><kbd>/</kbd> chat · <kbd>1</kbd>–<kbd>5</kbd> react · <kbd>P</kbd> draw</span>' +
+    '<button type="button" class="cx-draw" aria-pressed="false">Draw</button>' +
     '<button type="button" class="cx-edit" aria-pressed="false">Edit mode</button>' +
     '<button type="button" class="cx-reset-all" hidden>Reset</button>' +
     '<button type="button" class="cx-toggle"></button>';
@@ -690,6 +695,7 @@
   var editBtn = bar.querySelector('.cx-edit'), resetAll = bar.querySelector('.cx-reset-all'), toggleBtn = bar.querySelector('.cx-toggle');
 
   function setEdit(on) {
+    if (on && drawMode) setDraw(false);
     editMode = on;
     window.__cxEditing = on;
     document.documentElement.classList.toggle('cx-editing', on);
@@ -764,8 +770,11 @@
     if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.key === '/') { e.preventDefault(); openChat(); return; }
     // Easter egg: type "doy" and every cursor rushes to the name.
-    keyBuf = (keyBuf + e.key.toLowerCase()).slice(-3);
-    if (keyBuf === 'doy') gather();
+    if (/^[1-5]$/.test(e.key) && mouse.x > -500) { react(mouse.x + 10, mouse.y - 6, REACTIONS[+e.key - 1]); return; }
+    if (e.key.toLowerCase() === 'p' && !keyBuf.endsWith('hi')) { setDraw(!drawMode); }
+    keyBuf = (keyBuf + e.key.toLowerCase()).slice(-4);
+    if (keyBuf.endsWith('doy')) gather();
+    if (keyBuf === 'hire') hire();
   });
   function gather() {
     var name = document.querySelector('.hero-title .hl');
@@ -821,6 +830,114 @@
     });
   }, { passive: true });
 
+  /* ── Reactions: keys 1–5 float a reaction up from your cursor ───────────── */
+  var REACTIONS = [
+    { t: '♥', c: '#ff6f91' }, { t: '★', c: '#ffc24b' }, { t: '+1', c: '#8cc8ff' }, { t: 'wow', c: '#a9ecd0' }, { t: '!?', c: '#c9b6ff' }
+  ];
+  function react(x, y, r) {
+    for (var k = 0; k < 3; k++) {
+      (function (k) {
+        setTimeout(function () {
+          var el = document.createElement('span');
+          el.className = 'cx-react';
+          el.textContent = r.t;
+          el.style.cssText = 'left:' + (x + rand(-14, 14)) + 'px;top:' + y + 'px;--rc:' + r.c + ';--dx:' + rand(-30, 30).toFixed(0) + 'px';
+          layer.appendChild(el);
+          setTimeout(function () { el.remove(); }, 1500);
+        }, k * 120);
+      })(k);
+    }
+  }
+
+  /* ── Bar: call one cursor, or gather them all ──────────────────────────── */
+  bar.querySelectorAll('.cx-dots button').forEach(function (b) {
+    var bot = bots[+b.dataset.bot];
+    b.addEventListener('mouseenter', function () { bot.name_(1200); });
+    b.addEventListener('click', function () {
+      if (!api.enabled) setBots(true);
+      var r = b.getBoundingClientRect();
+      bot.followMouse = null;
+      bot.go(r.left + rand(-40, 40), innerHeight - BOTTOM - 30).then(function () {
+        bot.say(pick(['You called?', 'Hi!', 'On my way', 'Need help?']), 2000);
+        react(bot.x + 8, bot.y - 4, pick(REACTIONS));
+      });
+    });
+  });
+  bar.querySelector('.cx-count').addEventListener('click', function () {
+    if (!api.enabled) setBots(true);
+    var cx = innerWidth / 2, cy = innerHeight / 2;
+    burst(cx, cy, 30);
+    bots.forEach(function (b, i) {
+      var ang = i / bots.length * Math.PI * 2;
+      b.followMouse = null;
+      b.go(cx + Math.cos(ang) * 220, cy + Math.sin(ang) * 150);
+      setTimeout(function () { b.say(pick(['Here!', 'Hey', 'Present', 'Hi Doy', 'Yo']), 1800); }, 400 + i * 50);
+    });
+  });
+
+  /* ── Easter egg: type "hire" ──────────────────────────────────────────── */
+  function hire() {
+    var mail = document.getElementById('mail-btn');
+    burst(innerWidth / 2, innerHeight / 3, 70);
+    bots.forEach(function (b, i) {
+      setTimeout(function () { b.say(pick(['Hired!', 'Welcome aboard', 'Send the offer', 'Great pick', 'Start Monday?']), 2400); }, i * 90);
+    });
+    if (mail) { mail.classList.remove('cx-pulse'); void mail.offsetWidth; mail.classList.add('cx-pulse'); }
+  }
+
+  /* ── Draw: press P or the Draw button, sketch on the page; strokes fade ── */
+  var ink = document.createElement('canvas');
+  ink.className = 'cx-ink';
+  document.body.appendChild(ink);
+  var ictx = ink.getContext('2d');
+  var drawMode = false, strokes = [], cur = null;
+  var INK = ['#e2553a', '#2f6fe4', '#1f9d6b', '#ffc24b', '#4a1826'];
+  var inkColor = 0;
+  function sizeInk() { ink.width = innerWidth * dpr; ink.height = innerHeight * dpr; ink.style.width = innerWidth + 'px'; ink.style.height = innerHeight + 'px'; }
+  sizeInk(); addEventListener('resize', sizeInk);
+  var drawBtn = bar.querySelector('.cx-draw');
+  function setDraw(on) {
+    drawMode = on;
+    ink.classList.toggle('is-on', on);
+    drawBtn.setAttribute('aria-pressed', String(on));
+    drawBtn.textContent = on ? 'Stop drawing' : 'Draw';
+    if (on) { setEdit(false); inkColor = (inkColor + 1) % INK.length; }
+  }
+  drawBtn.addEventListener('click', function () { setDraw(!drawMode); });
+  ink.addEventListener('pointerdown', function (e) {
+    cur = { c: INK[inkColor], pts: [[e.clientX, e.clientY + scrollY]], t: Infinity };
+    strokes.push(cur);
+    ink.setPointerCapture(e.pointerId);
+  });
+  ink.addEventListener('pointermove', function (e) { if (cur) cur.pts.push([e.clientX, e.clientY + scrollY]); });
+  function endStroke() {
+    if (!cur) return;
+    cur.t = performance.now();
+    if (cur.pts.length > 6 && Math.random() < .6) {
+      var p = cur.pts[cur.pts.length - 1], b = pick(bots);
+      b.go(p[0] + 30, p[1] - scrollY + 10).then(function () { b.say(pick(['Nice drawing', 'Art!', 'Frame it', 'Haha', 'Masterpiece']), 1800); });
+    }
+    cur = null;
+  }
+  ink.addEventListener('pointerup', endStroke);
+  ink.addEventListener('pointercancel', endStroke);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && drawMode) setDraw(false); });
+  function drawInk() {
+    ictx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ictx.clearRect(0, 0, innerWidth, innerHeight);
+    var nowT = performance.now();
+    strokes = strokes.filter(function (s) { return nowT - s.t < 4500; });
+    strokes.forEach(function (s) {
+      var age = nowT - s.t, a = age < 3000 ? 1 : 1 - (age - 3000) / 1500;
+      ictx.globalAlpha = Math.max(0, a);
+      ictx.strokeStyle = s.c; ictx.lineWidth = 4; ictx.lineCap = 'round'; ictx.lineJoin = 'round';
+      ictx.beginPath();
+      s.pts.forEach(function (p, i) { var y = p[1] - scrollY; if (i) ictx.lineTo(p[0], y); else ictx.moveTo(p[0], y); });
+      ictx.stroke();
+    });
+    ictx.globalAlpha = 1;
+  }
+
   /* ── Frame loop ───────────────────────────────────────────────────────── */
   var last = performance.now();
   (function frame(now) {
@@ -831,6 +948,7 @@
     placeInspector();
     drawMarks();
     drawPins();
+    drawInk();
     placeChat();
     requestAnimationFrame(frame);
   })(last);

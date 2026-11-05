@@ -8,15 +8,19 @@
 .cx-cur svg { display: block; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35)); transition: scale 120ms var(--ease); }
 .cx-cur.is-down svg { scale: 0.82; }
 .cx-tag {
-  position: absolute; left: 15px; top: 17px; white-space: nowrap;
-  font: 500 11.5px/1 var(--font-sans); color: #0a0a0b;
-  padding: 5px 8px; border-radius: 4px 999px 999px 999px;
+  position: absolute; left: 14px; top: 16px; display: flex; align-items: center; white-space: nowrap;
+  font: 500 11px/1 var(--font-sans); color: #0a0a0b; opacity: .85;
+  padding: 4px 6px; border-radius: 3px 999px 999px 999px;
+  transition: opacity 200ms, padding 300ms var(--ease);
 }
+.cx-tag b { font-weight: 600; }
+.cx-full { display: inline-block; max-width: 0; overflow: hidden; vertical-align: bottom; transition: max-width 350ms var(--ease); }
+.cx-cur.is-named .cx-tag { opacity: 1; padding: 4px 8px; }
+.cx-cur.is-named .cx-full { max-width: 130px; }
 .cx-bots-off .cx-cur, .cx-bots-off .cx-sel:not(.cx-user) { opacity: 0; }
 
 .cx-you { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity 200ms; will-change: transform; }
 .cx-you.is-on { opacity: 1; }
-.cx-you .cx-tag { background: #e2553a; color: #fff; left: 14px; top: 18px; }
 
 .cx-sel {
   position: absolute; left: 0; top: 0; border: 1.5px solid var(--sc);
@@ -117,7 +121,7 @@
   opacity: 0; scale: .7; transform-origin: 0 0; transition: opacity 200ms, scale 260ms var(--ease);
 }
 .cx-say.is-on { opacity: 1; scale: 1; }
-.cx-you .cx-say-you { --bc: #e2553a; color: #fff; left: 14px; top: 42px; }
+.cx-you .cx-say-you { --bc: #e2553a; color: #fff; left: 14px; top: 22px; }
 
 /* ── Scribbles: hand-drawn underline / circle ───────────────────────────── */
 .cx-mark { position: absolute; left: 0; top: 0; overflow: visible; transition: opacity 400ms; }

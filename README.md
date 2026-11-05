@@ -18,6 +18,8 @@ Plain HTML, CSS, and JavaScript, no framework. The 3D hero uses three.js, bundle
 index.html          page markup
 assets/css/main.css styles (design tokens, light/dark themes)
 assets/js/main.js   nav, theme toggle, reveals, 3D tilt, video previews, photo viewer
+assets/js/cursors.js    live cursors: frame sections as they scroll in, play with the page, edit mode
+assets/css/cursors.css  styles for the live cursors overlay
 assets/js/hero-3d.js    3D hero scene (bundled from src/hero-3d.js with three.js)
 src/hero-3d.js      source for the 3D laptop scene
 assets/img/         optimized WebP images

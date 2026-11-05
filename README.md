@@ -9,8 +9,8 @@ Personal portfolio of Jeremiah Falcon Escubido (Doy), BSIT student at St. Mary's
 - **Intro**: a maroon loader that counts to 100% and wipes away (once per visit)
 - **About Doy**: torn coral panel with a photo deck you can shuffle, and a name that bounces on hover
 - **Work slides**: scrolling down slides the projects sideways, each with a playable phone demo:
-  a StudyQuest quiz with timer and XP, a BansaRide route with passenger toggles, and a GABAY AR view
-  where you pick a destination; plus the published research
+  a StudyQuest quiz with timer and XP, a BansaRide route with passenger toggles, and the real GABAY
+  app screens (splash to live AR sign) you can tap through; plus the published research
 - **By the numbers**: flip cards
 - **Toolbox**: filter tools by shelf and hover one to see where I used it
 - **Journey**: a drag-to-scroll slider of milestones

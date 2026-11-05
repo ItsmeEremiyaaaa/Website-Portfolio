@@ -1,7 +1,9 @@
-/* Live cursors — multiplayer-style cursors that "build" each section as it scrolls in,
-   play with the page's interactive parts (tilt cards, headings, chips), and an edit mode
-   that lets visitors select and restyle elements themselves.
-   Dependency-free. Loaded before main.js, which calls PortfolioCursors.construct() on reveal. */
+/* Live cursors
+   - A swarm of tiny cursors drifts over the page (canvas) and scatters away from your mouse.
+   - Three named cursors frame each block as it scrolls in (main.js calls construct()),
+     then play with the page: tilt cards, restyle headings and chips, retype the hero line.
+   - Edit mode lets visitors select any element, restyle it and drag it around.
+   Dependency-free. Loaded before main.js. */
 (function () {
   'use strict';
 
@@ -11,37 +13,39 @@
   var reduce = matchMedia('(prefers-reduced-motion: reduce)');
   var fine = matchMedia('(hover: hover) and (pointer: fine)');
   var wide = matchMedia('(min-width: 720px)');
-  if (reduce.matches || !fine.matches || !wide.matches) return;
+  if (reduce.matches) return;
+  var full = fine.matches && wide.matches; // named cursors + edit mode only on desktop
 
   /* ── Settings ─────────────────────────────────────────────────────────── */
   var BOTS = [
-    { name: 'Designer', color: '#4DA3FF' },
-    { name: 'Developer', color: '#FF6FA8' },
-    { name: 'Recruiter', color: '#FFC24B' }
+    { name: 'Designer', color: '#8cc8ff' },
+    { name: 'Developer', color: '#ff8fb8' },
+    { name: 'Recruiter', color: '#ffc24b' }
   ];
-  var SWATCHES = ['#ff9472', '#4DA3FF', '#FF6FA8', '#FFC24B', '#B69CFF', '#FF8A5B'];
-  var PHRASES = ['for the web, desktop, and AR.', 'with Laravel, React, and Java.', 'that people actually use.'];
+  var SWARM_COLORS = ['#8cc8ff', '#ff8fb8', '#ffc24b', '#a9ecd0', '#ffb49b', '#ffffff', '#c9b6ff'];
+  var SWATCHES = ['#e2553a', '#4a1826', '#8cc8ff', '#ff8fb8', '#ffc24b', '#a9ecd0', '#c9b6ff'];
+  var PHRASES = ['mobile, web and AR apps', 'tools for my campus', 'apps my town can use', 'things you can tap'];
   // [selector, label shown on the selection box, kind]
   var EDITABLE = [
     ['.hero-title', 'Hero title', 'text'],
-    ['.hero-kicker', 'Kicker', 'text'],
-    ['.hero-avatar', 'Avatar', 'box'],
+    ['.hero-title .hl', 'Name', 'text'],
+    ['.kicker', 'Kicker', 'text'],
     ['.hero-actions .btn', 'Button', 'fill'],
-    ['.hero-facts li', 'Highlight', 'text'],
+    ['.hero-photo', 'Photo', 'box'],
+    ['.sticker', 'Sticker', 'fill'],
     ['.eyebrow', 'Eyebrow', 'text'],
     ['.section-title', 'Section title', 'text'],
-    ['.group-title', 'Group title', 'text'],
     ['.project-title', 'Project title', 'text'],
+    ['.art-chip', 'Chip', 'fill'],
     ['.badge', 'Badge', 'fill'],
     ['.tags li', 'Tag', 'fill'],
     ['.chips li', 'Chip', 'fill'],
-    ['.roles li', 'Role', 'fill'],
-    ['.browser', 'Screenshot', 'box'],
-    ['.about-portrait', 'Portrait', 'box'],
-    ['.timeline-item h3', 'Milestone', 'text'],
+    ['.stack-row dt', 'Label', 'text'],
+    ['.timeline-when', 'Year', 'text'],
     ['.gallery li', 'Photo', 'box'],
-    ['.now-title', 'Status', 'text'],
-    ['.contact-title', 'Heading', 'text']
+    ['.contact-title', 'Heading', 'text'],
+    ['.qr-card', 'QR card', 'box'],
+    ['.collage', 'Photo', 'box']
   ];
 
   var store = {
@@ -52,6 +56,80 @@
   var rand = function (a, b) { return a + Math.random() * (b - a); };
   var pick = function (a) { return a[Math.floor(Math.random() * a.length)]; };
   var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+
+  /* ── Overlay ──────────────────────────────────────────────────────────── */
+  var layer = document.createElement('div');
+  layer.className = 'cx-layer';
+  layer.setAttribute('aria-hidden', 'true');
+  var canvas = document.createElement('canvas');
+  canvas.className = 'cx-swarm';
+  layer.appendChild(canvas);
+  document.body.appendChild(layer);
+  var ctx = canvas.getContext('2d');
+  var dpr = 1, W = 0, H = 0;
+  function resize() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = innerWidth; H = innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  }
+  resize();
+  addEventListener('resize', resize);
+
+  function ring(x, y, color) {
+    var el = document.createElement('div');
+    el.className = 'cx-ring';
+    el.style.cssText = 'left:' + x + 'px;top:' + y + 'px;--rc:' + color;
+    layer.appendChild(el);
+    setTimeout(function () { el.remove(); }, 520);
+  }
+
+  /* ── Swarm of tiny cursors ────────────────────────────────────────────── */
+  var mouse = { x: -999, y: -999 };
+  addEventListener('pointermove', function (e) { if (e.isTrusted) { mouse.x = e.clientX; mouse.y = e.clientY; } }, { passive: true });
+  var swarmCount = full ? 22 : 10;
+  var swarm = [];
+  for (var i = 0; i < swarmCount; i++) {
+    swarm.push({
+      x: rand(0, W), y: rand(0, H), vx: rand(-.4, .4), vy: rand(-.4, .4),
+      a: rand(0, Math.PI * 2), s: rand(.7, 1.15), c: pick(SWARM_COLORS), next: rand(3000, 9000)
+    });
+  }
+  var swarmOn = true;
+  function drawArrow(x, y, s, c) {
+    ctx.save();
+    ctx.translate(x, y); ctx.scale(s, s);
+    ctx.beginPath();
+    ctx.moveTo(0, 0); ctx.lineTo(11, 5.3); ctx.lineTo(6.2, 6.5); ctx.lineTo(4.1, 11.3); ctx.closePath();
+    ctx.fillStyle = c; ctx.fill();
+    ctx.lineWidth = 1.1; ctx.strokeStyle = 'rgba(30,6,14,.75)'; ctx.stroke();
+    ctx.restore();
+  }
+  function stepSwarm(dt) {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    if (!swarmOn) return;
+    swarm.forEach(function (p) {
+      p.a += rand(-.25, .25);
+      p.vx += Math.cos(p.a) * .03; p.vy += Math.sin(p.a) * .03;
+      var dx = p.x - mouse.x, dy = p.y - mouse.y, d = Math.hypot(dx, dy);
+      if (d < 140 && d > 0) { var f = (140 - d) / 140 * .9; p.vx += dx / d * f; p.vy += dy / d * f; }
+      var sp = Math.hypot(p.vx, p.vy), max = d < 140 ? 4.5 : .9;
+      if (sp > max) { p.vx *= max / sp; p.vy *= max / sp; }
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -20) p.x = W + 10; if (p.x > W + 20) p.x = -10;
+      if (p.y < -20) p.y = H + 10; if (p.y > H + 20) p.y = -10;
+      p.next -= dt;
+      if (p.next < 0) { p.next = rand(4000, 11000); ring(p.x + 2, p.y + 2, p.c); }
+      drawArrow(p.x, p.y, p.s, p.c);
+    });
+  }
+
+  if (!full) {
+    var lastM = performance.now();
+    (function loopMobile(now) { stepSwarm(now - lastM); lastM = now; requestAnimationFrame(loopMobile); })(lastM);
+    return;
+  }
 
   /* ── Editable registry ────────────────────────────────────────────────── */
   var editable = [];
@@ -70,15 +148,10 @@
     return r.width > 0 && r.top > 70 && r.bottom < innerHeight - 70 && r.left >= 0 && r.right <= innerWidth;
   };
 
-  /* ── Overlay ──────────────────────────────────────────────────────────── */
-  var layer = document.createElement('div');
-  layer.className = 'cx-layer';
-  layer.setAttribute('aria-hidden', 'true');
-  document.body.appendChild(layer);
-
+  /* ── Selection boxes and named cursors ────────────────────────────────── */
   var arrow = function (c) {
-    return '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 2l17 8.2-7.3 1.9L9.6 19.6z" fill="' + c +
-      '" stroke="#0a0a0b" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+    return '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 2l17 8.2-7.3 1.9L9.6 19.6z" fill="' + c +
+      '" stroke="#1e060e" stroke-width="1.4" stroke-linejoin="round"/></svg>';
   };
   function makeSel(color) {
     var box = document.createElement('div');
@@ -106,15 +179,7 @@
     s.box.style.height = h + 'px';
     s.dim.textContent = label + ' · ' + Math.round(s.mode === 'draw' ? w : r.width) + ' × ' + Math.round(s.mode === 'draw' ? h : r.height);
   }
-  function ring(x, y, color) {
-    var el = document.createElement('div');
-    el.className = 'cx-ring';
-    el.style.cssText = 'left:' + x + 'px;top:' + y + 'px;--rc:' + color;
-    layer.appendChild(el);
-    setTimeout(function () { el.remove(); }, 520);
-  }
 
-  /* ── Bots ─────────────────────────────────────────────────────────────── */
   function Bot(cfg, i) {
     this.name = cfg.name; this.color = cfg.color;
     this.el = document.createElement('div');
@@ -133,7 +198,7 @@
     this.anchor = null; this.tx = x; this.ty = y;
     return Promise.race([new Promise(function (r) { self.done = r; }), wait(1600)]);
   };
-  // Follow a point inside an element (fractions of its box), so the target tracks the page while scrolling.
+  // Follow a point inside an element (fractions of its box) so the target tracks the page while scrolling.
   Bot.prototype.follow = function (el, fx, fy) {
     var self = this;
     this.anchor = { el: el, fx: fx, fy: fy };
@@ -148,24 +213,22 @@
     this.x += (this.tx - this.x) * 0.16;
     this.y += (this.ty - this.y) * 0.16;
     this.el.style.transform = 'translate(' + this.x + 'px,' + this.y + 'px)';
-    if (this.tilt) {
-      this.tilt.dispatchEvent(new PointerEvent('pointermove', { clientX: this.x, clientY: this.y, bubbles: true }));
-    }
+    if (this.tilt) this.tilt.dispatchEvent(new PointerEvent('pointermove', { clientX: this.x, clientY: this.y, bubbles: true }));
     if (this.done && Math.hypot(this.tx - this.x, this.ty - this.y) < 3) { var d = this.done; this.done = null; d(); }
     drawSel(this.sel);
   };
   Bot.prototype.click = function () {
-    this.el.classList.add('is-down');
-    var el = this.el; setTimeout(function () { el.classList.remove('is-down'); }, 160);
+    var el = this.el;
+    el.classList.add('is-down');
+    setTimeout(function () { el.classList.remove('is-down'); }, 160);
     ring(this.x + 2, this.y + 2, this.color);
   };
   Bot.prototype.wander = function () {
     return this.go(clamp(this.x + rand(-280, 280), 40, innerWidth - 120), clamp(this.y + rand(-200, 200), 90, innerHeight - 120));
   };
-
   var bots = BOTS.map(function (c, i) { return new Bot(c, i); });
 
-  /* ── Construct: a bot drags a frame over an element as it scrolls in ──── */
+  /* ── Construct: drag a frame over a block as it scrolls in ────────────── */
   api.construct = function (el) {
     if (!api.enabled || document.hidden || !wide.matches) return Promise.resolve();
     var r0 = el.getBoundingClientRect();
@@ -185,7 +248,7 @@
         bot.sel.mode = 'fit';
         bot.click();
         clearTimeout(safety); resolve();
-        await wait(700);
+        await wait(650);
         bot.sel.target = null; bot.anchor = null;
         await bot.wander();
         bot.busy = false;
@@ -193,7 +256,7 @@
     });
   };
 
-  /* ── Edits (bots revert theirs; visitors' edits stay until reset) ──────── */
+  /* ── Edits (cursors undo theirs; visitors' edits stay until reset) ──────── */
   function snapshot(el) {
     return { color: el.style.color, bg: el.style.backgroundColor, rotate: el.style.rotate, scale: el.style.scale, translate: el.style.translate };
   }
@@ -204,7 +267,7 @@
   function recolor(el, c) {
     if (el.dataset.cxKind === 'fill') {
       el.style.backgroundColor = c;
-      el.style.color = '#0a0a0b';
+      el.style.color = (c === '#4a1826' || c === '#e2553a') ? '#fffaf6' : '#2a0f18';
     } else {
       el.style.color = c;
     }
@@ -212,12 +275,10 @@
   var botActions = {
     color: function (el) { recolor(el, pick(SWATCHES)); },
     rotate: function (el) {
-      var m = el.dataset.cxKind === 'fill' ? 6 : el.dataset.cxKind === 'box' ? 3 : 1.5;
+      var m = el.dataset.cxKind === 'fill' ? 8 : el.dataset.cxKind === 'box' ? 4 : 2;
       el.style.rotate = rand(-m, m).toFixed(1) + 'deg';
     },
-    scale: function (el) {
-      el.style.scale = (el.dataset.cxKind === 'box' ? rand(0.96, 1.05) : rand(1.04, 1.12)).toFixed(2);
-    }
+    scale: function (el) { el.style.scale = (el.dataset.cxKind === 'box' ? rand(0.95, 1.05) : rand(1.04, 1.14)).toFixed(2); }
   };
   var actionsFor = function (el) { return el.dataset.cxKind === 'box' ? ['rotate', 'scale'] : ['color', 'color', 'rotate', 'scale']; };
 
@@ -256,35 +317,35 @@
     busyEls.delete(el);
   }
 
-  var heroTitle = document.querySelector('.hero-title');
-  var phraseEl = heroTitle && heroTitle.querySelector('.text-muted');
-  if (phraseEl) heroTitle.setAttribute('aria-label', heroTitle.textContent.replace(/\s+/g, ' ').trim());
+  var phraseEl = document.querySelector('.hero-phrase');
+  var roleEl = phraseEl && phraseEl.parentElement;
+  if (roleEl) roleEl.setAttribute('aria-label', roleEl.textContent.replace(/\s+/g, ' ').trim());
   async function doType(bot) {
-    if (!phraseEl || !inView(heroTitle) || busyEls.has(heroTitle)) return doEdit(bot);
-    busyEls.add(heroTitle);
+    if (!phraseEl || !inView(roleEl) || busyEls.has(roleEl)) return doEdit(bot);
+    busyEls.add(roleEl);
     var r = phraseEl.getBoundingClientRect();
-    await bot.go(r.right - 6, r.bottom - 14);
+    await bot.go(r.right - 4, r.bottom - 10);
     bot.click();
-    heroTitle.classList.add('cx-typing');
+    roleEl.classList.add('cx-typing');
     var current = phraseEl.textContent.trim();
     while (phraseEl.textContent.length) { phraseEl.textContent = phraseEl.textContent.slice(0, -1); await wait(22); }
     var next = pick(PHRASES.filter(function (p) { return p !== current; }));
     for (var i = 0; i < next.length; i++) { phraseEl.textContent += next[i]; await wait(rand(40, 95)); }
     await wait(400);
-    heroTitle.classList.remove('cx-typing');
-    busyEls.delete(heroTitle);
+    roleEl.classList.remove('cx-typing');
+    busyEls.delete(roleEl);
   }
 
   async function idle(bot) {
-    await wait(rand(1200, 2600));
+    await wait(rand(2500, 4000));
     for (;;) {
-      await wait(rand(1400, 3600));
+      await wait(rand(1400, 3400));
       if (!api.enabled || bot.busy || document.hidden || editMode) continue;
       bot.busy = true;
       var roll = Math.random();
       try {
-        if (roll < 0.5) await doEdit(bot);
-        else if (roll < 0.72) await doTilt(bot);
+        if (roll < 0.48) await doEdit(bot);
+        else if (roll < 0.7) await doTilt(bot);
         else if (roll < 0.84) await doType(bot);
         else await bot.wander();
       } catch (e) { /* keep the loop alive */ }
@@ -298,17 +359,12 @@
   you.className = 'cx-you';
   you.innerHTML = '<span class="cx-tag">You</span>';
   layer.appendChild(you);
-  var ux = -200, uy = -200;
-  addEventListener('pointermove', function (e) {
-    if (e.pointerType !== 'mouse' || !e.isTrusted) return;
-    ux = e.clientX; uy = e.clientY;
-    you.classList.add('is-on');
-  }, { passive: true });
+  addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse' && e.isTrusted) you.classList.add('is-on'); }, { passive: true });
   document.documentElement.addEventListener('mouseleave', function () { you.classList.remove('is-on'); });
 
-  /* ── Edit mode: select an element, restyle it, drag it ────────────────── */
+  /* ── Edit mode ────────────────────────────────────────────────────────── */
   var editMode = false;
-  var userSel = makeSel('var(--accent)');
+  var userSel = makeSel('#e2553a');
   userSel.box.classList.add('cx-user');
   var insp = document.createElement('div');
   insp.className = 'cx-insp';
@@ -337,7 +393,7 @@
     busyEls.add(el);
     if (!originals.has(el)) originals.set(el, snapshot(el));
     inName.textContent = el.dataset.cxName;
-    insp.querySelector('.cx-sw').parentElement.hidden = el.dataset.cxKind === 'box';
+    insp.querySelector('.cx-row-sw').hidden = el.dataset.cxKind === 'box';
     insp.hidden = false;
     syncInspector();
   }
@@ -358,7 +414,7 @@
   }
 
   insp.querySelector('.cx-sw').addEventListener('click', function (e) {
-    var b = e.target.closest('button'); var el = userSel.target;
+    var b = e.target.closest('button'), el = userSel.target;
     if (b && el) { markUser(el); recolor(el, b.dataset.c); }
   });
   inSize.addEventListener('input', function () { var el = userSel.target; if (el) { markUser(el); el.style.scale = inSize.value / 100; syncInspector(); } });
@@ -408,7 +464,7 @@
     '<span class="cx-dots" aria-hidden="true">' +
     BOTS.map(function (b) { return '<b style="background:' + b.color + '">' + b.name[0] + '</b>'; }).join('') +
     '<b class="cx-dot-you">Y</b></span>' +
-    '<span class="cx-hint">Edit mode: click anything to restyle it, drag to move</span>' +
+    '<span class="cx-hint">Click anything to restyle it, drag to move</span>' +
     '<button type="button" class="cx-edit" aria-pressed="false">Edit mode</button>' +
     '<button type="button" class="cx-reset-all" hidden>Reset</button>' +
     '<button type="button" class="cx-toggle"></button>';
@@ -425,6 +481,7 @@
   }
   function setBots(on) {
     api.enabled = on;
+    swarmOn = on;
     layer.classList.toggle('cx-bots-off', !on);
     toggleBtn.textContent = on ? 'Hide cursors' : 'Show cursors';
     if (!on) bots.forEach(function (b) { b.sel.target = null; });
@@ -437,20 +494,22 @@
     originals.clear();
     syncInspector();
   });
-
   setBots(store.get('cursors') !== 'off');
 
   /* ── Frame loop ───────────────────────────────────────────────────────── */
-  (function frame() {
+  var last = performance.now();
+  (function frame(now) {
+    stepSwarm(now - last); last = now;
     bots.forEach(function (b) { b.step(); });
-    you.style.transform = 'translate(' + ux + 'px,' + uy + 'px)';
+    you.style.transform = 'translate(' + mouse.x + 'px,' + mouse.y + 'px)';
     drawSel(userSel);
     placeInspector();
     requestAnimationFrame(frame);
-  })();
+  })(last);
 
-  // Opening sequence: the three cursors frame the hero while it loads in.
-  var heroParts = ['.hero-id', '.hero-title', '.hero-visual'].map(function (s) { return document.querySelector(s); }).filter(Boolean);
-  if (api.enabled) heroParts.forEach(function (el, i) { setTimeout(function () { api.construct(el); }, 250 + i * 220); });
-  bots.forEach(idle);
+  // Named cursors start working once the intro has wiped away.
+  var started = false;
+  function start() { if (started) return; started = true; bots.forEach(idle); }
+  document.addEventListener('intro:done', start);
+  setTimeout(start, 4000);
 })();

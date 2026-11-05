@@ -1,49 +1,50 @@
 # Jeremiah Escubido — Portfolio
 
-Personal portfolio of Jeremiah Falcon Escubido, BSIT student at St. Mary's College of Bansalan.
+Personal portfolio of Jeremiah Falcon Escubido (Doy), BSIT student at St. Mary's College of Bansalan.
 
 **Live site:** https://itsmeeremiyaaaa.github.io/Website-Portfolio/
 
 ## What's inside
 
-- **Selected work**: StudyQuest, BansaRide, and GABAY (applications), and published research (AJESS, 2025)
-- **About, stack, journey**: education, recognition, and the tools I use
-- **Contact**: email, LinkedIn, GitHub, ORCID, and a downloadable CV
+- **Intro**: a maroon loader that counts to 100% and wipes away (once per visit)
+- **About**: cream hero with a torn coral photo panel
+- **Selected work**: StudyQuest, BansaRide, GABAY, and published research (AJESS, 2025)
+- **Stack, journey, campus life, contact**: tools, education and recognition, a photo wall, and a GitHub QR card
+
+## Live cursors
+
+`assets/js/cursors.js` draws a swarm of tiny cursors that scatter from your mouse, plus three named
+cursors (Designer, Developer, Recruiter) that drag a frame over each block as it scrolls in, tilt the
+cards, restyle headings and chips, and retype the hero line. Their edits undo themselves.
+**Edit mode** (bottom bar) lets visitors click any element to recolor, resize, rotate or drag it.
+Named cursors and edit mode run on desktop only; everything is off with reduced motion.
 
 ## Built with
 
-Plain HTML, CSS, and JavaScript, no framework. The 3D hero uses three.js, bundled with esbuild.
+Plain HTML, CSS and JavaScript, no framework.
 
 ```
-index.html          page markup
-assets/css/main.css styles (design tokens, light/dark themes)
-assets/js/main.js   nav, theme toggle, reveals, 3D tilt, video previews, photo viewer
-assets/js/cursors.js    live cursors: frame sections as they scroll in, play with the page, edit mode
-assets/css/cursors.css  styles for the live cursors overlay
-assets/js/hero-3d.js    3D hero scene (bundled from src/hero-3d.js with three.js)
-src/hero-3d.js      source for the 3D laptop scene
-assets/img/         optimized WebP images
-assets/video/       compressed project videos
-assets/fonts/       self-hosted Geist fonts (Latin subset, SIL OFL)
+index.html               page markup
+assets/css/main.css      styles (tokens, maroon and cream sections)
+assets/css/cursors.css   live cursors overlay
+assets/js/main.js        intro, menu, reveals, tilt, photo viewer, copy email
+assets/js/cursors.js     live cursors and edit mode
+assets/img/              optimized WebP images and the GitHub QR code
+assets/fonts/            self-hosted Caveat Brush and Geist (SIL OFL)
 assets/Escubido_Jeremiah_Resume.pdf  downloadable CV
-404.html            custom not-found page
-media/              original source media (not loaded by the site)
+404.html                 custom not-found page
+media/                   original source media (not loaded by the site)
 ```
 
 ## Run locally
 
 ```bash
-npm install   # only needed to rebuild the 3D scene
-npm start
+npm start   # then open http://localhost:8080
 ```
-
-After editing `src/hero-3d.js`, run `npm run build`. It bundles the scene and refreshes the asset fingerprints.
-
-Then open http://localhost:8080.
 
 ## Deploy
 
-After changing any CSS or JS file, run `npm run stamp` before committing. It adds a content fingerprint (`?v=…`) to the asset links so visitors never get a stale cached stylesheet with new HTML.
-
+After changing any CSS or JS file, run `npm run stamp` before committing. It adds a content fingerprint
+(`?v=…`) to the asset links so visitors never get a stale cached file.
 
 GitHub Pages builds from the `master` branch (root folder). Every change merged into `master` goes live automatically.

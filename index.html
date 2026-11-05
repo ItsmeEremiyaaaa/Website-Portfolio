@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jeremiah Escubido — Full-Stack Developer &amp; BSIT Student</title>
-  <meta name="description" content="Portfolio of Jeremiah Falcon Escubido, a 4th-year BSIT student in Davao, Philippines building full-stack web apps with React, Laravel and PHP, desktop systems in Java, an AR campus navigation app, and published research. Open to internship and OJT opportunities.">
+  <title>Jeremiah Escubido — Developer &amp; BSIT Student</title>
+  <meta name="description" content="Portfolio of Jeremiah Falcon Escubido (Doy), a 4th-year BSIT student in Bansalan, Davao del Sur building mobile apps, web systems and an AR campus navigation app. Open to internship and OJT opportunities.">
   <meta name="author" content="Jeremiah Falcon Escubido">
-  <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#2a0f18">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#4a1826">
 
   <link rel="canonical" href="https://itsmeeremiyaaaa.github.io/Website-Portfolio/">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://itsmeeremiyaaaa.github.io/Website-Portfolio/">
   <meta property="og:site_name" content="Jeremiah Escubido">
-  <meta property="og:title" content="Jeremiah Escubido — Full-Stack Developer &amp; BSIT Student">
-  <meta property="og:description" content="Laravel and React web apps, Java desktop systems, an AR campus navigation app, and published research. Open to internship and OJT opportunities.">
+  <meta property="og:title" content="Jeremiah Escubido — Developer &amp; BSIT Student">
+  <meta property="og:description" content="StudyQuest, BansaRide and GABAY: mobile, web and AR apps, plus published research. Open to internship and OJT opportunities.">
   <meta property="og:image" content="https://itsmeeremiyaaaa.github.io/Website-Portfolio/assets/img/og-image.png">
-  <meta property="og:image:alt" content="Preview of Jeremiah Escubido's portfolio: BSIT student &amp; full-stack developer">
+  <meta property="og:image:alt" content="Preview of Jeremiah Escubido's portfolio">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
@@ -25,40 +25,40 @@
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 
+  <link rel="preload" href="assets/fonts/caveat-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=aea576a3">
-  <link rel="stylesheet" href="assets/css/cursors.css?v=e8f49bde">
+  <link rel="stylesheet" href="assets/css/main.css?v=97896357">
+  <link rel="stylesheet" href="assets/css/cursors.css?v=6d406325">
 
   <script>
-    // Apply the saved theme before first paint to avoid a flash.
+    // Mark JS early so reveal styles only apply when they can be undone, and show the intro once per visit.
     (function () {
       var d = document.documentElement;
       d.classList.add('js');
-      try {
-        var t = localStorage.getItem('theme');
-        if (t === 'light' || t === 'dark') d.dataset.theme = t;
-      } catch (e) {}
+      var seen = false;
+      try { seen = sessionStorage.getItem('intro-seen') === '1'; } catch (e) {}
+      if (!seen && !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('has-intro');
     })();
   </script>
-  <script src="assets/js/cursors.js?v=bb8db30f" defer></script>
-  <script src="assets/js/main.js?v=cdca1429" defer></script>
+  <script src="assets/js/cursors.js?v=29d611f2" defer></script>
+  <script src="assets/js/main.js?v=b9a586d9" defer></script>
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Jeremiah Falcon Escubido",
-    "jobTitle": "Full-Stack Developer & BSIT Student",
+    "alternateName": "Doy",
+    "jobTitle": "Developer & BSIT Student",
     "url": "https://itsmeeremiyaaaa.github.io/Website-Portfolio/",
     "image": "https://itsmeeremiyaaaa.github.io/Website-Portfolio/assets/img/portrait.webp",
     "email": "mailto:jeremiahescubido05@gmail.com",
-    "address": { "@type": "PostalAddress", "addressRegion": "Davao Region", "addressCountry": "PH" },
+    "address": { "@type": "PostalAddress", "addressLocality": "Bansalan", "addressRegion": "Davao del Sur", "addressCountry": "PH" },
     "alumniOf": [
       { "@type": "CollegeOrUniversity", "name": "St. Mary's College of Bansalan" },
       { "@type": "CollegeOrUniversity", "name": "STI College of Novaliches" }
     ],
-    "knowsAbout": ["Laravel", "React", "TypeScript", "Java", "Augmented reality", "ICT in education"],
+    "knowsAbout": ["React Native", "React", "Laravel", "Unity", "Augmented reality", "ICT in education"],
     "sameAs": [
       "https://github.com/ItsmeEremiyaaaa",
       "https://www.linkedin.com/in/jeremiah-escubido",
@@ -77,520 +77,330 @@
   <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M8 7h9v9"/></symbol>
   <symbol id="i-arrow-right" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="i-arrow-up" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M6 11l6-6 6 6"/></symbol>
-  <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></g></symbol>
-  <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" d="M4 8h16M4 16h16"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></symbol>
-  <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5Z"/></symbol>
-  <symbol id="i-pause" viewBox="0 0 24 24"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></symbol>
   <symbol id="i-chevron-left" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="m15 6-6 6 6 6"/></symbol>
   <symbol id="i-chevron-right" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></symbol>
   <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></g></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-download" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
   <symbol id="i-orcid" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24ZM8.3 17.4H6.9V7.5h1.4v9.9Zm-.7-11.2a.94.94 0 1 1 0-1.88.94.94 0 0 1 0 1.88Zm3.2 11.2V7.5h3.8c3.6 0 5.2 2.6 5.2 4.95 0 2.56-2 4.95-5.2 4.95h-3.8Zm1.4-1.27h2.3c2.9 0 3.7-2.2 3.7-3.68 0-2.4-1.5-3.68-3.8-3.68h-2.2v7.36Z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/></g></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 18h7.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H16"/></g></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></g></symbol>
 </svg>
+
+<!-- Intro: shown once per visit, skipped with reduced motion -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-inner">
+    <p class="intro-title">Hold on,<br>let's get acquainted.</p>
+    <div class="intro-progress">
+      <span class="intro-count"><span id="intro-num">0</span>%</span>
+      <span class="intro-bar"><span id="intro-fill"></span></span>
+      <span class="intro-meta">Jeremiah Escubido · Portfolio 2026</span>
+    </div>
+  </div>
+  <button class="intro-skip" type="button" id="intro-skip">Skip intro</button>
+</div>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
 <!-- ─── Navigation ─────────────────────────────────────────── -->
 <header class="site-header" id="top">
-  <nav class="nav container" aria-label="Primary">
-    <a class="brand" href="#top">
-      <span class="brand-mark" aria-hidden="true">JE</span>
-      <span class="brand-name">Jeremiah Escubido</span>
-    </a>
-
-    <ul class="nav-links" id="nav-links">
+  <nav class="nav wrap" aria-label="Primary">
+    <a class="brand" href="#top" aria-label="Jeremiah Escubido, back to top">doy<span>.</span></a>
+    <ul class="nav-links">
       <li><a href="#work">Work</a></li>
-      <li><a href="#about">About</a></li>
       <li><a href="#stack">Stack</a></li>
       <li><a href="#journey">Journey</a></li>
+      <li><a href="#life">Life</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-
     <div class="nav-actions">
-      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle color theme">
-        <svg class="icon icon-sun" aria-hidden="true"><use href="#i-sun"/></svg>
-        <svg class="icon icon-moon" aria-hidden="true"><use href="#i-moon"/></svg>
-      </button>
-      <a class="btn btn-sm btn-primary nav-cta" href="#contact">Get in touch</a>
+      <a class="btn btn-sm btn-ink" href="assets/Escubido_Jeremiah_Resume.pdf" download>
+        <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> CV
+      </a>
       <button class="icon-btn menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
         <svg class="icon icon-menu" aria-hidden="true"><use href="#i-menu"/></svg>
         <svg class="icon icon-close" aria-hidden="true"><use href="#i-close"/></svg>
       </button>
     </div>
   </nav>
-
   <div class="mobile-menu" id="mobile-menu" hidden>
-    <ul class="container">
+    <ul class="wrap">
       <li><a href="#work">Work</a></li>
-      <li><a href="#about">About</a></li>
       <li><a href="#stack">Stack</a></li>
       <li><a href="#journey">Journey</a></li>
+      <li><a href="#life">Life</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li><a href="assets/Escubido_Jeremiah_Resume.pdf" download>Download CV (PDF)</a></li>
     </ul>
   </div>
 </header>
 
 <main id="main">
 
-  <!-- ─── Hero ──────────────────────────────────────────────── -->
+  <!-- ─── Hero: About Doy ────────────────────────────────────── -->
   <section class="hero" aria-labelledby="hero-title">
-    <div class="hero-grid-bg" aria-hidden="true"></div>
-    <div class="container hero-inner">
-      <div class="hero-copy">
-        <div class="hero-id">
-          <img class="hero-avatar" src="assets/img/portrait-360.webp" width="360" height="362" alt="" fetchpriority="high">
-          <div>
-            <p class="hero-kicker">Hi, I'm Jeremiah Escubido</p>
-            <p class="hero-status"><span class="status-dot" aria-hidden="true"></span> Open to internship &amp; OJT</p>
-          </div>
-        </div>
-        <h1 class="hero-title" id="hero-title">
-          BSIT student &amp; full&#8209;stack developer building practical software <span class="text-muted">for the web, desktop, and AR.</span>
-        </h1>
-        <p class="hero-lede enter" style="--d:1">
-          I'm in my fourth year of BSIT at St. Mary's College of Bansalan. I build web apps with Laravel and React,
-          desktop systems in Java, and I'm currently developing GABAY, an AR campus navigation app.
-          I've also published research on ICT in education.
-        </p>
-        <div class="hero-actions enter" style="--d:2">
-          <a class="btn btn-primary" href="#work">
-            View my work
-            <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-          <a class="btn btn-secondary" href="assets/Escubido_Jeremiah_Resume.pdf" download>
-            <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>
-            Download CV
-          </a>
-          <span class="hero-socials">
-            <a class="icon-btn" href="https://github.com/ItsmeEremiyaaaa" target="_blank" rel="noopener" aria-label="GitHub profile">
-              <svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>
-            </a>
-            <a class="icon-btn" href="https://www.linkedin.com/in/jeremiah-escubido" target="_blank" rel="noopener" aria-label="LinkedIn profile">
-              <svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg>
-            </a>
-            <a class="icon-btn" href="https://orcid.org/0009-0007-5341-8733" target="_blank" rel="noopener" aria-label="ORCID research profile">
-              <svg class="icon" aria-hidden="true"><use href="#i-orcid"/></svg>
-            </a>
-          </span>
-        </div>
-        <ul class="hero-facts enter" style="--d:3" aria-label="Highlights">
-          <li>4× Dean's Lister</li>
-          <li>Published researcher, 2025</li>
-          <li>Davao, Philippines</li>
-        </ul>
+    <div class="hero-copy wrap-left">
+      <p class="kicker reveal">Jeremiah Falcon Escubido · BSIT 4A</p>
+      <h1 class="hero-title reveal" id="hero-title">About <span class="hl">Doy</span></h1>
+      <p class="hero-role reveal">Developer building <span class="hero-phrase">mobile, web and AR apps</span> for the people around me.</p>
+      <p class="hero-lede reveal">
+        I'm a fourth-year BSIT student at St. Mary's College of Bansalan in Davao del Sur. I led the team behind
+        StudyQuest, built BansaRide for commuters in my town, and I'm finishing GABAY, an AR campus navigator, as my capstone.
+        I've also published research on ICT in education.
+      </p>
+      <div class="hero-actions reveal">
+        <a class="btn btn-maroon" href="#work">See my work <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+        <a class="btn btn-line" href="assets/Escubido_Jeremiah_Resume.pdf" download><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> Download CV</a>
       </div>
+      <ul class="hero-facts reveal" aria-label="Highlights">
+        <li><span class="status-dot" aria-hidden="true"></span> Open to internship &amp; OJT</li>
+        <li>4× Dean's Lister</li>
+        <li>Published researcher, 2025</li>
+      </ul>
+    </div>
 
-      <div class="hero-visual enter" style="--d:1" aria-hidden="true">
-        <div class="hero-glow"></div>
-        <canvas class="hero-3d" data-src="assets/js/hero-3d.js?v=c94f4c8c"></canvas>
-      </div>
+    <div class="hero-panel">
+      <figure class="hero-photo tilt reveal">
+        <img src="assets/img/portrait.webp" srcset="assets/img/portrait-360.webp 360w, assets/img/portrait.webp 720w"
+             sizes="(max-width: 900px) 70vw, 420px" width="720" height="723" fetchpriority="high"
+             alt="Jeremiah Escubido in a school polo and round glasses">
+        <figcaption>Doy · Bansalan, Davao del Sur</figcaption>
+      </figure>
+      <span class="sticker sticker-a" aria-hidden="true">&gt;</span>
+      <span class="sticker sticker-b" aria-hidden="true">&lt;</span>
+      <span class="sticker sticker-c" aria-hidden="true">AR</span>
+      <p class="hero-vertical" aria-hidden="true">Portfolio — 2026</p>
     </div>
   </section>
 
-  <!-- ─── Selected work ──────────────────────────────────────── -->
-  <section class="section" id="work" aria-labelledby="work-title">
-    <div class="container">
+  <!-- ─── Work ───────────────────────────────────────────────── -->
+  <section class="section maroon" id="work" aria-labelledby="work-title">
+    <div class="wrap">
       <header class="section-head reveal">
-        <p class="eyebrow">Selected work</p>
-        <h2 class="section-title" id="work-title">Apps and research.</h2>
-        <p class="section-desc">What each project set out to do, what I built, and the tools I used.</p>
+        <p class="eyebrow">01 · Selected work</p>
+        <h2 class="section-title" id="work-title">Things I've built.</h2>
+        <p class="section-desc">Three apps people actually use, and the research behind how students learn with technology.</p>
       </header>
 
-      <!-- Applications -->
-      <div class="work-group">
-        <h3 class="group-title reveal">Applications</h3>
-        <div class="app-grid app-grid-3">
-          <article class="project app-card reveal depth tilt" aria-labelledby="p-studyquest">
+      <div class="projects">
+        <article class="project reveal" aria-labelledby="p-studyquest">
+          <div class="project-art art-orange tilt" aria-hidden="true">
+            <svg class="art-icon"><use href="#i-star"/></svg>
+            <span class="art-chip c1">+120 XP</span>
+            <span class="art-chip c2">7-day streak</span>
+            <span class="art-chip c3">0:20</span>
+          </div>
+          <div class="project-body">
             <p class="project-meta"><span class="badge">Mobile app</span><span>Project leader · Team of 6</span></p>
-            <h4 class="project-title" id="p-studyquest">StudyQuest</h4>
-            <p class="app-kind">Gamified quiz app</p>
+            <h3 class="project-title" id="p-studyquest">StudyQuest</h3>
+            <p class="project-kind">Gamified quiz app</p>
             <p class="project-desc">
               Quizzes that play like a game: XP and levels, daily streaks, 32 badges, friends and quiz leaderboards,
-              and a 20-second timer on every question, in English or Tagalog. Shipped as an Android APK for a
-              school beta test and showcased at TechCase.
+              and a 20-second timer on every question, in English or Tagalog. Shipped as an Android APK for a school
+              beta test and showcased at TechCase.
             </p>
-            <ul class="roles" data-label="Users" aria-label="User roles">
-              <li>Students</li>
-              <li>Friends</li>
-            </ul>
-            <ul class="tags" aria-label="Technologies">
-              <li>React Native</li><li>Expo</li><li>Firebase</li><li>Cloud Functions</li><li>i18next</li>
-            </ul>
+            <ul class="tags" aria-label="Technologies"><li>React Native</li><li>Expo</li><li>Firebase</li><li>Cloud Functions</li><li>i18next</li></ul>
             <div class="project-links">
-              <a class="btn btn-secondary btn-sm" href="https://studyquest-a547c.web.app" target="_blank" rel="noopener">
-                Try the web version
-                <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
-              </a>
+              <a class="btn btn-sm btn-cream" href="https://studyquest-a547c.web.app" target="_blank" rel="noopener">Try the web version <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
             </div>
-          </article>
+          </div>
+        </article>
 
-          <article class="project app-card reveal depth tilt" aria-labelledby="p-bansaride">
+        <article class="project project-flip reveal" aria-labelledby="p-bansaride">
+          <div class="project-art art-blue tilt" aria-hidden="true">
+            <svg class="art-icon"><use href="#i-route"/></svg>
+            <span class="art-chip c1">Tricycle · ₱ fare</span>
+            <span class="art-chip c2">96 routes</span>
+            <span class="art-chip c3">Works offline</span>
+          </div>
+          <div class="project-body">
             <p class="project-meta"><span class="badge">Mobile &amp; web app</span><span>PWA · Android</span></p>
-            <h4 class="project-title" id="p-bansaride">BansaRide</h4>
-            <p class="app-kind">Ride and fare guide for Bansalan</p>
+            <h3 class="project-title" id="p-bansaride">BansaRide</h3>
+            <p class="project-kind">Ride and fare guide for Bansalan</p>
             <p class="project-desc">
               Shows where to catch a tricycle, pedicab, bus or van in Bansalan, what the ride costs for students,
               seniors, PWD and adults, and where the drivers' groups wait. About 96 real road routes on a map that
               keeps working without signal, plus rider-reported fares and ride alerts.
             </p>
-            <ul class="roles" data-label="Users" aria-label="User roles">
-              <li>Riders</li>
-              <li>Drivers' groups</li>
-              <li>Admin</li>
-            </ul>
-            <ul class="tags" aria-label="Technologies">
-              <li>React</li><li>Vite</li><li>Leaflet</li><li>OpenStreetMap</li><li>Supabase</li><li>Capacitor</li>
-            </ul>
+            <ul class="tags" aria-label="Technologies"><li>React</li><li>Vite</li><li>Leaflet</li><li>OpenStreetMap</li><li>Supabase</li><li>Capacitor</li></ul>
             <div class="project-links">
-              <a class="btn btn-secondary btn-sm" href="https://github.com/ItsmeEremiyaaaa/BansaRide" target="_blank" rel="noopener">
-                <svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>
-                Source code
-                <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
-              </a>
-            </div>
-          </article>
-
-          <article class="project app-card reveal depth tilt" aria-labelledby="p-gabay">
-            <p class="project-meta"><span class="badge badge-accent">Capstone</span><span>Mobile · AR</span></p>
-            <h4 class="project-title" id="p-gabay">GABAY</h4>
-            <p class="app-kind">Virtual campus navigation using augmented reality</p>
-            <p class="project-desc">
-              An AR wayfinding app for St. Mary's College of Bansalan. Floating signs for each campus location
-              bob and fade with distance, a 3D pin marks the destination, and a "Where to?" search lists every
-              place on campus. Onboarding and UI designed in Figma.
-            </p>
-            <ul class="roles" data-label="Focus" aria-label="Focus areas">
-              <li>Wayfinding</li>
-              <li>AR guidance</li>
-              <li>UI design</li>
-            </ul>
-            <ul class="tags" aria-label="Technologies">
-              <li>Unity</li><li>C#</li><li>MultiSet SDK</li><li>Supabase</li><li>Figma</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-
-      <!-- Research -->
-      <div class="work-group">
-        <h3 class="group-title reveal">Research</h3>
-        <article class="project project-featured reveal depth" aria-labelledby="p-research">
-          <div class="project-body">
-            <p class="project-meta">
-              <span class="badge badge-accent">Published</span>
-              <span>June 2025</span>
-            </p>
-            <h4 class="project-title" id="p-research">ICT Integration &amp; Student Performance</h4>
-            <p class="project-subtitle">“Correlation Between ICT Integration in Teaching, Learning and Perceived Student Performance Among College Students in Bansalan, Philippines”</p>
-            <p class="project-desc">
-              Schools keep adding technology to the classroom, but how does it relate to how students see their own performance?
-              This study examines the correlation between ICT integration in teaching and learning and the perceived academic
-              performance of BSIT students in Bansalan.
-            </p>
-            <dl class="project-facts">
-              <div>
-                <dt>Role</dt>
-                <dd>Co-author (first-listed), with Alexis Dale Laborte and Karen N. Bangcas</dd>
-              </div>
-              <div>
-                <dt>Published in</dt>
-                <dd>Asian Journal of Education and Social Studies · Vol. 51, Issue 6 · pp. 755–766</dd>
-              </div>
-            </dl>
-            <ul class="tags" aria-label="Methods and skills">
-              <li>Quantitative research</li>
-              <li>Correlational analysis</li>
-              <li>Academic writing</li>
-            </ul>
-            <div class="project-links">
-              <a class="btn btn-secondary btn-sm" href="https://doi.org/10.9734/ajess/2025/v51i62032" target="_blank" rel="noopener">
-                Read the paper
-                <svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
-              </a>
-              <a class="text-link" href="https://orcid.org/0009-0007-5341-8733" target="_blank" rel="noopener">
-                <svg class="icon" aria-hidden="true"><use href="#i-orcid"/></svg>
-                ORCID profile
-              </a>
+              <a class="btn btn-sm btn-cream" href="https://github.com/ItsmeEremiyaaaa/BansaRide" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> Source code <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
             </div>
           </div>
-          <div class="project-media">
-            <div class="browser" data-depth>
-              <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>doi.org/10.9734/ajess/2025/v51i62032</em></div>
-              <img src="assets/img/research.webp" srcset="assets/img/research-700.webp 700w, assets/img/research.webp 1351w"
-                   sizes="(max-width: 860px) calc(100vw - 72px), 520px" width="1351" height="635" loading="lazy" decoding="async"
-                   alt="Journal article page for the study in the Asian Journal of Education and Social Studies, listing Jeremiah Falcon Escubido as first author">
+        </article>
+
+        <article class="project reveal" aria-labelledby="p-gabay">
+          <div class="project-art art-mint tilt" aria-hidden="true">
+            <svg class="art-icon"><use href="#i-pin"/></svg>
+            <span class="art-chip c1">Library · 24 m</span>
+            <span class="art-chip c2">Where to?</span>
+            <span class="art-chip c3">Capstone</span>
+          </div>
+          <div class="project-body">
+            <p class="project-meta"><span class="badge badge-accent">Capstone</span><span>Mobile · AR</span></p>
+            <h3 class="project-title" id="p-gabay">GABAY</h3>
+            <p class="project-kind">Virtual campus navigation using augmented reality</p>
+            <p class="project-desc">
+              An AR wayfinding app for St. Mary's College of Bansalan. Floating signs for each campus location bob
+              and fade with distance, a 3D pin marks the destination, and a "Where to?" search lists every place on
+              campus. Onboarding and UI designed in Figma.
+            </p>
+            <ul class="tags" aria-label="Technologies"><li>Unity</li><li>C#</li><li>MultiSet SDK</li><li>Supabase</li><li>Figma</li></ul>
+          </div>
+        </article>
+
+        <article class="project project-flip reveal" aria-labelledby="p-research">
+          <div class="project-art art-shot tilt">
+            <img src="assets/img/research.webp" srcset="assets/img/research-700.webp 700w, assets/img/research.webp 1351w"
+                 sizes="(max-width: 900px) 90vw, 520px" width="1351" height="635" loading="lazy" decoding="async"
+                 alt="Journal article page listing Jeremiah Falcon Escubido as first author">
+          </div>
+          <div class="project-body">
+            <p class="project-meta"><span class="badge badge-accent">Published</span><span>June 2025</span></p>
+            <h3 class="project-title" id="p-research">ICT Integration &amp; Student Performance</h3>
+            <p class="project-kind">Asian Journal of Education and Social Studies · Vol. 51, Issue 6</p>
+            <p class="project-desc">
+              A correlational study of how ICT integration in teaching and learning relates to the perceived academic
+              performance of college students in Bansalan. First-listed co-author, with Alexis Dale Laborte and Karen N. Bangcas.
+            </p>
+            <ul class="tags" aria-label="Methods"><li>Quantitative research</li><li>Correlational analysis</li><li>Academic writing</li></ul>
+            <div class="project-links">
+              <a class="btn btn-sm btn-cream" href="https://doi.org/10.9734/ajess/2025/v51i62032" target="_blank" rel="noopener">Read the paper <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+              <a class="text-link" href="https://orcid.org/0009-0007-5341-8733" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-orcid"/></svg> ORCID</a>
             </div>
           </div>
         </article>
       </div>
 
-      <p class="work-more reveal">
-        <a class="text-link" href="https://github.com/ItsmeEremiyaaaa" target="_blank" rel="noopener">
-          More on GitHub
-          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
-        </a>
-      </p>
+      <p class="work-more reveal"><a class="text-link" href="https://github.com/ItsmeEremiyaaaa" target="_blank" rel="noopener">More on GitHub <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></p>
     </div>
   </section>
 
-  <!-- ─── About ─────────────────────────────────────────────── -->
-  <section class="section section-alt" id="about" aria-labelledby="about-title">
-    <div class="container about">
+  <!-- ─── Stack ──────────────────────────────────────────────── -->
+  <section class="section cream" id="stack" aria-labelledby="stack-title">
+    <div class="wrap stack-wrap">
       <header class="section-head reveal">
-        <p class="eyebrow">About</p>
-        <h2 class="section-title" id="about-title">I build things from the ground up and care how people use them.</h2>
-        <figure class="about-portrait tilt">
-          <img src="assets/img/portrait.webp" srcset="assets/img/portrait-360.webp 360w, assets/img/portrait.webp 720w"
-               sizes="(max-width: 860px) 60vw, 320px" width="720" height="723" loading="lazy" decoding="async"
-               alt="Pixel-art portrait of Jeremiah Escubido wearing round glasses and a school polo">
-        </figure>
-      </header>
-
-      <div class="about-body reveal">
-        <p>
-          I'm Jeremiah Falcon Escubido, a fourth-year BSIT student at St. Mary's College of Bansalan in Davao.
-          I build web applications, role-based management systems, and interactive tools, and I like understanding
-          how the people who use them actually experience them.
-        </p>
-        <p>
-          Most of my recent work is full-stack: Laravel and React with TypeScript and Inertia.js, plus Java desktop
-          apps. I've also worked with Arduino hardware, game development in Godot, and creative production such as
-          graphic design, video editing, and short film direction. In 2025 I co-authored a published study on
-          ICT integration in education.
-        </p>
-
-        <dl class="glance">
-          <div><dt>Studying</dt><dd>BS Information Technology, St. Mary's College of Bansalan (4th year)</dd></div>
-          <div><dt>Focus</dt><dd>Full-stack web apps, AR development, ICT research</dd></div>
-          <div><dt>Based in</dt><dd>Davao, Philippines</dd></div>
-          <div><dt>Open to</dt><dd>Internship / OJT, freelance projects, collaborations</dd></div>
-        </dl>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Stack ─────────────────────────────────────────────── -->
-  <section class="section" id="stack" aria-labelledby="stack-title">
-    <div class="container">
-      <header class="section-head reveal">
-        <p class="eyebrow">Stack</p>
-        <h2 class="section-title" id="stack-title">Tools I work with.</h2>
+        <p class="eyebrow">02 · Stack</p>
+        <h2 class="section-title" id="stack-title">What I work with.</h2>
         <p class="section-desc">Grouped by what I use them for, from coursework and my own projects.</p>
       </header>
-
       <dl class="stack reveal stagger">
-        <div class="stack-row">
-          <dt>Languages</dt>
-          <dd><ul class="chips"><li>TypeScript</li><li>JavaScript</li><li>PHP</li><li>Java</li><li>Python</li><li>C#</li><li>C++</li><li>GDScript</li></ul></dd>
-        </div>
-        <div class="stack-row">
-          <dt>Web</dt>
-          <dd><ul class="chips"><li>React</li><li>Laravel</li><li>Inertia.js</li><li>Vite</li><li>Tailwind CSS</li><li>Leaflet</li><li>HTML5</li><li>CSS</li></ul></dd>
-        </div>
-        <div class="stack-row">
-          <dt>Back end &amp; data</dt>
-          <dd><ul class="chips"><li>PHP</li><li>Laravel</li><li>MySQL</li><li>JSON APIs</li></ul></dd>
-        </div>
-        <div class="stack-row">
-          <dt>Mobile &amp; desktop</dt>
-          <dd><ul class="chips"><li>React Native</li><li>Java Swing</li><li>Augmented reality</li></ul></dd>
-        </div>
-        <div class="stack-row">
-          <dt>Games &amp; hardware</dt>
-          <dd><ul class="chips"><li>Godot</li><li>Arduino</li></ul></dd>
-        </div>
-        <div class="stack-row">
-          <dt>Tools</dt>
-          <dd><ul class="chips"><li>Git</li><li>GitHub</li><li>VS Code</li><li>NetBeans</li><li>Figma</li></ul></dd>
-        </div>
-        <div class="stack-row">
-          <dt>Creative</dt>
-          <dd><ul class="chips"><li>Adobe</li><li>Graphic design</li><li>Video editing</li><li>Encoding</li><li>Short film direction</li></ul></dd>
-        </div>
-        <div class="stack-row">
-          <dt>Research &amp; docs</dt>
-          <dd><ul class="chips"><li>Research writing</li><li>Technical documentation</li><li>Microsoft Office</li></ul></dd>
-        </div>
-        <div class="stack-row">
-          <dt>Ways of working</dt>
-          <dd><ul class="chips"><li>Team leadership</li><li>UI/design collaboration</li><li>Public speaking</li><li>Mentoring</li></ul></dd>
-        </div>
+        <div class="stack-row"><dt>Mobile &amp; AR</dt><dd><ul class="chips"><li>React Native</li><li>Expo</li><li>Unity</li><li>C#</li><li>Capacitor</li><li>MultiSet SDK</li></ul></dd></div>
+        <div class="stack-row"><dt>Web</dt><dd><ul class="chips"><li>React</li><li>TypeScript</li><li>Vite</li><li>Laravel</li><li>Inertia.js</li><li>Tailwind CSS</li><li>Leaflet</li></ul></dd></div>
+        <div class="stack-row"><dt>Back end &amp; data</dt><dd><ul class="chips"><li>Firebase</li><li>Supabase</li><li>PHP</li><li>MySQL</li><li>JSON APIs</li></ul></dd></div>
+        <div class="stack-row"><dt>Languages</dt><dd><ul class="chips"><li>JavaScript</li><li>TypeScript</li><li>PHP</li><li>Java</li><li>Python</li><li>C#</li><li>C++</li></ul></dd></div>
+        <div class="stack-row"><dt>Design &amp; tools</dt><dd><ul class="chips"><li>Figma</li><li>Git</li><li>GitHub</li><li>VS Code</li><li>Adobe</li><li>Video editing</li></ul></dd></div>
+        <div class="stack-row"><dt>Ways of working</dt><dd><ul class="chips"><li>Team leadership</li><li>Research writing</li><li>Public speaking</li><li>Mentoring</li></ul></dd></div>
       </dl>
     </div>
   </section>
 
-  <!-- ─── Journey ───────────────────────────────────────────── -->
-  <section class="section section-alt" id="journey" aria-labelledby="journey-title">
-    <div class="container journey">
+  <!-- ─── Journey ────────────────────────────────────────────── -->
+  <section class="section cream-2" id="journey" aria-labelledby="journey-title">
+    <div class="wrap journey">
       <header class="section-head reveal">
-        <p class="eyebrow">Journey</p>
+        <p class="eyebrow">03 · Journey</p>
         <h2 class="section-title" id="journey-title">Education &amp; recognition.</h2>
-        <p class="section-desc">
-          <a class="text-link" href="assets/Escubido_Jeremiah_Resume.pdf" download>
-            <svg class="icon icon-sm" aria-hidden="true"><use href="#i-download"/></svg>
-            Download my CV (PDF)
-          </a>
-        </p>
+        <p class="section-desc"><a class="text-link" href="assets/Escubido_Jeremiah_Resume.pdf" download><svg class="icon icon-sm" aria-hidden="true"><use href="#i-download"/></svg> Download my CV (PDF)</a></p>
       </header>
-
       <ol class="timeline reveal stagger">
         <li class="timeline-item">
           <p class="timeline-when">2024 – 2026</p>
-          <div class="timeline-what">
-            <h3>BS Information Technology</h3>
-            <p class="timeline-org">St. Mary's College of Bansalan, Inc. · 4th year</p>
-            <p>Web applications, systems and security, system integration, AR development, computer graphics, and ICT research.</p>
-          </div>
+          <div><h3>BS Information Technology</h3><p class="timeline-org">St. Mary's College of Bansalan, Inc. · 4th year</p><p>Web and mobile applications, system integration, AR development, computer graphics, and ICT research. Active in SITeS.</p></div>
+        </li>
+        <li class="timeline-item">
+          <p class="timeline-when">Oct 2026</p>
+          <div><h3>TechCase showcase</h3><p class="timeline-org">StudyQuest booth</p><p>Presented StudyQuest as developer and project leader at the school's technology showcase.</p></div>
         </li>
         <li class="timeline-item">
           <p class="timeline-when">Jun 2025</p>
-          <div class="timeline-what">
-            <h3>Published research article</h3>
-            <p class="timeline-org">Asian Journal of Education and Social Studies</p>
-            <p>Co-authored a study on ICT integration and perceived student performance among college students in Bansalan.</p>
-          </div>
+          <div><h3>Published research article</h3><p class="timeline-org">Asian Journal of Education and Social Studies</p><p>Co-authored a study on ICT integration and perceived student performance among college students in Bansalan.</p></div>
         </li>
         <li class="timeline-item">
           <p class="timeline-when">4×</p>
-          <div class="timeline-what">
-            <h3>Dean's List</h3>
-            <p class="timeline-org">BSIT program</p>
-            <p>Recognized four times for academic performance.</p>
-          </div>
+          <div><h3>Dean's List</h3><p class="timeline-org">BSIT program</p><p>Recognized four times for academic performance.</p></div>
         </li>
         <li class="timeline-item">
           <p class="timeline-when">2018 – 2023</p>
-          <div class="timeline-what">
-            <h3>BS Information Technology</h3>
-            <p class="timeline-org">STI College of Novaliches</p>
-            <p>Research, on-the-job training, systems, web development, security, and IT innovation.</p>
-          </div>
+          <div><h3>BS Information Technology</h3><p class="timeline-org">STI College of Novaliches</p><p>Research, on-the-job training, systems, web development, security, and IT innovation.</p></div>
         </li>
       </ol>
     </div>
   </section>
 
-  <!-- ─── Now ───────────────────────────────────────────────── -->
-  <section class="section section-tight" id="now" aria-labelledby="now-title">
-    <div class="container">
-      <div class="now reveal">
-        <h2 class="now-title" id="now-title"><span class="status-dot" aria-hidden="true"></span> Right now</h2>
-        <ul class="now-list">
-          <li><strong>Building</strong>: GABAY, my AR campus navigation capstone, and BansaRide, a ride and fare guide for Bansalan.</li>
-          <li><strong>Studying</strong>: my final year of BSIT at St. Mary's College of Bansalan.</li>
-          <li><strong>Looking for</strong>: an internship or OJT placement, plus freelance projects and collaborations.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Beyond the code ───────────────────────────────────── -->
-  <section class="section section-alt" id="life" aria-labelledby="life-title">
-    <div class="container">
+  <!-- ─── Life ───────────────────────────────────────────────── -->
+  <section class="section maroon" id="life" aria-labelledby="life-title">
+    <div class="wrap">
       <header class="section-head reveal">
-        <p class="eyebrow">Beyond the code</p>
-        <h2 class="section-title" id="life-title">Campus life &amp; the people I learn with.</h2>
+        <p class="eyebrow">04 · Beyond the code</p>
+        <h2 class="section-title" id="life-title">Campus life &amp; my people.</h2>
         <p class="section-desc">Program events, recognition, presentations, and a few moments in between.</p>
       </header>
-
       <ul class="gallery reveal stagger" aria-label="Photo gallery">
-        <li><button type="button" data-full="assets/img/life-8.webp"><img src="assets/img/life-8-sm.webp" srcset="assets/img/life-8-sm.webp 640w, assets/img/life-8.webp 1400w" sizes="(max-width: 640px) 100vw, 50vw" width="640" height="480" loading="lazy" decoding="async" alt="Presenting in a computer lab during a BSIT session"></button></li>
-        <li><button type="button" data-full="assets/img/life-9.webp"><img src="assets/img/life-9-sm.webp" srcset="assets/img/life-9-sm.webp 640w, assets/img/life-9.webp 1400w" sizes="(max-width: 640px) 50vw, 25vw" width="640" height="480" loading="lazy" decoding="async" alt="Receiving an achievement certificate and medal with faculty"></button></li>
-        <li><button type="button" data-full="assets/img/life-6.webp"><img src="assets/img/life-6-sm.webp" srcset="assets/img/life-6-sm.webp 640w, assets/img/life-6.webp 1400w" sizes="(max-width: 640px) 50vw, 25vw" width="640" height="427" loading="lazy" decoding="async" alt="BSIT students on stage at a program event"></button></li>
-        <li><button type="button" data-full="assets/img/life-10.webp"><img src="assets/img/life-10-sm.webp" srcset="assets/img/life-10-sm.webp 640w, assets/img/life-10.webp 1400w" sizes="(max-width: 640px) 50vw, 25vw" width="640" height="643" loading="lazy" decoding="async" alt="Classmates holding certificates at an awarding"></button></li>
-        <li><button type="button" data-full="assets/img/life-1.webp"><img src="assets/img/life-1-sm.webp" srcset="assets/img/life-1-sm.webp 640w, assets/img/life-1.webp 1400w" sizes="(max-width: 640px) 50vw, 25vw" width="640" height="480" loading="lazy" decoding="async" alt="BSIT students gathered outdoors on campus for a meeting"></button></li>
-        <li><button type="button" data-full="assets/img/life-7.webp"><img src="assets/img/life-7-sm.webp" srcset="assets/img/life-7-sm.webp 640w, assets/img/life-7.webp 1400w" sizes="(max-width: 640px) 50vw, 25vw" width="640" height="427" loading="lazy" decoding="async" alt="Group photo after a cultural dance performance"></button></li>
-        <li><button type="button" data-full="assets/img/life-5.webp"><img src="assets/img/life-5-sm.webp" srcset="assets/img/life-5-sm.webp 640w, assets/img/life-5.webp 1400w" sizes="(max-width: 640px) 50vw, 25vw" width="640" height="480" loading="lazy" decoding="async" alt="Friends walking together after a school workshop"></button></li>
-        <li><button type="button" data-full="assets/img/life-2.webp"><img src="assets/img/life-2-sm.webp" srcset="assets/img/life-2-sm.webp 640w, assets/img/life-2.webp 1400w" sizes="(max-width: 640px) 50vw, 25vw" width="640" height="480" loading="lazy" decoding="async" alt="Hiking with friends on a trail to a waterfall"></button></li>
-        <li><button type="button" data-full="assets/img/life-4.webp"><img src="assets/img/life-4-sm.webp" srcset="assets/img/life-4-sm.webp 640w, assets/img/life-4.webp 1400w" sizes="(max-width: 640px) 50vw, 25vw" width="640" height="480" loading="lazy" decoding="async" alt="Classmates smiling in the classroom"></button></li>
+        <li><button type="button" data-full="assets/img/life-8.webp"><img src="assets/img/life-8-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="Presenting in a computer lab during a BSIT session"></button></li>
+        <li><button type="button" data-full="assets/img/life-9.webp"><img src="assets/img/life-9-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="Receiving an achievement certificate and medal with faculty"></button></li>
+        <li><button type="button" data-full="assets/img/life-6.webp"><img src="assets/img/life-6-sm.webp" width="640" height="427" loading="lazy" decoding="async" alt="BSIT students on stage at a program event"></button></li>
+        <li><button type="button" data-full="assets/img/life-10.webp"><img src="assets/img/life-10-sm.webp" width="640" height="643" loading="lazy" decoding="async" alt="Classmates holding certificates at an awarding"></button></li>
+        <li><button type="button" data-full="assets/img/life-1.webp"><img src="assets/img/life-1-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="BSIT students gathered outdoors on campus for a meeting"></button></li>
+        <li><button type="button" data-full="assets/img/life-7.webp"><img src="assets/img/life-7-sm.webp" width="640" height="427" loading="lazy" decoding="async" alt="Group photo after a cultural dance performance"></button></li>
+        <li><button type="button" data-full="assets/img/life-5.webp"><img src="assets/img/life-5-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="Friends walking together after a school workshop"></button></li>
+        <li><button type="button" data-full="assets/img/life-2.webp"><img src="assets/img/life-2-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="Hiking with friends on a trail to a waterfall"></button></li>
       </ul>
     </div>
   </section>
 
-  <!-- ─── Contact ───────────────────────────────────────────── -->
-  <section class="section contact" id="contact" aria-labelledby="contact-title">
-    <div class="container contact-inner">
+  <!-- ─── Contact ────────────────────────────────────────────── -->
+  <section class="section maroon contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap contact-inner">
       <div class="contact-copy reveal">
-        <p class="eyebrow">Contact</p>
-        <h2 class="contact-title" id="contact-title">Let's build something real.</h2>
+        <p class="eyebrow">05 · Contact</p>
+        <h2 class="contact-title" id="contact-title">See you<br>on GitHub.</h2>
         <p class="section-desc">
-          I'm open to internships and OJT, freelance projects, and collaborations, or just a good conversation
-          about tech and creativity. Email is the best way to reach me.
+          I'm open to internships and OJT, freelance projects, and collaborations. Email is the best way to reach me,
+          or scan the card to follow my work.
         </p>
         <div class="contact-actions">
-          <a class="btn btn-primary" href="mailto:jeremiahescubido05@gmail.com">
-            <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
-            Email me
-          </a>
-          <button class="btn btn-secondary copy-email" type="button" data-email="jeremiahescubido05@gmail.com">
+          <a class="btn btn-cream" href="mailto:jeremiahescubido05@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> Email me</a>
+          <button class="btn btn-ghost copy-email" type="button" data-email="jeremiahescubido05@gmail.com">
             <svg class="icon icon-copy" aria-hidden="true"><use href="#i-copy"/></svg>
             <svg class="icon icon-check" aria-hidden="true"><use href="#i-check"/></svg>
             <span class="copy-label">Copy address</span>
           </button>
         </div>
+        <ul class="contact-links">
+          <li><a href="mailto:jeremiahescubido05@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>jeremiahescubido05@gmail.com</a></li>
+          <li><a href="https://www.linkedin.com/in/jeremiah-escubido" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg>LinkedIn</a></li>
+          <li><a href="https://orcid.org/0009-0007-5341-8733" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-orcid"/></svg>ORCID</a></li>
+        </ul>
       </div>
 
-      <ul class="contact-links reveal">
-        <li>
-          <a href="mailto:jeremiahescubido05@gmail.com">
-            <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>
-            <span><span class="cl-label">Email</span><span class="cl-value">jeremiahescubido05@gmail.com</span></span>
-            <svg class="icon cl-arrow" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
-          </a>
-        </li>
-        <li>
-          <a href="https://www.linkedin.com/in/jeremiah-escubido" target="_blank" rel="noopener">
-            <svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg>
-            <span><span class="cl-label">LinkedIn</span><span class="cl-value">Jeremiah Escubido</span></span>
-            <svg class="icon cl-arrow" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/ItsmeEremiyaaaa" target="_blank" rel="noopener">
-            <svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>
-            <span><span class="cl-label">GitHub</span><span class="cl-value">ItsmeEremiyaaaa</span></span>
-            <svg class="icon cl-arrow" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
-          </a>
-        </li>
-        <li>
-          <a href="https://orcid.org/0009-0007-5341-8733" target="_blank" rel="noopener">
-            <svg class="icon" aria-hidden="true"><use href="#i-orcid"/></svg>
-            <span><span class="cl-label">ORCID</span><span class="cl-value">0009-0007-5341-8733</span></span>
-            <svg class="icon cl-arrow" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
-          </a>
-        </li>
-        <li>
-          <a href="assets/Escubido_Jeremiah_Resume.pdf" download>
-            <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>
-            <span><span class="cl-label">CV</span><span class="cl-value">Escubido_Jeremiah_Resume.pdf</span></span>
-            <svg class="icon cl-arrow cl-arrow-down" aria-hidden="true"><use href="#i-arrow-right"/></svg>
-          </a>
-        </li>
-      </ul>
+      <div class="contact-visual reveal">
+        <img class="collage c-1" src="assets/img/life-9-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="">
+        <img class="collage c-2" src="assets/img/life-6-sm.webp" width="640" height="427" loading="lazy" decoding="async" alt="">
+        <img class="collage c-3" src="assets/img/life-8-sm.webp" width="640" height="480" loading="lazy" decoding="async" alt="">
+        <a class="qr-card tilt" href="https://github.com/ItsmeEremiyaaaa" target="_blank" rel="noopener" aria-label="GitHub profile ItsmeEremiyaaaa">
+          <img src="assets/img/qr-github.svg" width="200" height="200" alt="">
+          <span class="qr-handle">@ItsmeEremiyaaaa</span>
+          <span class="qr-note">Scan for my GitHub</span>
+        </a>
+      </div>
     </div>
   </section>
 </main>
 
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <p>© <span id="year">2026</span> Jeremiah Falcon Escubido · Designed and built by hand.</p>
-    <a class="text-link" href="#top">
-      Back to top
-      <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up"/></svg>
-    </a>
+<footer class="site-footer maroon">
+  <div class="wrap footer-inner">
+    <p>© <span id="year">2026</span> Jeremiah Falcon Escubido · Designed and built by hand in Bansalan.</p>
+    <a class="text-link" href="#top">Back to top <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
   </div>
 </footer>
 
 <!-- Gallery lightbox -->
 <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
-  <figure>
-    <img src="" alt="">
-    <figcaption></figcaption>
-  </figure>
+  <figure><img src="" alt=""><figcaption></figcaption></figure>
   <button class="icon-btn lb-close" type="button" aria-label="Close photo viewer"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
   <button class="icon-btn lb-prev" type="button" aria-label="Previous photo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
   <button class="icon-btn lb-next" type="button" aria-label="Next photo"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>

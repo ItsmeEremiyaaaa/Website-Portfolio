@@ -1,6 +1,8 @@
 /* Live cursors overlay (see assets/js/cursors.js). Uses the site's tokens from main.css. */
 
-.cx-layer { position: fixed; inset: 0; z-index: 150; pointer-events: none; overflow: hidden; }
+.cx-layer { position: fixed; inset: 0; z-index: 420; pointer-events: none; overflow: hidden; }
+.cx-swarm { position: absolute; inset: 0; transition: opacity 400ms; }
+.cx-bots-off .cx-swarm { opacity: 0; }
 
 .cx-cur { position: absolute; left: 0; top: 0; will-change: transform; transition: opacity 300ms var(--ease); }
 .cx-cur svg { display: block; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35)); transition: scale 120ms var(--ease); }
@@ -14,7 +16,7 @@
 
 .cx-you { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity 200ms; will-change: transform; }
 .cx-you.is-on { opacity: 1; }
-.cx-you .cx-tag { background: var(--accent); color: var(--accent-ink); left: 14px; top: 18px; }
+.cx-you .cx-tag { background: #e2553a; color: #fff; left: 14px; top: 18px; }
 
 .cx-sel {
   position: absolute; left: 0; top: 0; border: 1.5px solid var(--sc);
@@ -46,7 +48,7 @@
               color 400ms ease, background-color 400ms ease, transform 160ms linear, box-shadow 300ms var(--ease) !important;
 }
 .cx-anim.cx-dragging { transition: color 400ms ease, background-color 400ms ease, transform 160ms linear !important; }
-.hero-title.cx-typing .text-muted::after {
+.hero-role.cx-typing .hero-phrase::after {
   content: ""; display: inline-block; width: 2px; height: 0.9em; margin-left: 3px;
   background: currentColor; vertical-align: -0.08em; animation: cx-blink 800ms steps(1) infinite;
 }
@@ -59,12 +61,12 @@
 .cx-editing .cx-bar button, .cx-editing .cx-insp button { cursor: pointer; }
 
 .cx-insp {
-  position: fixed; left: 0; top: 0; z-index: 160; width: 232px;
+  position: fixed; left: 0; top: 0; z-index: 430; width: 232px;
   background: var(--surface); color: var(--text); border: 1px solid var(--border-strong);
   border-radius: var(--r); padding: 12px; box-shadow: var(--shadow); font: 13px/1.4 var(--font-sans);
 }
 .cx-insp[hidden] { display: none; }
-.cx-insp-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font: 500 12px var(--font-mono); color: var(--accent-text); }
+.cx-insp-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font: 500 12px var(--font-mono); color: #b63b24; }
 .cx-x { background: none; border: 0; color: var(--text-muted); font-size: 18px; line-height: 1; padding: 0 4px; }
 .cx-row { display: grid; grid-template-columns: 50px 1fr 36px; align-items: center; gap: 8px; margin: 8px 0; color: var(--text-muted); }
 .cx-row[hidden] { display: none; }
@@ -81,10 +83,10 @@
 }
 .cx-reset { width: 100%; border-radius: var(--r-sm); margin-top: 4px; }
 .cx-reset:hover, .cx-bar button:hover { border-color: var(--border-strong); }
-.cx-bar button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+.cx-bar button[aria-pressed="true"] { background: var(--maroon); color: var(--cream); border-color: transparent; }
 
 .cx-bar {
-  position: fixed; left: 50%; bottom: 16px; translate: -50% 0; z-index: 140;
+  position: fixed; left: 50%; bottom: 16px; translate: -50% 0; z-index: 140; color: var(--ink);
   display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 12px;
   background: var(--nav-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-strong); border-radius: 999px; box-shadow: var(--shadow);
@@ -97,9 +99,10 @@
   font: 600 9.5px/16px var(--font-sans); color: #0a0a0b; text-align: center;
 }
 .cx-dots b:first-child { margin-left: 0; }
-.cx-dots .cx-dot-you { background: var(--accent); color: var(--accent-ink); }
+.cx-dots .cx-dot-you { background: #e2553a; color: #fff; }
 .cx-hint { display: none; }
 .cx-editing .cx-hint { display: inline; }
 
 @media (max-width: 900px) { .cx-editing .cx-hint { display: none; } }
-@media print, (max-width: 719px) { .cx-layer, .cx-bar, .cx-insp { display: none !important; } }
+@media (max-width: 719px) { .cx-bar, .cx-insp, .cx-cur, .cx-sel, .cx-you { display: none !important; } }
+@media print { .cx-layer, .cx-bar, .cx-insp { display: none !important; } }

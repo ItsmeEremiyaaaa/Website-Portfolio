@@ -1,0 +1,105 @@
+/* Live cursors overlay (see assets/js/cursors.js). Uses the site's tokens from main.css. */
+
+.cx-layer { position: fixed; inset: 0; z-index: 150; pointer-events: none; overflow: hidden; }
+
+.cx-cur { position: absolute; left: 0; top: 0; will-change: transform; transition: opacity 300ms var(--ease); }
+.cx-cur svg { display: block; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35)); transition: scale 120ms var(--ease); }
+.cx-cur.is-down svg { scale: 0.82; }
+.cx-tag {
+  position: absolute; left: 15px; top: 17px; white-space: nowrap;
+  font: 500 11.5px/1 var(--font-sans); color: #0a0a0b;
+  padding: 5px 8px; border-radius: 4px 999px 999px 999px;
+}
+.cx-bots-off .cx-cur, .cx-bots-off .cx-sel:not(.cx-user) { opacity: 0; }
+
+.cx-you { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity 200ms; will-change: transform; }
+.cx-you.is-on { opacity: 1; }
+.cx-you .cx-tag { background: var(--accent); color: var(--accent-ink); left: 14px; top: 18px; }
+
+.cx-sel {
+  position: absolute; left: 0; top: 0; border: 1.5px solid var(--sc);
+  opacity: 0; transition: opacity 200ms; will-change: transform, width, height;
+}
+.cx-sel.is-on { opacity: 1; }
+.cx-sel.is-drawing { background: color-mix(in srgb, var(--sc) 8%, transparent); }
+.cx-sel i { position: absolute; width: 8px; height: 8px; background: #fff; border: 1.5px solid var(--sc); }
+.cx-sel i:nth-child(1) { left: -5px; top: -5px; }
+.cx-sel i:nth-child(2) { right: -5px; top: -5px; }
+.cx-sel i:nth-child(3) { left: -5px; bottom: -5px; }
+.cx-sel i:nth-child(4) { right: -5px; bottom: -5px; }
+.cx-dim {
+  position: absolute; left: 50%; top: 100%; margin-top: 8px; translate: -50% 0; white-space: nowrap;
+  background: var(--sc); color: #0a0a0b; font: 500 10.5px/1 var(--font-mono);
+  padding: 4px 6px; border-radius: 4px; font-variant-numeric: tabular-nums;
+}
+.cx-sel.is-drawing .cx-dim { left: 100%; translate: -100% 0; }
+
+.cx-ring {
+  position: absolute; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%;
+  border: 2px solid var(--rc); animation: cx-ring 500ms ease-out forwards;
+}
+@keyframes cx-ring { from { transform: scale(0.3); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+
+/* Elements while a cursor (or you) is restyling them */
+.cx-anim {
+  transition: rotate 500ms var(--ease), scale 500ms var(--ease), translate 500ms var(--ease),
+              color 400ms ease, background-color 400ms ease, transform 160ms linear, box-shadow 300ms var(--ease) !important;
+}
+.cx-anim.cx-dragging { transition: color 400ms ease, background-color 400ms ease, transform 160ms linear !important; }
+.hero-title.cx-typing .text-muted::after {
+  content: ""; display: inline-block; width: 2px; height: 0.9em; margin-left: 3px;
+  background: currentColor; vertical-align: -0.08em; animation: cx-blink 800ms steps(1) infinite;
+}
+@keyframes cx-blink { 50% { opacity: 0; } }
+
+/* Edit mode */
+.cx-editing [data-cx-name] { cursor: move; }
+.cx-editing [data-cx-name]:hover { outline: 1px dashed color-mix(in srgb, var(--accent) 70%, transparent); outline-offset: 3px; }
+.cx-editing a, .cx-editing button { cursor: default; }
+.cx-editing .cx-bar button, .cx-editing .cx-insp button { cursor: pointer; }
+
+.cx-insp {
+  position: fixed; left: 0; top: 0; z-index: 160; width: 232px;
+  background: var(--surface); color: var(--text); border: 1px solid var(--border-strong);
+  border-radius: var(--r); padding: 12px; box-shadow: var(--shadow); font: 13px/1.4 var(--font-sans);
+}
+.cx-insp[hidden] { display: none; }
+.cx-insp-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font: 500 12px var(--font-mono); color: var(--accent-text); }
+.cx-x { background: none; border: 0; color: var(--text-muted); font-size: 18px; line-height: 1; padding: 0 4px; }
+.cx-row { display: grid; grid-template-columns: 50px 1fr 36px; align-items: center; gap: 8px; margin: 8px 0; color: var(--text-muted); }
+.cx-row[hidden] { display: none; }
+.cx-row.cx-row-sw { grid-template-columns: 50px 1fr; }
+.cx-sw { display: flex; flex-wrap: wrap; gap: 6px; }
+.cx-sw button { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--border-strong); padding: 0; }
+.cx-sw button:hover { box-shadow: 0 0 0 2px var(--text); }
+.cx-row input[type="range"] { width: 100%; accent-color: var(--accent); }
+.cx-row output { font: 11px var(--font-mono); text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+.cx-reset, .cx-bar button {
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 12px; font: 500 12.5px var(--font-sans);
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.cx-reset { width: 100%; border-radius: var(--r-sm); margin-top: 4px; }
+.cx-reset:hover, .cx-bar button:hover { border-color: var(--border-strong); }
+.cx-bar button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+.cx-bar {
+  position: fixed; left: 50%; bottom: 16px; translate: -50% 0; z-index: 140;
+  display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 12px;
+  background: var(--nav-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-strong); border-radius: 999px; box-shadow: var(--shadow);
+  font: 12.5px var(--font-sans); color: var(--text-muted); white-space: nowrap;
+}
+.cx-bar [hidden] { display: none; }
+.cx-dots { display: flex; }
+.cx-dots b {
+  width: 20px; height: 20px; margin-left: -6px; border-radius: 50%; border: 2px solid var(--bg);
+  font: 600 9.5px/16px var(--font-sans); color: #0a0a0b; text-align: center;
+}
+.cx-dots b:first-child { margin-left: 0; }
+.cx-dots .cx-dot-you { background: var(--accent); color: var(--accent-ink); }
+.cx-hint { display: none; }
+.cx-editing .cx-hint { display: inline; }
+
+@media (max-width: 900px) { .cx-editing .cx-hint { display: none; } }
+@media print { .cx-layer, .cx-bar, .cx-insp { display: none !important; } }

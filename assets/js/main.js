@@ -92,8 +92,11 @@
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           var el = entry.target;
-          el.classList.add('is-visible');
           revealObserver.unobserve(el);
+          // Live cursors (cursors.js) drag a frame over the element first, then it appears.
+          var cursors = window.PortfolioCursors;
+          var show = function () { el.classList.add('is-visible'); };
+          if (cursors && cursors.enabled) cursors.construct(el).then(show); else show();
           // Once the entrance finishes, hand transitions back to the element (hover, tilt).
           el.addEventListener('transitionend', function done(e) {
             if (e.target !== el || e.propertyName !== 'opacity' || el.classList.contains('stagger')) return;

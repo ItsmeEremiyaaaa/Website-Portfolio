@@ -274,15 +274,15 @@
   var safeX = function (x) { return clamp(x, 12, innerWidth - 40); };
   var homeEl = document.querySelector('.photo-deck');
   var t0 = performance.now();
-  // Resting: the agents tag along behind your mouse arrow in a loose little group.
-  // Before the mouse has moved (or on touch), they wait on the left edge.
-  var ringC = { x: 70, y: innerHeight * .5 };
-  var OFFSETS = [[22, 26], [40, 14], [34, 44], [56, 32], [18, 54], [52, 58], [70, 18], [72, 46]];
+  // Resting: each agent flies back to its own slot in the bottom bar and docks there.
+  var dockBtns = [];
   function homePoint(i) {
-    var o = OFFSETS[i % OFFSETS.length];
-    var t = (performance.now() - t0) / 1000;
-    // A tiny idle wobble so they look alive, not pinned.
-    return { x: ringC.x + o[0] + Math.sin(t * 1.7 + i) * 3, y: ringC.y + o[1] + Math.cos(t * 1.4 + i * 2) * 3 };
+    var btn = dockBtns[i];
+    if (btn) {
+      var r = btn.getBoundingClientRect();
+      if (r.width) return { x: r.left + r.width / 2 - 6, y: r.top + r.height / 2 - 6, dock: true };
+    }
+    return { x: 40, y: innerHeight - 140, dock: false };
   }
   // Tiny colored cursor icon used in the bar, the build log and comment pins (no names, no letters).
   var miniArrow = function (c, size) {
@@ -295,9 +295,12 @@
     if (this.homing) {
       var h = homePoint(this.idx);
       this.tx = h.x; this.ty = h.y;
-      this.el.classList.toggle('is-resting', performance.now() - this.restSince > 1500);
+      var docked = h.dock && Math.hypot(this.tx - this.x, this.ty - this.y) < 8;
+      this.el.classList.toggle('is-docked', docked);
+      if (dockBtns[this.idx]) dockBtns[this.idx].classList.toggle('is-out', !docked);
     } else {
-      this.el.classList.remove('is-resting');
+      this.el.classList.remove('is-docked');
+      if (dockBtns[this.idx]) dockBtns[this.idx].classList.add('is-out');
     }
     if (this.homing) { /* handled above */ } else if (this.followMouse && mouse.x > -500) {
       this.anchor = null;
@@ -320,7 +323,7 @@
       // A straggler left parked out of the content area drifts back in.
       this.ty = rand(TOP + 40, innerHeight - BOTTOM - 40);
     }
-    var k = this.homing ? 0.07 + (this.idx % 8) * 0.018 : this.speed;
+    var k = this.homing ? 0.14 : this.speed;
     this.x += (this.tx - this.x) * k;
     this.y += (this.ty - this.y) * k;
     this.el.style.transform = 'translate(' + this.x + 'px,' + this.y + 'px)';
@@ -758,6 +761,7 @@
     '<button type="button" class="cx-toggle"></button>';
   document.body.appendChild(bar);
   logEl = bar.querySelector('.cx-log');
+  dockBtns = Array.prototype.slice.call(bar.querySelectorAll('.cx-dots button'));
   var editBtn = bar.querySelector('.cx-edit'), resetAll = bar.querySelector('.cx-reset-all'), toggleBtn = bar.querySelector('.cx-toggle');
 
   function setEdit(on) {
@@ -1015,7 +1019,6 @@
   var last = performance.now();
   (function frame(now) {
     stepSwarm(now - last); last = now;
-    if (mouse.x > -500) { ringC.x = mouse.x; ringC.y = mouse.y; }
     bots.forEach(function (b) { b.step(); });
     you.style.transform = 'translate(' + mouse.x + 'px,' + mouse.y + 'px)';
     drawSel(userSel);

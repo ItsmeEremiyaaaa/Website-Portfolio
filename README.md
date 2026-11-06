@@ -20,7 +20,7 @@ Personal portfolio of Jeremiah Falcon Escubido (Doy), BSIT student at St. Mary's
 ## Agent-built feel
 
 `assets/js/cursors.js` runs eight "agents" as plain colored cursors, with no names or letters. When they finish a
-job they rejoin a little group that tags along behind your mouse arrow. They drag a frame over each block as it scrolls in, test the demos,
+job they fly back and dock in their own slot in the bottom bar (a faded slot means that agent is out working). They drag a frame over each block as it scrolls in, test the demos,
 restyle and comment, and every action shows up in the **build log** in the bottom bar. Their edits undo
 themselves. Visitors can press `/` to chat, `1`–`5` for reactions, `P` (or Draw) to sketch, click a
 mini cursor in the bar to call that agent, click "8 agents building" to gather them, and type `doy` or `hire`.

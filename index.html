@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jeremiah Escubido — Developer &amp; BSIT Student</title>
-  <meta name="description" content="Interactive portfolio of Jeremiah Falcon Escubido (Doy), a 4th-year BSIT student in Bansalan, Davao del Sur. Play with StudyQuest, BansaRide and GABAY demos. Open to internship and OJT opportunities.">
-  <meta name="author" content="Jeremiah Falcon Escubido">
+  <title>Jeremiah F. Escubido — Developer &amp; BSIT Student</title>
+  <meta name="description" content="Interactive portfolio of Jeremiah F. Escubido (Doy), a 4th-year BSIT student in Bansalan, Davao del Sur. Play with StudyQuest, BansaRide and GABAY demos. Open to internship and OJT opportunities.">
+  <meta name="author" content="Jeremiah F. Escubido">
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#4a1826">
 
@@ -13,11 +13,11 @@
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://itsmeeremiyaaaa.github.io/Website-Portfolio/">
-  <meta property="og:site_name" content="Jeremiah Escubido">
-  <meta property="og:title" content="Jeremiah Escubido — Developer &amp; BSIT Student">
+  <meta property="og:site_name" content="Jeremiah F. Escubido">
+  <meta property="og:title" content="Jeremiah F. Escubido — Developer &amp; BSIT Student">
   <meta property="og:description" content="StudyQuest, BansaRide and GABAY: mobile, web and AR apps, plus published research. Open to internship and OJT opportunities.">
   <meta property="og:image" content="https://itsmeeremiyaaaa.github.io/Website-Portfolio/assets/img/og-image.png">
-  <meta property="og:image:alt" content="Preview of Jeremiah Escubido's portfolio">
+  <meta property="og:image:alt" content="Preview of Jeremiah F. Escubido's portfolio">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
@@ -27,27 +27,32 @@
 
   <link rel="preload" href="assets/fonts/caveat-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=74dab446">
-  <link rel="stylesheet" href="assets/css/cursors.css?v=f60eaa76">
+  <link rel="stylesheet" href="assets/css/main.css?v=4e608d1f">
+  <link rel="stylesheet" href="assets/css/cursors.css?v=692de489">
 
   <script>
     // Mark JS early so reveal styles only apply when they can be undone, and show the intro once per visit.
     (function () {
       var d = document.documentElement;
       d.classList.add('js');
+      try { var t = localStorage.getItem('theme'); if (t && t !== 'maroon') d.dataset.theme = t; } catch (e) {}
       var seen = false;
       try { seen = sessionStorage.getItem('intro-seen') === '1'; } catch (e) {}
       if (!seen && !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('has-intro');
+      // Desktop visitors watch the agents build the hero step by step (see cursors.js heroSequence).
+      var off = false; try { off = localStorage.getItem('cursors') === 'off'; } catch (e) {}
+      if (!off && matchMedia('(hover: hover) and (pointer: fine)').matches && matchMedia('(min-width: 720px)').matches &&
+          !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('hero-seq');
     })();
   </script>
-  <script src="assets/js/cursors.js?v=1f78b344" defer></script>
-  <script src="assets/js/main.js?v=a0e3ba38" defer></script>
+  <script src="assets/js/cursors.js?v=d31ec65c" defer></script>
+  <script src="assets/js/main.js?v=e03a732b" defer></script>
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "Jeremiah Falcon Escubido",
+    "name": "Jeremiah F. Escubido",
     "alternateName": "Doy",
     "jobTitle": "Developer & BSIT Student",
     "url": "https://itsmeeremiyaaaa.github.io/Website-Portfolio/",
@@ -107,9 +112,10 @@
 <a class="skip-link" href="#main">Skip to content</a>
 
 <!-- ─── Navigation ─────────────────────────────────────────── -->
-<header class="site-header" id="top">
+<span id="top" class="top-anchor" aria-hidden="true"></span>
+<header class="site-header">
   <nav class="nav wrap" aria-label="Primary">
-    <a class="brand" href="#top" aria-label="Jeremiah Escubido, back to top">doy<span>.</span></a>
+    <a class="brand back-top" href="#top" aria-label="Jeremiah F. Escubido, back to top">doy<span>.</span></a>
     <ul class="nav-links">
       <li><a href="#work">Work</a></li>
       <li><a href="#toolbox">Toolbox</a></li>
@@ -118,6 +124,12 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-actions">
+      <div class="theme-pick" role="radiogroup" aria-label="Site theme">
+        <button type="button" role="radio" aria-checked="true" data-theme="maroon" title="Maroon" aria-label="Maroon theme"><i></i></button>
+        <button type="button" role="radio" aria-checked="false" data-theme="navy" title="Navy" aria-label="Navy theme"><i></i></button>
+        <button type="button" role="radio" aria-checked="false" data-theme="forest" title="Forest" aria-label="Forest theme"><i></i></button>
+        <button type="button" role="radio" aria-checked="false" data-theme="grape" title="Grape" aria-label="Grape theme"><i></i></button>
+      </div>
       <a class="btn btn-sm btn-ink" href="assets/Escubido_Jeremiah_Resume.pdf" download>
         <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> CV
       </a>
@@ -143,7 +155,7 @@
   <!-- ─── Hero ───────────────────────────────────────────────── -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-copy">
-      <p class="kicker reveal">Jeremiah Falcon Escubido · BSIT 4A · SMCBI</p>
+      <p class="kicker reveal">Jeremiah F. Escubido · BSIT 4A · SMCBI</p>
       <h1 class="hero-title reveal" id="hero-title" aria-label="About Doy">
         <span aria-hidden="true">About</span> <span class="hl" aria-hidden="true"><span class="ltr">D</span><span class="ltr">o</span><span class="ltr">y</span></span>
       </h1>
@@ -170,7 +182,7 @@
           <figcaption>Presenting in the lab</figcaption>
         </figure>
         <figure class="deck-photo">
-          <img src="assets/img/portrait.webp" srcset="assets/img/portrait-360.webp 360w, assets/img/portrait.webp 720w" sizes="380px" width="720" height="723" fetchpriority="high" alt="Jeremiah Escubido in a school polo and round glasses">
+          <img src="assets/img/portrait.webp" srcset="assets/img/portrait-360.webp 360w, assets/img/portrait.webp 720w" sizes="380px" width="720" height="723" fetchpriority="high" alt="Jeremiah F. Escubido in a school polo and round glasses">
           <figcaption>Doy · Bansalan, Davao del Sur</figcaption>
         </figure>
       </div>
@@ -310,7 +322,7 @@
             <div class="slide-art art-paper">
               <div class="browser">
                 <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>doi.org/10.9734/ajess/2025/v51i62032</em></div>
-                <img src="assets/img/research.webp" srcset="assets/img/research-700.webp 700w, assets/img/research.webp 1351w" sizes="(max-width: 900px) 90vw, 560px" width="1351" height="635" loading="lazy" decoding="async" alt="Journal article page listing Jeremiah Falcon Escubido as first author">
+                <img src="assets/img/research.webp" srcset="assets/img/research-700.webp 700w, assets/img/research.webp 1351w" sizes="(max-width: 900px) 90vw, 560px" width="1351" height="635" loading="lazy" decoding="async" alt="Journal article page listing Jeremiah F. Escubido as first author">
               </div>
               <span class="art-chip c1">Published 2025</span>
               <span class="art-chip c2">First author</span>
@@ -513,8 +525,8 @@
 
 <footer class="site-footer maroon">
   <div class="wrap footer-inner">
-    <p>© <span id="year">2026</span> Jeremiah Falcon Escubido · Designed and built by hand in Bansalan. Psst: type <kbd>doy</kbd>.</p>
-    <a class="text-link" href="#top">Back to top <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
+    <p>© <span id="year">2026</span> Jeremiah F. Escubido · Designed and built by hand in Bansalan. Psst: type <kbd>doy</kbd>.</p>
+    <a class="text-link back-top" href="#top">Back to top <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
   </div>
 </footer>
 

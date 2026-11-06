@@ -1,6 +1,6 @@
-# Jeremiah Escubido — Portfolio
+# Jeremiah F. Escubido — Portfolio
 
-Personal portfolio of Jeremiah Falcon Escubido (Doy), BSIT student at St. Mary's College of Bansalan.
+Personal portfolio of Jeremiah F. Escubido (Doy), BSIT student at St. Mary's College of Bansalan.
 
 **Live site:** https://itsmeeremiyaaaa.github.io/Website-Portfolio/
 
@@ -18,6 +18,15 @@ Personal portfolio of Jeremiah Falcon Escubido (Doy), BSIT student at St. Mary's
 - **Contact**: pick a topic and the email subject fills itself, plus a GitHub QR card
 
 ## Agent-built feel
+
+On desktop, the hero is built live after the intro: agents draw the panel, frame the name line, click in
+"About Doy" letter by letter, type the role line, place the buttons, fly the photos into the deck and stick
+on the stickers (about 9 seconds). **Back to top** rewinds the page: an agent drags it up while the others
+delete each block, then the hero is rebuilt and everything else rebuilds as you scroll.
+
+**Themes**: Maroon, Navy, Forest and Grape, picked from the header and remembered. When a visitor goes idle,
+an agent fast-clicks through every theme to show them off, then restores theirs.
+
 
 `assets/js/cursors.js` runs eight "agents" as plain colored cursors, with no names or letters. When they finish a
 job they fly back and dock in their own slot in the bottom bar (a faded slot means that agent is out working). They drag a frame over each block as it scrolls in, test the demos,

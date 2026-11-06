@@ -328,7 +328,7 @@
     this.y += (this.ty - this.y) * k;
     this.el.style.transform = 'translate(' + this.x + 'px,' + this.y + 'px)';
     if (this.tilt) this.tilt.dispatchEvent(new PointerEvent('pointermove', { clientX: this.x, clientY: this.y, bubbles: true }));
-    if (this.done && Math.hypot(this.tx - this.x, this.ty - this.y) < 4) { var d = this.done; this.done = null; d(); }
+    if (this.done && Math.hypot(this.tx - this.x, this.ty - this.y) < (this.arrive || 4)) { var d = this.done; this.done = null; d(); }
     drawSel(this.sel);
   };
   Bot.prototype.name_ = function (ms) {
@@ -621,7 +621,6 @@
     { id: 'tools-grid', target: '#toolbox', log: 'rebuilt the toolbox as a grid', morph: '.tool, .tool-info, .tool-filters' },
     { id: 'journey-grid', target: '#journey', log: 'turned the journey into a grid', morph: '.jcard' },
     { id: 'contact-flip', target: '#contact', log: 'swapped the contact columns', morph: '.contact-copy, .contact-visual' },
-    { id: 'theme-navy', target: 'main', log: 'tried a navy theme on the whole site', global: true },
     { id: 'sharp', target: 'main', log: 'tested sharp corners site-wide', global: true },
     { id: 'type-sans', target: 'main', log: 'swapped headings to a bold sans', global: true },
     { id: 'tight', target: 'main', log: 'tightened section spacing', global: true }
@@ -649,7 +648,7 @@
     return function () { kids.forEach(function (k) { parent.appendChild(k); }); };
   }
   async function doRestructure(bot) {
-    if (restructuring || performance.now() - lastRestructure < 9000) return doEdit(bot);
+    if (restructuring || touring || rewinding || performance.now() - lastRestructure < 9000) return doEdit(bot);
     var options = RESTRUCTURES.filter(function (t) {
       var el = document.querySelector(t.target);
       if (!el) return false;
@@ -692,7 +691,7 @@
     await wait(rand(600, 2400));
     for (;;) {
       await wait(rand(900, 2600));
-      if (!api.enabled || bot.busy || document.hidden || editMode || acting >= MAX_ACTING) continue;
+      if (!api.enabled || bot.busy || document.hidden || editMode || seqRunning || acting >= MAX_ACTING) continue;
       if (performance.now() - lastScroll < 900) continue;
       bot.busy = true; acting++;
       var roll = Math.random();
@@ -1105,7 +1104,7 @@
   addEventListener('pointermove', function (e) { if (e.isTrusted && (Math.abs(e.movementX) + Math.abs(e.movementY) > 2)) userActed(); }, { passive: true });
   var lightboxEl = document.getElementById('lightbox');
   function canTour() {
-    if (!api.enabled || document.hidden || editMode || drawMode || !chat.hidden) return false;
+    if (!api.enabled || document.hidden || editMode || drawMode || !chat.hidden || restructuring || rewinding || seqRunning) return false;
     if (lightboxEl && lightboxEl.open) return false;
     if (root.classList && root.classList.contains('has-intro') && !root.classList.contains('intro-out')) return false;
     var max = document.documentElement.scrollHeight - innerHeight;
@@ -1114,7 +1113,7 @@
   var root = document.documentElement;
   // Exact stops so every view is complete: each section's top under the nav, each work slide fully
   // in place, and extra stops inside sections taller than the screen.
-  var NAV = 64;
+  var NAV = 64, BAR_SPACE = 96;
   function tourStops() {
     var stops = [], max = document.documentElement.scrollHeight - innerHeight;
     var pageY = function (el) { return el.getBoundingClientRect().top + scrollY; };
@@ -1126,13 +1125,30 @@
         for (var k = 0; k < n; k++) stops.push(Math.round(top + total * (k / Math.max(1, n - 1)) + 2));
         return;
       }
-      var y = Math.round(pageY(sec) - NAV), h = sec.offsetHeight, view = innerHeight - NAV - 90;
-      stops.push(y);
-      for (var extra = y + view; extra < y + h - view * .35; extra += view) stops.push(Math.round(extra));
+      // Center the section's actual content between the nav and the bottom bar.
+      var box = null;
+      Array.prototype.forEach.call(sec.children, function (c) {
+        var cs = getComputedStyle(c);
+        if (cs.position === 'absolute' || cs.position === 'fixed' || cs.display === 'none') return;
+        var r = c.getBoundingClientRect(); if (!r.height) return;
+        box = box ? { top: Math.min(box.top, r.top), bottom: Math.max(box.bottom, r.bottom) } : { top: r.top, bottom: r.bottom };
+      });
+      if (!box) { var rr = sec.getBoundingClientRect(); box = { top: rr.top, bottom: rr.bottom }; }
+      var cTop = box.top + scrollY, cH = box.bottom - box.top;
+      var view = innerHeight - NAV - BAR_SPACE;
+      if (cH <= view - 24) {
+        stops.push(Math.round(cTop + cH / 2 - (NAV + view / 2)));
+      } else {
+        var y = Math.round(cTop - NAV - 24);
+        stops.push(y);
+        for (var extra = y + view - 60; extra < cTop + cH - view + 40; extra += view - 60) stops.push(Math.round(extra));
+        stops.push(Math.round(cTop + cH - NAV - view + 24));
+      }
     });
     return stops.map(function (v) { return clamp(v, 0, max); })
       .sort(function (a, b) { return a - b; })
-      .filter(function (v, i, a) { return i === 0 || v - a[i - 1] > 40; });
+      .filter(function (v, i, a) { return i === 0 || v - a[i - 1] > 80; })
+      .filter(function (v) { return v === 0 || v > 80; });
   }
   function tour() {
     var bot = bots.filter(function (b) { return !b.busy; })[0];
@@ -1175,11 +1191,201 @@
       setTimeout(function () { bot.home(); bot.busy = false; }, 300);
     }
   }
+  // Theme show-off: the first thing an agent does when you go AFK is fast-click through every theme,
+  // then put yours back. Once per idle spell.
+  var themeShown = false;
+  addEventListener('pointerdown', function () { themeShown = false; }, { passive: true });
+  addEventListener('keydown', function () { themeShown = false; }, { passive: true });
+  addEventListener('wheel', function () { themeShown = false; }, { passive: true });
+  function themeDemo() {
+    var T = window.PortfolioTheme, btns = Array.prototype.slice.call(document.querySelectorAll('.theme-pick button'));
+    var bot = bots.filter(function (b) { return !b.busy; })[0];
+    if (!T || !btns.length || !bot) return;
+    var cancelled = false, original = T.get(), bot0 = bot;
+    themeShown = true;
+    // Cancel restores your theme right away, so a click on the picker always wins.
+    touring = { cancel: function () { if (!cancelled) { cancelled = true; T.set(original, { preview: true, instant: true }); } } };
+    bot.busy = true;
+    log(bot, 'showing off the themes');
+    (async function () {
+      await bot.follow(btns[0], .5, .6);
+      bot.say('Themes!', 1400);
+      var order = btns.concat([btns.filter(function (b) { return b.dataset.theme === original; })[0] || btns[0]]);
+      for (var i = 0; i < order.length && !cancelled; i++) {
+        await bot.follow(order[i], .5, .6);
+        bot.click();
+        T.set(order[i].dataset.theme, { preview: true });
+        await wait(i === order.length - 1 ? 200 : 650);
+      }
+      touring = null; lastTour = performance.now();
+      bot0.home(); bot0.busy = false;
+    })();
+  }
   setInterval(function () {
     var now = performance.now();
     if (touring || now - lastInput < IDLE_MS || now - lastTour < PAUSE_MS) return;
-    if (canTour()) tour();
+    if (!canTour()) { if (!themeShown && api.enabled && !seqRunning && !editMode && !drawMode && !rewinding) themeDemo(); return; }
+    if (!themeShown) themeDemo(); else tour();
   }, 500);
+
+  /* ── Back to top: one agent drags the page up while the others delete each block on
+     the way; at the top the page is rebuilt from scratch as you scroll down again. ── */
+  var rewinding = false;
+  function deleteFlash(el, color) {
+    var r = el.getBoundingClientRect();
+    if (r.bottom < TOP || r.top > innerHeight || !r.width) return;
+    var box = document.createElement('div');
+    box.className = 'cx-del';
+    box.style.cssText = 'transform:translate(' + (r.left - 3) + 'px,' + (r.top - 3) + 'px);width:' + (r.width + 6) + 'px;height:' + (r.height + 6) + 'px;--dc:' + color;
+    box.innerHTML = '<span>Delete</span>';
+    layer.appendChild(box);
+    setTimeout(function () { box.remove(); }, 700);
+    el.classList.add('cx-deleting');
+  }
+  api.backToTop = function (link) {
+    if (rewinding) return;
+    var R = window.PortfolioReveal; if (!R) { scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    rewinding = true; if (touring) touring.cancel();
+    var lead = bots.filter(function (b) { return !b.busy; })[0] || bots[0];
+    lead.busy = true;
+    var from = scrollY, dur = clamp(from * .22, 1300, 2600);
+    var lr = link.getBoundingClientRect();
+    log(lead, 'rewinding the page');
+    lead.go(lr.left + lr.width / 2, lr.top + lr.height / 2).then(function () {
+      lead.click();
+      lead.say(pick(['Rewinding…', 'Back to the top', 'Starting over']), 1600);
+      lead.el.classList.add('is-grab');
+      var helpers = bots.filter(function (b) { return b !== lead; });
+      var start = performance.now(), lastDel = 0, gx = innerWidth - 70;
+      (function step(now) {
+        var t = Math.min(1, (now - start) / dur), e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        scrollTo({ top: from * (1 - e), behavior: 'instant' });
+        lead.anchor = null; lead.homing = false; lead.tx = gx; lead.ty = innerHeight * (.72 - .44 * e);
+        // Helpers delete whatever is on screen as it passes.
+        if (now - lastDel > 90) {
+          lastDel = now;
+          var vis = R.all.filter(function (el) {
+            if (el.classList.contains('cx-deleting')) return false;
+            var r = el.getBoundingClientRect();
+            return r.bottom > TOP + 20 && r.top < innerHeight - BOTTOM;
+          });
+          if (vis.length) {
+            var el = vis[Math.floor(Math.random() * vis.length)], h = helpers[Math.floor(Math.random() * helpers.length)];
+            var r = el.getBoundingClientRect();
+            h.homing = false; h.anchor = null; h.tx = clamp(r.left + r.width * .5, 12, innerWidth - 40); h.ty = clamp(r.top + 10, TOP, innerHeight - BOTTOM);
+            h.click();
+            deleteFlash(el, h.color);
+          }
+        }
+        if (t < 1) { requestAnimationFrame(step); return; }
+        // At the top: everything is cleared, then rebuilt as the visitor scrolls back down.
+        lead.click();
+        lead.el.classList.remove('is-grab');
+        log(lead, 'cleared the page, rebuilding');
+        setTimeout(function () {
+          R.reset({ skipHero: true });
+          bots.forEach(function (b) { b.home(); });
+          lead.busy = false; rewinding = false;
+          lastInput = performance.now();
+          api.heroSequence();
+        }, 250);
+      })(start);
+    });
+  };
+
+  /* ── Opening timelapse: the agents build the hero one piece at a time ───── */
+  var seqRunning = false;
+  async function frameStep(bot, el, onStart, msg) {
+    if (!el) return;
+    bot.speed = 0.28; bot.limit = 900; bot.arrive = 16;
+    await bot.follow(el, 0, 0);
+    bot.click();
+    bot.sel.target = el; bot.sel.mode = 'draw';
+    if (onStart) onStart();
+    bot.speed = 0.15;
+    await bot.follow(el, 1, 1);
+    bot.sel.mode = 'fit';
+    bot.click();
+    if (msg) log(bot, msg);
+    await wait(110);
+    bot.sel.target = null;
+    bot.speed = 0.2; bot.limit = 1600; bot.arrive = 0;
+  }
+  var $1 = function (q) { return document.querySelector(q); };
+  var $all = function (q) { return Array.prototype.slice.call(document.querySelectorAll(q)); };
+  var SEQ_PARTS = '.hero-panel, .ltr, .hero-actions .btn, .deck-photo, .sticker, .deck-hint, .hero-vertical';
+  api.heroSequence = async function () {
+    if (seqRunning) return;
+    seqRunning = true;
+    root.classList.add('hero-seq');
+    $all(SEQ_PARTS).forEach(function (el) { el.classList.remove('is-in'); });
+    var heroReveals = ['.hero .kicker', '.hero-title', '.hero-role', '.hero-lede', '.hero-actions', '.hero-status', '.photo-deck'].map($1).filter(Boolean);
+    heroReveals.forEach(function (el) { el.classList.add('reveal'); el.classList.remove('is-visible'); });
+    var phrase = $1('.hero-phrase'), fullPhrase = phrase ? PHRASES[0] : '';
+    if (phrase) phrase.textContent = '';
+    var show = function (el) { if (el) el.classList.add('is-visible'); };
+    var k = 0, next = function () { var b = bots[k++ % bots.length]; b.busy = true; return b; };
+    var done = false;
+    var finish = function () {
+      if (done) return; done = true;
+      heroReveals.forEach(show);
+      $all(SEQ_PARTS).forEach(function (el) { el.classList.add('is-in'); });
+      if (phrase && !phrase.textContent) phrase.textContent = fullPhrase;
+      root.classList.remove('hero-seq');
+      bots.forEach(function (b) { b.sel.target = null; b.busy = false; b.home(); });
+      seqRunning = false;
+      log(bots[0], 'finished the hero');
+    };
+    var guard = setTimeout(finish, 22000);
+    try {
+      await wait(150);
+      bots.forEach(function (bb) { bb.arrive = 16; });
+      // Each step names the block to frame and what happens once it's framed. While one agent draws,
+      // the next one is already flying to its spot, so the build reads as one smooth timelapse.
+      var steps = [
+        { el: '.hero-panel', msg: 'drew the hero panel', start: function () { $1('.hero-panel').classList.add('is-in'); } },
+        { el: '.hero .kicker', msg: 'added the name line', start: function () { show($1('.hero .kicker')); } },
+        { el: '.hero-title', msg: 'wrote "About Doy"', start: function () { show($1('.hero-title')); }, after: async function (b) {
+          for (var i = 0, L = $all('.ltr'); i < L.length; i++) { await b.follow(L[i], .5, .7); b.click(); L[i].classList.add('is-in'); await wait(60); }
+        } },
+        { el: '.hero-role', msg: 'typed the role line', start: function () { var r = $1('.hero-role'); show(r); r.classList.add('cx-typing'); }, after: async function (b) {
+          if (!phrase) return;
+          for (var c = 0; c < fullPhrase.length; c++) {
+            phrase.textContent += fullPhrase[c];
+            var r2 = phrase.getBoundingClientRect(); b.tx = r2.right + 2; b.ty = r2.bottom - 8;
+            await wait(24);
+          }
+          $1('.hero-role').classList.remove('cx-typing');
+        } },
+        { el: '.hero-lede', msg: 'wrote the intro paragraph', start: function () { show($1('.hero-lede')); } },
+        { el: '.hero-actions', msg: 'placed the buttons', start: function () { show($1('.hero-actions')); }, after: async function (b) {
+          for (var j = 0, B = $all('.hero-actions .btn'); j < B.length; j++) { await b.follow(B[j], .5, .5); b.click(); B[j].classList.add('is-in'); await wait(80); }
+        } },
+        { el: '.hero-status', msg: 'switched on the status', start: function () { show($1('.hero-status')); } },
+        { el: '.photo-deck', msg: 'stacked the photo deck', start: function () { show($1('.photo-deck')); }, after: async function (b) {
+          var photos = $all('.deck-photo'), dr = $1('.photo-deck').getBoundingClientRect();
+          for (var p = 0; p < photos.length; p++) { await b.go(dr.right - 40, dr.top + 60 + p * 30); b.click(); photos[p].classList.add('is-in'); await wait(120); }
+        } },
+        { el: '.sticker-c', msg: 'stuck on the stickers', after: async function (b) {
+          for (var q = 0, S = $all('.sticker'); q < S.length; q++) { await b.follow(S[q], .5, .5); b.click(); S[q].classList.add('is-in'); await wait(80); }
+          var hint = $1('.deck-hint'); if (hint) { await b.follow(hint, .5, .5); b.click(); hint.classList.add('is-in'); }
+          var vert = $1('.hero-vertical'); if (vert) vert.classList.add('is-in');
+        }, noFrame: true }
+      ];
+      var team = steps.map(function () { return next(); });
+      for (var n = 0; n < steps.length; n++) {
+        var st = steps[n], b = team[n], el = $1(st.el);
+        // Send the next agent on its way now.
+        if (steps[n + 1]) { var nb = team[n + 1], nel = $1(steps[n + 1].el); if (nel) { nb.speed = 0.2; nb.follow(nel, 0, 0); } }
+        if (st.noFrame) { await b.follow(el, .5, .5); } else { await frameStep(b, el, st.start, null); }
+        if (st.after) await st.after(b);
+        log(b, st.msg);
+        b.arrive = 0; b.home(); b.busy = false;
+      }
+    } catch (e) { /* fall through to finish */ }
+    clearTimeout(guard);
+    finish();
+  };
 
   /* ── Frame loop ───────────────────────────────────────────────────────── */
   var last = performance.now();

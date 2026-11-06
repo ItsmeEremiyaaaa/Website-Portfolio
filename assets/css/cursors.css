@@ -303,3 +303,23 @@
 
 /* Smooth fallback when View Transitions aren't available */
 .hero-panel, .section { transition: padding 500ms var(--ease), background-color 500ms var(--ease); }
+
+/* Back to top: blocks being deleted by agents */
+.cx-del { position: absolute; left: 0; top: 0; border: 2px solid #e2553a; background: rgba(226, 85, 58, .10); border-radius: 6px; animation: cx-del 650ms var(--ease) forwards; }
+.cx-del span { position: absolute; left: -2px; top: -22px; background: #e2553a; color: #fff; font: 600 10.5px/1 var(--font-mono); padding: 4px 6px; border-radius: 4px 4px 0 0; }
+@keyframes cx-del { 0% { opacity: 0; scale: 1.04; } 25% { opacity: 1; scale: 1; } 100% { opacity: 0; scale: .9; } }
+.cx-deleting { opacity: 0 !important; transform: scale(.94) !important; filter: blur(2px); transition: opacity 420ms var(--ease), transform 420ms var(--ease), filter 420ms !important; }
+
+/* Opening timelapse: hero parts wait until an agent places them */
+.hero-seq .hero-panel { transition: opacity 700ms var(--ease), transform 900ms var(--ease); }
+.hero-seq .hero-panel:not(.is-in) { opacity: 0; transform: translateX(5%); }
+.hero-seq .ltr { transition: transform 500ms var(--spring), opacity 250ms; }
+.hero-seq .ltr:not(.is-in) { opacity: 0; transform: translateY(.35em) scale(.5); }
+.hero-seq .hero-actions .btn { transition: opacity 250ms, scale 450ms var(--spring), transform 220ms var(--ease); }
+.hero-seq .hero-actions .btn:not(.is-in) { opacity: 0; scale: .6; }
+.hero-seq .deck-photo { transition: transform 650ms var(--spring), opacity 300ms, translate 650ms var(--spring), rotate 650ms var(--spring); }
+.hero-seq .deck-photo:not(.is-in) { opacity: 0; translate: 180px -50px; rotate: 22deg; }
+.hero-seq .sticker { transition: opacity 250ms, scale 500ms var(--spring); }
+.hero-seq .sticker:not(.is-in) { opacity: 0; scale: .2; }
+.hero-seq .deck-hint, .hero-seq .hero-vertical { transition: opacity 400ms; }
+.hero-seq .deck-hint:not(.is-in), .hero-seq .hero-vertical:not(.is-in) { opacity: 0; }

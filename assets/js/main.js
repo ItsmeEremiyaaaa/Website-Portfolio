@@ -36,6 +36,23 @@
     $('#intro-skip').addEventListener('click', finish);
   }
 
+  /* ── Themes ───────────────────────────────────────────────────────────── */
+  var themeBtns = $$('.theme-pick button');
+  function setTheme(name, opts) {
+    var apply = function () {
+      if (name === 'maroon') delete root.dataset.theme; else root.dataset.theme = name;
+      themeBtns.forEach(function (b) { b.setAttribute('aria-checked', String(b.dataset.theme === name)); });
+    };
+    if (!(opts && opts.instant) && document.startViewTransition && !reduceMotion.matches) document.startViewTransition(apply); else apply();
+    if (!(opts && opts.preview)) { try { localStorage.setItem('theme', name); } catch (e) {} }
+  }
+  function getTheme() { return root.dataset.theme || 'maroon'; }
+  themeBtns.forEach(function (b) {
+    b.setAttribute('aria-checked', String(b.dataset.theme === getTheme()));
+    b.addEventListener('click', function (e) { setTheme(b.dataset.theme, { preview: !e.isTrusted }); });
+  });
+  window.PortfolioTheme = { list: themeBtns.map(function (b) { return b.dataset.theme; }), set: setTheme, get: getTheme };
+
   /* ── Mobile menu & active link ────────────────────────────────────────── */
   var menuBtn = $('.menu-toggle'), menu = $('#mobile-menu');
   function setMenu(open) {
@@ -88,8 +105,32 @@
       });
       flush();
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-    reveals.forEach(function (el) { observer.observe(el); });
+    var inHero = function (el) { return !!el.closest('.hero'); };
+    reveals.forEach(function (el) { if (!(root.classList.contains('hero-seq') && inHero(el))) observer.observe(el); });
+    // Lets the agents tear the page down and rebuild it (used by Back to top).
+    window.PortfolioReveal = {
+      all: reveals,
+      reset: function (opts) {
+        queue.length = 0;
+        reveals.forEach(function (el) {
+          el.classList.remove('is-visible', 'cx-deleting');
+          el.classList.add('reveal');
+          if (!(opts && opts.skipHero && inHero(el))) observer.observe(el);
+        });
+      }
+    };
   }
+
+  /* ── Back to top: agents rewind the page (falls back to a plain smooth scroll) ── */
+  $$('.back-top').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var c = window.PortfolioCursors;
+      if (c && c.enabled && c.backToTop && window.PortfolioReveal) c.backToTop(a);
+      else window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+      if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
+    });
+  });
 
   /* ── Tilt (mouse / trackpad) ──────────────────────────────────────────── */
   if (finePointer.matches && !reduceMotion.matches) {
@@ -503,7 +544,12 @@
 
   runIntro(function () {
     try { sessionStorage.setItem('intro-seen', '1'); } catch (e) {}
-    document.dispatchEvent(new CustomEvent('intro:done'));
     startReveals();
+    var c = window.PortfolioCursors;
+    if (root.classList.contains('hero-seq')) {
+      if (c && c.heroSequence) c.heroSequence();
+      else root.classList.remove('hero-seq'), $$('.hero .reveal').forEach(function (el) { el.classList.add('is-visible'); });
+    }
+    document.dispatchEvent(new CustomEvent('intro:done'));
   });
 })();

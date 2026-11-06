@@ -217,5 +217,13 @@
 @media (max-width: 1000px) { .cx-log { max-width: 180px; } }
 
 /* Resting agents gather in one flock and fade back */
-.cx-cur.is-resting { opacity: .5; }
-.cx-cur.is-resting svg { scale: .85; }
+.cx-cur.is-resting { opacity: .8; }
+.cx-cur.is-resting svg { scale: .8; }
+
+/* Bar: plain mini cursors instead of letters */
+.cx-dots button { width: 20px; height: 22px; margin-left: 0; border: 0; border-radius: 6px; background: transparent; display: grid; place-items: center; }
+.cx-dots button:hover { background: rgba(42, 15, 24, .08); }
+.cx-dots { gap: 1px; }
+.cx-log svg { flex: none; }
+.cx-pin b { background: #fff; }
+.cx-pin span { padding-left: 11px; }

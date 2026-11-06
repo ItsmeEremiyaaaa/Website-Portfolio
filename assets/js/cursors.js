@@ -274,27 +274,30 @@
   var safeX = function (x) { return clamp(x, 12, innerWidth - 40); };
   var homeEl = document.querySelector('.photo-deck');
   var t0 = performance.now();
+  // Resting place: a ring on the left edge, circling nose-to-tail like an ant mill.
   function homePoint(i, n) {
-    var cx = innerWidth - 150, cy = innerHeight - BOTTOM - 70;
-    if (homeEl) {
-      var r = homeEl.getBoundingClientRect();
-      if (r.bottom > TOP + 60 && r.top < innerHeight - BOTTOM - 60) { cx = r.right - 30; cy = clamp(r.top + 40, TOP + 30, innerHeight - BOTTOM - 40); }
-    }
-    // A loose flock: two rings, slowly breathing.
+    var cx = 70, cy = clamp(innerHeight * .5, TOP + 60, innerHeight - BOTTOM - 60);
     var t = (performance.now() - t0) / 1000;
-    var ang = i / n * Math.PI * 2 + t * .15, rad = (i % 2 ? 34 : 16) + Math.sin(t * 1.3 + i) * 4;
-    return { x: cx + Math.cos(ang) * rad, y: cy + Math.sin(ang) * rad * .8 };
+    var ang = i / n * Math.PI * 2 + t * 1.1, rad = 42;
+    return { x: cx + Math.cos(ang) * rad, y: cy + Math.sin(ang) * rad, heading: ang + Math.PI / 2 };
   }
+  // Tiny colored cursor icon used in the bar, the build log and comment pins (no names, no letters).
+  var miniArrow = function (c, size) {
+    return '<svg viewBox="0 0 24 24" width="' + (size || 14) + '" height="' + (size || 14) + '" aria-hidden="true"><path d="M3 2l17 8.2-7.3 1.9L9.6 19.6z" fill="' + c + '" stroke="#1e060e" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+  };
   Bot.prototype.home = function () {
     this.anchor = null; this.followMouse = null; this.homing = true; this.restSince = performance.now();
   };
   Bot.prototype.step = function () {
+    var svg = this.el.firstChild;
     if (this.homing) {
       var h = homePoint(this.idx, BOTS.length);
       this.tx = h.x; this.ty = h.y;
-      // Resting agents fade back so the page stays calm.
-      this.el.classList.toggle('is-resting', performance.now() - this.restSince > 2500);
+      // Point each arrow along the circle so the ring reads as a march. The arrow's tip faces up-left (-135°).
+      if (Math.hypot(this.tx - this.x, this.ty - this.y) < 60) svg.style.rotate = (h.heading * 180 / Math.PI + 135).toFixed(1) + 'deg';
+      this.el.classList.toggle('is-resting', performance.now() - this.restSince > 1500);
     } else {
+      svg.style.rotate = '';
       this.el.classList.remove('is-resting');
     }
     if (this.homing) { /* handled above */ } else if (this.followMouse && mouse.x > -500) {
@@ -379,10 +382,10 @@
   var logEl = null, logT = 0;
   function log(bot, text) {
     if (!logEl) return;
-    logEl.innerHTML = '<i style="background:' + bot.color + '"></i><b>' + bot.name + '</b> ' + text;
+    logEl.innerHTML = miniArrow(bot.color, 13) + ' ' + text;
     logEl.classList.remove('is-new'); void logEl.offsetWidth; logEl.classList.add('is-new');
     clearTimeout(logT);
-    logT = setTimeout(function () { logEl.innerHTML = '<i></i>All agents idle'; }, 6000);
+    logT = setTimeout(function () { logEl.innerHTML = '<i></i>All agents resting'; }, 6000);
   }
   var label = function (el) { return el && el.dataset.cxName ? el.dataset.cxName : (el && el.closest('section') && el.closest('section').querySelector('h2') ? el.closest('section').querySelector('h2').textContent.trim() : 'a block'); };
 
@@ -512,7 +515,7 @@
     var pin = document.createElement('div');
     pin.className = 'cx-pin';
     pin.style.setProperty('--pc', bot.color);
-    pin.innerHTML = '<b>' + bot.name[0] + '</b><span><strong>' + bot.name + '</strong> ' + text + '</span>';
+    pin.innerHTML = '<b>' + miniArrow(bot.color, 14) + '</b><span>' + text + '</span>';
     layer.appendChild(pin);
     var p = { el: el, node: pin };
     pins.push(p);
@@ -730,8 +733,9 @@
   bar.innerHTML =
     '<span class="cx-dots" role="group" aria-label="Call a cursor over">' +
     // The avatar dots spell the owner's name, one cursor color per letter. Click one to call that cursor.
-    'JEREMIAH'.split('').map(function (ch, i) {
-      return '<button type="button" data-bot="' + (i % BOTS.length) + '" style="background:' + BOTS[i % BOTS.length].color + '" aria-label="Call the ' + BOTS[i % BOTS.length].name + '" title="' + BOTS[i % BOTS.length].name + '">' + ch + '</button>';
+    // One tiny cursor per agent. Click one to call that agent over.
+    BOTS.map(function (b, i) {
+      return '<button type="button" data-bot="' + i + '" aria-label="Call agent ' + (i + 1) + '">' + miniArrow(b.color, 16) + '</button>';
     }).join('') +
     '</span>' +
     '<button type="button" class="cx-count" title="Gather every agent in the middle">' + BOTS.length + ' agents building</button>' +

@@ -22,7 +22,10 @@ Personal portfolio of Jeremiah Falcon Escubido (Doy), BSIT student at St. Mary's
 `assets/js/cursors.js` runs eight "agents" as plain colored cursors, with no names or letters. When they finish a
 job they fly back and dock in their own slot in the bottom bar (a faded slot means that agent is out working). They drag a frame over each block as it scrolls in, test the demos,
 restyle and comment, and every action shows up in the **build log** in the bottom bar. Their edits undo
-themselves. Visitors can press `/` to chat, `1`–`5` for reactions, `P` (or Draw) to sketch, click a
+themselves. One agent at a time also **restructures** the site: it mirrors the hero, swaps the work
+slide sides, reshuffles the flip cards, rebuilds the toolbox as a grid, wraps the journey into a grid,
+swaps the contact columns, or runs a site-wide pass (navy theme, sharp corners, sans headings, tighter
+spacing). Changes morph with View Transitions where supported and revert after a few seconds. Visitors can press `/` to chat, `1`–`5` for reactions, `P` (or Draw) to sketch, click a
 mini cursor in the bar to call that agent, click "8 agents building" to gather them, and type `doy` or `hire`.
 If a visitor sits idle for 9 seconds, an agent gives a tour: it drags each work slide sideways to the next
 project, then slides the page to the top of each following section, so every stop is a complete view.

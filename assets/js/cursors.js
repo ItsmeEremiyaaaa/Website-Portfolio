@@ -17,19 +17,20 @@
   var full = fine.matches && wide.matches; // named cursors + edit mode only on desktop
 
   /* ── Settings ─────────────────────────────────────────────────────────── */
-  // Ten named cursors work on the page at once. Add, remove or rename them here.
+  // Ten agents build the page at once. Their names show in the build log, not on the cursors.
   var BOTS = [
-    { name: 'Designer',  color: '#8cc8ff' },
-    { name: 'Developer', color: '#ff8fb8' },
-    { name: 'Recruiter', color: '#ffc24b' },
-    { name: 'Client',    color: '#a9ecd0' },
-    { name: 'Tester',    color: '#c9b6ff' },
-    { name: 'Mentor',    color: '#ffb49b' },
-    { name: 'Adviser',   color: '#7fe0e6' },
-    { name: 'Classmate', color: '#f5e27a' },
-    { name: 'PM',        color: '#ff9e6b' },
-    { name: 'Intern',    color: '#d8f08a' }
+    { name: 'Layout Agent',   color: '#8cc8ff' },
+    { name: 'Style Agent',    color: '#ff8fb8' },
+    { name: 'Copy Agent',     color: '#ffc24b' },
+    { name: 'QA Agent',       color: '#a9ecd0' },
+    { name: 'Motion Agent',   color: '#c9b6ff' },
+    { name: 'Data Agent',     color: '#ffb49b' },
+    { name: 'A11y Agent',     color: '#7fe0e6' },
+    { name: 'Content Agent',  color: '#f5e27a' },
+    { name: 'Review Agent',   color: '#ff9e6b' },
+    { name: 'Deploy Agent',   color: '#d8f08a' }
   ];
+
   var SWARM_COLORS = ['#8cc8ff', '#ff8fb8', '#ffc24b', '#a9ecd0', '#ffb49b', '#ffffff', '#c9b6ff'];
   var SWATCHES = ['#e2553a', '#4a1826', '#8cc8ff', '#ff8fb8', '#ffc24b', '#a9ecd0', '#c9b6ff'];
   var PHRASES = ['mobile, web and AR apps', 'tools for my campus', 'apps my town can use', 'things you can tap'];
@@ -100,7 +101,7 @@
   /* ── Swarm of tiny cursors ────────────────────────────────────────────── */
   var mouse = { x: -999, y: -999 };
   addEventListener('pointermove', function (e) { if (e.isTrusted) { mouse.x = e.clientX; mouse.y = e.clientY; } }, { passive: true });
-  var swarmCount = full ? 22 : 10;
+  var swarmCount = 0; // background swarm removed; tiny cursors only appear as click bursts
   var swarm = [];
   for (var i = 0; i < swarmCount; i++) {
     swarm.push({
@@ -172,7 +173,6 @@
     if (!e.isTrusted || !swarmOn || window.__cxEditing) return;
     if (e.target.closest('.cx-bar, .cx-insp, .cx-chat, .cx-ink, .lightbox')) return;
     if (e.target.closest('a, button')) { burst(e.clientX, e.clientY, 16); return; }
-    if (!e.target.closest('input, textarea, [data-cx-name], img')) attract = { x: e.clientX, y: e.clientY, until: performance.now() + 650 };
   });
 
   if (!full) {
@@ -245,15 +245,18 @@
     this.tx = this.x; this.ty = this.y;
     this.anchor = null; this.done = null; this.busy = false; this.tilt = null;
     this.speed = 0.2; this.limit = 1600;
+    this.idx = i; this.homing = false; this.restSince = 0;
   }
   Bot.prototype.go = function (x, y) {
     var self = this;
+    this.homing = false;
     this.anchor = null; this.tx = safeX(x); this.ty = safeY(y);
     return Promise.race([new Promise(function (r) { self.done = r; }), wait(this.limit)]);
   };
   // Follow a point inside an element (fractions of its box) so the target tracks the page while scrolling.
   Bot.prototype.follow = function (el, fx, fy) {
     var self = this;
+    this.homing = false;
     this.anchor = { el: el, fx: fx, fy: fy };
     return Promise.race([new Promise(function (r) { self.done = r; }), wait(this.limit)]);
   };
@@ -271,8 +274,32 @@
   var TOP = 76, BOTTOM = 96;
   var safeY = function (y) { return clamp(y, TOP, innerHeight - BOTTOM); };
   var safeX = function (x) { return clamp(x, 12, innerWidth - 40); };
+  var homeEl = document.querySelector('.photo-deck');
+  var t0 = performance.now();
+  function homePoint(i, n) {
+    var cx = innerWidth - 150, cy = innerHeight - BOTTOM - 70;
+    if (homeEl) {
+      var r = homeEl.getBoundingClientRect();
+      if (r.bottom > TOP + 60 && r.top < innerHeight - BOTTOM - 60) { cx = r.right - 30; cy = clamp(r.top + 40, TOP + 30, innerHeight - BOTTOM - 40); }
+    }
+    // A loose flock: two rings, slowly breathing.
+    var t = (performance.now() - t0) / 1000;
+    var ang = i / n * Math.PI * 2 + t * .15, rad = (i % 2 ? 34 : 16) + Math.sin(t * 1.3 + i) * 4;
+    return { x: cx + Math.cos(ang) * rad, y: cy + Math.sin(ang) * rad * .8 };
+  }
+  Bot.prototype.home = function () {
+    this.anchor = null; this.followMouse = null; this.homing = true; this.restSince = performance.now();
+  };
   Bot.prototype.step = function () {
-    if (this.followMouse && mouse.x > -500) {
+    if (this.homing) {
+      var h = homePoint(this.idx, BOTS.length);
+      this.tx = h.x; this.ty = h.y;
+      // Resting agents fade back so the page stays calm.
+      this.el.classList.toggle('is-resting', performance.now() - this.restSince > 2500);
+    } else {
+      this.el.classList.remove('is-resting');
+    }
+    if (this.homing) { /* handled above */ } else if (this.followMouse && mouse.x > -500) {
       this.anchor = null;
       this.tx = safeX(mouse.x + this.followMouse.dx);
       this.ty = safeY(mouse.y + this.followMouse.dy);
@@ -339,14 +366,27 @@
         await bot.follow(el, 1, 1);
         bot.sel.mode = 'fit';
         bot.click();
+        log(bot, 'built ' + label(el));
         clearTimeout(safety); resolve();
         await wait(380);
         bot.sel.target = null; bot.anchor = null;
         bot.speed = 0.2; bot.limit = 1600;
+        bot.home();
         bot.busy = false;
       })();
     });
   };
+
+  /* ── Build log in the bottom bar ──────────────────────────────────────── */
+  var logEl = null, logT = 0;
+  function log(bot, text) {
+    if (!logEl) return;
+    logEl.innerHTML = '<i style="background:' + bot.color + '"></i><b>' + bot.name + '</b> ' + text;
+    logEl.classList.remove('is-new'); void logEl.offsetWidth; logEl.classList.add('is-new');
+    clearTimeout(logT);
+    logT = setTimeout(function () { logEl.innerHTML = '<i></i>All agents idle'; }, 6000);
+  }
+  var label = function (el) { return el && el.dataset.cxName ? el.dataset.cxName : (el && el.closest('section') && el.closest('section').querySelector('h2') ? el.closest('section').querySelector('h2').textContent.trim() : 'a block'); };
 
   /* ── Edits (cursors undo theirs; visitors' edits stay until reset) ──────── */
   function snapshot(el) {
@@ -385,7 +425,9 @@
     var before = snapshot(el);
     el.classList.add('cx-anim');
     bot.click();
-    botActions[pick(actionsFor(el))](el);
+    var act = pick(actionsFor(el));
+    botActions[act](el);
+    log(bot, { color: 'restyled', rotate: 'rotated', scale: 'resized' }[act] + ' ' + label(el));
     await wait(1700);
     if (!el.dataset.cxUser) restore(el, before);
     await wait(550);
@@ -401,6 +443,7 @@
     busyEls.add(el);
     await bot.follow(el, 0.2, 0.3);
     bot.tilt = el;
+    log(bot, 'testing tilt on ' + label(el));
     await bot.follow(el, 0.8, 0.35);
     await bot.follow(el, 0.7, 0.8);
     await bot.follow(el, 0.3, 0.6);
@@ -422,6 +465,7 @@
     var current = phraseEl.textContent.trim();
     while (phraseEl.textContent.length) { phraseEl.textContent = phraseEl.textContent.slice(0, -1); await wait(22); }
     var next = pick(PHRASES.filter(function (p) { return p !== current; }));
+    log(bot, 'rewriting the hero line');
     for (var i = 0; i < next.length; i++) { phraseEl.textContent += next[i]; await wait(rand(40, 95)); }
     await wait(400);
     roleEl.classList.remove('cx-typing');
@@ -430,11 +474,12 @@
 
   /* Comments, scribbles, pins and following you */
   var LINES = {
-    any: ['Love this', 'Clean spacing', 'Ship it', 'Hire Doy?', 'So smooth', 'Nice type', 'Looks legit', 'This slaps', 'Approved', 'Saving this'],
-    project: ['Tried the demo!', 'Great idea', 'It actually works', 'Real users!', 'Play the quiz', 'So playable'],
-    photo: ['Good times', 'Cute pic', 'Squad', 'Core memory'],
-    you: ['Hi there', 'Following you', 'Where to next?', 'Scroll down', 'Check the work']
+    any: ['Aligning grid', 'Fixing spacing', 'Contrast OK', 'Shipping v3', 'Looks good', 'Tightening type', 'Hire Doy?', 'Approved', 'Rendering…', 'All tests pass'],
+    project: ['Demo tested', 'Works on mobile', 'Real users!', 'Try the quiz', 'Built by Doy', 'Shipped'],
+    photo: ['Good times', 'Core memory', 'Squad', 'Nice shot'],
+    you: ['Hi, visitor', 'Watching you scroll', 'Want a tour?', 'Scroll down', 'Check the work']
   };
+
   var marks = [];
   function addMark(el, color, kind, ms) {
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -499,6 +544,7 @@
     await bot.go(circle ? r.right + 4 : r.left, circle ? r.top : r.bottom);
     bot.click();
     addMark(el, bot.color, circle ? 'circle' : 'line', 3200);
+    log(bot, (circle ? 'circled ' : 'underlined ') + (el.textContent.trim().slice(0, 28) || label(el)));
     if (circle) await bot.follow(el, 0.5, 1.05); else await bot.follow(el, 1, 1);
     if (Math.random() < .5) bot.say(pick(LINES.any));
     await wait(700);
@@ -511,7 +557,9 @@
     await bot.follow(el, rand(.6, .95), rand(.05, .3));
     bot.click();
     var bank = (el.matches('.roll, .photo-deck')) ? LINES.photo : el.classList.contains('slide-art') ? LINES.project : LINES.any;
-    addPin(el, bot, pick(bank), 3800);
+    var note = pick(bank);
+    addPin(el, bot, note, 3800);
+    log(bot, 'commented "' + note + '"');
     await wait(900);
   }
   // Press buttons inside the visible phone demos, flip cards, filter the toolbox.
@@ -523,6 +571,7 @@
     bot.click();
     if (el.classList.contains('tool')) el.dispatchEvent(new PointerEvent('pointerenter'));
     else el.click();
+    log(bot, 'tested ' + (el.textContent.trim().slice(0, 24) || 'a demo'));
     if (Math.random() < .4) bot.say(pick(['Fun!', 'Let me try', 'Ooh', 'Nice demo', 'Again!']));
     await wait(900);
     if (el.classList.contains('fact')) { await wait(1400); el.click(); }
@@ -539,6 +588,7 @@
     followers++;
     bot.followMouse = { dx: rand(-70, -30) * (Math.random() < .5 ? 1 : -1.6), dy: rand(24, 60) };
     bot.say(pick(LINES.you), 2400);
+    log(bot, 'is following you');
     await wait(rand(3200, 4800));
     bot.followMouse = null;
     followers--;
@@ -547,26 +597,28 @@
 
   var lastScroll = 0;
   addEventListener('scroll', function () { lastScroll = performance.now(); }, { passive: true });
+  // Agents mostly rest together. Now and then ONE of them leaves the group to do a single job.
+  var acting = 0;
   async function idle(bot) {
-    await wait(rand(2500, 4000));
+    bot.home();
+    await wait(rand(4000, 9000));
     for (;;) {
-      await wait(rand(1400, 3400));
-      if (!api.enabled || bot.busy || document.hidden || editMode) continue;
-      if (performance.now() - lastScroll < 1400) continue;
-      bot.busy = true;
+      await wait(rand(5000, 12000));
+      if (!api.enabled || bot.busy || document.hidden || editMode || acting >= 1) continue;
+      if (performance.now() - lastScroll < 2500) continue;
+      bot.busy = true; acting++;
       var roll = Math.random();
       try {
-        if (roll < 0.22) await doEdit(bot);
-        else if (roll < 0.34) await doPlay(bot);
-        else if (roll < 0.44) await doTilt(bot);
-        else if (roll < 0.52) await doType(bot);
-        else if (roll < 0.66) await doScribble(bot);
-        else if (roll < 0.78) await doPin(bot);
-        else if (roll < 0.86) await doFollow(bot);
-        else if (roll < 0.94) await doSay(bot);
-        else await bot.wander();
+        if (roll < 0.26) await doEdit(bot);
+        else if (roll < 0.44) await doPlay(bot);
+        else if (roll < 0.56) await doTilt(bot);
+        else if (roll < 0.64) await doType(bot);
+        else if (roll < 0.82) await doScribble(bot);
+        else await doPin(bot);
       } catch (e) { /* keep the loop alive */ }
       bot.sel.target = null;
+      acting--;
+      bot.home();
       bot.busy = false;
     }
   }
@@ -681,10 +733,11 @@
     '<span class="cx-dots" role="group" aria-label="Call a cursor over">' +
     // The avatar dots spell the owner's name, one cursor color per letter. Click one to call that cursor.
     'JEREMIAH'.split('').map(function (ch, i) {
-      return '<button type="button" data-bot="' + (i % BOTS.length) + '" style="background:' + BOTS[i % BOTS.length].color + '" aria-label="Call ' + BOTS[i % BOTS.length].name + '">' + ch + '</button>';
+      return '<button type="button" data-bot="' + (i % BOTS.length) + '" style="background:' + BOTS[i % BOTS.length].color + '" aria-label="Call the ' + BOTS[i % BOTS.length].name + '" title="' + BOTS[i % BOTS.length].name + '">' + ch + '</button>';
     }).join('') +
     '</span>' +
-    '<button type="button" class="cx-count" title="Gather every cursor around you">' + (BOTS.length + 1) + ' editing</button>' +
+    '<button type="button" class="cx-count" title="Gather every agent in the middle">' + BOTS.length + ' agents building</button>' +
+    '<span class="cx-log" aria-live="polite"><i></i>Agents warming up…</span>' +
     '<span class="cx-hint">Click anything to restyle it, drag to move</span>' +
     '<span class="cx-tip"><kbd>/</kbd> chat · <kbd>1</kbd>–<kbd>5</kbd> react · <kbd>P</kbd> draw</span>' +
     '<button type="button" class="cx-draw" aria-pressed="false">Draw</button>' +
@@ -692,6 +745,7 @@
     '<button type="button" class="cx-reset-all" hidden>Reset</button>' +
     '<button type="button" class="cx-toggle"></button>';
   document.body.appendChild(bar);
+  logEl = bar.querySelector('.cx-log');
   var editBtn = bar.querySelector('.cx-edit'), resetAll = bar.querySelector('.cx-reset-all'), toggleBtn = bar.querySelector('.cx-toggle');
 
   function setEdit(on) {
@@ -731,7 +785,7 @@
   var youSay = document.createElement('span');
   youSay.className = 'cx-say cx-say-you';
   you.appendChild(youSay);
-  var REPLIES = ['Hi!', 'Same here', 'Agreed', 'Haha', 'Welcome!', 'Thanks for visiting', 'Hello from Bansalan', 'Nice to meet you'];
+  var REPLIES = ['Hi! Building Doy\'s site', 'Noted', 'Agreed', 'Haha', 'Welcome!', 'Thanks for visiting', 'Logged it', 'Nice to meet you'];
   function openChat() {
     if (editMode) return;
     chat.hidden = false; chatInput.value = ''; chatInput.focus();
@@ -759,7 +813,7 @@
       helper.go(clamp(mouse.x + 60, 20, innerWidth - 140), clamp(mouse.y - 30, 80, innerHeight - 100)).then(function () {
         helper.say(pick(REPLIES), 2600);
         return wait(2600);
-      }).then(function () { helper.busy = false; });
+      }).then(function () { helper.busy = false; helper.home(); });
     }
   });
   chatInput.addEventListener('blur', function () { setTimeout(closeChat, 100); });
@@ -789,6 +843,7 @@
         b.followMouse = null;
         b.go(r.left + r.width / 2 + Math.cos(ang) * (r.width * .5 + 130), r.top + r.height / 2 + Math.sin(ang) * (r.height * .5 + 90));
         setTimeout(function () { b.say(i % 2 ? 'Doy!' : 'Hi Doy!', 2000); }, 500 + i * 60);
+        setTimeout(function () { if (!b.busy) b.home(); }, 3400 + i * 60);
       });
     }, 500);
   }
@@ -858,7 +913,9 @@
       var r = b.getBoundingClientRect();
       bot.followMouse = null;
       bot.go(r.left + rand(-40, 40), innerHeight - BOTTOM - 30).then(function () {
-        bot.say(pick(['You called?', 'Hi!', 'On my way', 'Need help?']), 2000);
+        bot.say(pick(['You called?', 'Hi!', 'On it', 'Need help?']), 2000);
+        log(bot, 'reporting for duty');
+        setTimeout(function () { if (!bot.busy) bot.home(); }, 3200);
         react(bot.x + 8, bot.y - 4, pick(REACTIONS));
       });
     });
@@ -872,6 +929,7 @@
       b.followMouse = null;
       b.go(cx + Math.cos(ang) * 220, cy + Math.sin(ang) * 150);
       setTimeout(function () { b.say(pick(['Here!', 'Hey', 'Present', 'Hi Doy', 'Yo']), 1800); }, 400 + i * 50);
+      setTimeout(function () { if (!b.busy) b.home(); }, 3200 + i * 50);
     });
   });
 
@@ -915,7 +973,10 @@
     cur.t = performance.now();
     if (cur.pts.length > 6 && Math.random() < .6) {
       var p = cur.pts[cur.pts.length - 1], b = pick(bots);
-      b.go(p[0] + 30, p[1] - scrollY + 10).then(function () { b.say(pick(['Nice drawing', 'Art!', 'Frame it', 'Haha', 'Masterpiece']), 1800); });
+      b.go(p[0] + 30, p[1] - scrollY + 10).then(function () {
+        b.say(pick(['Nice drawing', 'Art!', 'Frame it', 'Haha', 'Masterpiece']), 1800);
+        setTimeout(function () { if (!b.busy) b.home(); }, 2400);
+      });
     }
     cur = null;
   }

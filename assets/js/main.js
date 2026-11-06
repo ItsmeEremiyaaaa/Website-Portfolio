@@ -77,7 +77,7 @@
         var el = queue.shift();
         if (!el) { flushing = false; return; }
         if (cursors().enabled) cursors().construct(el).then(function () { show(el); }); else show(el);
-        setTimeout(next, 60);
+        setTimeout(next, 200);
       })();
     }
     var observer = new IntersectionObserver(function (entries) {

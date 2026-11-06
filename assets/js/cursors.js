@@ -757,7 +757,7 @@
     '<span class="cx-tip"><kbd>/</kbd> chat · <kbd>1</kbd>–<kbd>5</kbd> react · <kbd>P</kbd> draw</span>' +
     '<button type="button" class="cx-draw" aria-pressed="false">Draw</button>' +
     '<button type="button" class="cx-edit" aria-pressed="false">Edit mode</button>' +
-    '<button type="button" class="cx-reset-all" hidden>Reset</button>' +
+    '<button type="button" class="cx-reset-all is-off">Reset</button>' +
     '<button type="button" class="cx-toggle"></button>';
   document.body.appendChild(bar);
   logEl = bar.querySelector('.cx-log');
@@ -771,7 +771,7 @@
     document.documentElement.classList.toggle('cx-editing', on);
     editBtn.setAttribute('aria-pressed', String(on));
     editBtn.textContent = on ? 'Done editing' : 'Edit mode';
-    resetAll.hidden = !on;
+    resetAll.classList.toggle('is-off', !on);
     if (!on) select(null);
   }
   function setBots(on) {
@@ -973,6 +973,7 @@
   function setDraw(on) {
     drawMode = on;
     ink.classList.toggle('is-on', on);
+    document.documentElement.classList.toggle('cx-drawing', on);
     drawBtn.setAttribute('aria-pressed', String(on));
     drawBtn.textContent = on ? 'Stop drawing' : 'Draw';
     if (on) { setEdit(false); inkColor = (inkColor + 1) % INK.length; }

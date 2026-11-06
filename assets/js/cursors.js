@@ -274,11 +274,14 @@
   var safeX = function (x) { return clamp(x, 12, innerWidth - 40); };
   var homeEl = document.querySelector('.photo-deck');
   var t0 = performance.now();
-  // Resting place: a ring on the left edge, circling nose-to-tail like an ant mill.
+  // Resting place: an ant-mill ring that follows your mouse arrow, circling nose-to-tail around it.
+  // Before the mouse has moved (or on touch), the ring waits on the left edge.
+  var ringC = { x: 70, y: innerHeight * .5 };
+  var ringReady = true;
   function homePoint(i, n) {
-    var cx = 70, cy = clamp(innerHeight * .5, TOP + 60, innerHeight - BOTTOM - 60);
+    var cx = ringC.x, cy = ringC.y;
     var t = (performance.now() - t0) / 1000;
-    var ang = i / n * Math.PI * 2 + t * 1.1, rad = 42;
+    var ang = i / n * Math.PI * 2 + t * 1.1, rad = 46;
     return { x: cx + Math.cos(ang) * rad, y: cy + Math.sin(ang) * rad, heading: ang + Math.PI / 2 };
   }
   // Tiny colored cursor icon used in the bar, the build log and comment pins (no names, no letters).
@@ -1005,6 +1008,7 @@
   var last = performance.now();
   (function frame(now) {
     stepSwarm(now - last); last = now;
+    if (mouse.x > -500) { ringC.x += (mouse.x - ringC.x) * .14; ringC.y += (mouse.y - ringC.y) * .14; }
     bots.forEach(function (b) { b.step(); });
     you.style.transform = 'translate(' + mouse.x + 'px,' + mouse.y + 'px)';
     drawSel(userSel);

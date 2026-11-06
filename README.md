@@ -19,11 +19,11 @@ Personal portfolio of Jeremiah Falcon Escubido (Doy), BSIT student at St. Mary's
 
 ## Agent-built feel
 
-`assets/js/cursors.js` runs eight "agents" (Layout, Style, Copy, QA, Motion, Data, Review, Deploy), one per
-letter of JEREMIAH, as plain colored cursors. They drag a frame over each block as it scrolls in, test the demos,
+`assets/js/cursors.js` runs eight "agents" as plain colored cursors, with no names or letters. When they finish a
+job they rejoin a ring on the left edge and circle nose-to-tail like an ant mill. They drag a frame over each block as it scrolls in, test the demos,
 restyle and comment, and every action shows up in the **build log** in the bottom bar. Their edits undo
 themselves. Visitors can press `/` to chat, `1`–`5` for reactions, `P` (or Draw) to sketch, click a
-letter of JEREMIAH to call an agent, click "8 agents building" to gather them, and type `doy` or `hire`.
+mini cursor in the bar to call that agent, click "8 agents building" to gather them, and type `doy` or `hire`.
 **Edit mode** lets visitors restyle or drag any element. Agents run on desktop only and are off with
 reduced motion; **Hide cursors** turns them off.
 

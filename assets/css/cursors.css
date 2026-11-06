@@ -227,3 +227,8 @@
 .cx-log svg { flex: none; }
 .cx-pin b { background: #fff; }
 .cx-pin span { padding-left: 11px; }
+
+/* Agents dock in their bar slot when resting; an empty slot means that agent is out working */
+.cx-cur.is-docked { opacity: 0; transition: opacity 160ms; }
+.cx-dots button svg { transition: opacity 250ms, scale 300ms var(--spring); }
+.cx-dots button.is-out svg { opacity: .22; scale: .8; }

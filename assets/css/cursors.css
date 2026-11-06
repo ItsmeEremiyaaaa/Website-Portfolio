@@ -256,3 +256,6 @@
 @media (max-width: 1180px) { .cx-tip, .cx-hint, .cx-editing .cx-hint { display: none; } }
 @media (max-width: 980px) { .cx-log { display: none; } }
 @media (max-width: 860px) { .cx-bar .cx-count { display: none; } }
+
+/* An agent holding the page while it slides it */
+.cx-cur.is-grab svg { scale: .82; filter: drop-shadow(0 4px 6px rgba(0,0,0,.45)); }

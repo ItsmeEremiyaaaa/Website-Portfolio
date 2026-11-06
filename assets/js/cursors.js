@@ -1034,35 +1034,68 @@
     if (lightboxEl && lightboxEl.open) return false;
     if (root.classList && root.classList.contains('has-intro') && !root.classList.contains('intro-out')) return false;
     var max = document.documentElement.scrollHeight - innerHeight;
-    return scrollY < max - 40;
+    return scrollY < max - 24;
   }
   var root = document.documentElement;
+  // Exact stops so every view is complete: each section's top under the nav, each work slide fully
+  // in place, and extra stops inside sections taller than the screen.
+  var NAV = 64;
+  function tourStops() {
+    var stops = [], max = document.documentElement.scrollHeight - innerHeight;
+    var pageY = function (el) { return el.getBoundingClientRect().top + scrollY; };
+    var work = document.getElementById('work'), pin = work && work.querySelector('.work-pin');
+    var native = work && work.classList.contains('is-native');
+    document.querySelectorAll('main > section, footer').forEach(function (sec) {
+      if (sec === work && pin && !native) {
+        var top = pageY(pin) - NAV, total = pin.offsetHeight - (innerHeight - NAV), n = work.querySelectorAll('.slide').length;
+        for (var k = 0; k < n; k++) stops.push(Math.round(top + total * (k / Math.max(1, n - 1)) + 2));
+        return;
+      }
+      var y = Math.round(pageY(sec) - NAV), h = sec.offsetHeight, view = innerHeight - NAV - 90;
+      stops.push(y);
+      for (var extra = y + view; extra < y + h - view * .35; extra += view) stops.push(Math.round(extra));
+    });
+    return stops.map(function (v) { return clamp(v, 0, max); })
+      .sort(function (a, b) { return a - b; })
+      .filter(function (v, i, a) { return i === 0 || v - a[i - 1] > 40; });
+  }
   function tour() {
     var bot = bots.filter(function (b) { return !b.busy; })[0];
     if (!bot) return;
-    var max = document.documentElement.scrollHeight - innerHeight;
-    var from = scrollY, to = Math.min(max, from + Math.round(innerHeight * .75));
-    var dist = to - from; if (dist < 40) return;
+    var from = scrollY;
+    var next = tourStops().filter(function (v) { return v > from + 24; })[0];
+    if (next === undefined) return;
+    var to = next, dist = to - from;
+    // Inside the work slides the agent grabs the slide and drags it sideways; elsewhere it drags the page down.
+    var workEl = document.getElementById('work'), pinEl = workEl && workEl.querySelector('.work-pin');
+    var sideways = false;
+    if (pinEl && !workEl.classList.contains('is-native')) {
+      var pTop = pinEl.getBoundingClientRect().top + scrollY - NAV, pEnd = pTop + pinEl.offsetHeight - (innerHeight - NAV);
+      sideways = from >= pTop - 4 && to <= pEnd + 6;
+    }
     bot.busy = true;
     var cancelled = false, raf = 0;
     touring = { cancel: function () { cancelled = true; cancelAnimationFrame(raf); } };
-    var gx = innerWidth - 70, y0 = innerHeight * .28, y1 = innerHeight * .72;
-    log(bot, 'sliding you down the page');
-    bot.go(gx, y0).then(function () {
+    var x0 = innerWidth - 70, x1 = x0, y0 = innerHeight * .28, y1 = innerHeight * .72;
+    if (sideways) { x0 = innerWidth * .78; x1 = innerWidth * .22; y0 = y1 = innerHeight * .55; }
+    log(bot, sideways ? 'sliding to the next project' : 'sliding you down the page');
+    bot.go(x0, y0).then(function () {
       if (cancelled) return finish();
       bot.click();
-      bot.say(pick(['This way', 'Next up', 'Let me show you', 'Keep going']), 1600);
-      var start = performance.now(), dur = 1400;
+      bot.say(sideways ? pick(['Next project', 'Swipe!', 'Check this one']) : pick(['This way', 'Next up', 'Let me show you', 'Keep going']), 1600);
+      bot.el.classList.add('is-grab');
+      var start = performance.now(), dur = clamp(dist * 1.6, 900, 1800);
       (function step(now) {
         if (cancelled) return finish();
         var t = Math.min(1, (now - start) / dur), e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
         scrollTo({ top: from + dist * e, behavior: 'instant' });
         bot.anchor = null; bot.homing = false;
-        bot.tx = gx; bot.ty = y0 + (y1 - y0) * e;
+        bot.tx = x0 + (x1 - x0) * e; bot.ty = y0 + (y1 - y0) * e;
         if (t < 1) raf = requestAnimationFrame(step); else { bot.click(); finish(); }
       })(start);
     });
     function finish() {
+      bot.el.classList.remove('is-grab');
       touring = null; lastTour = performance.now();
       setTimeout(function () { bot.home(); bot.busy = false; }, 300);
     }

@@ -357,19 +357,22 @@
       return Math.hypot(a.x - r0.left, a.y - r0.top) - Math.hypot(b.x - r0.left, b.y - r0.top);
     })[0];
     bot.busy = true;
-    bot.speed = 0.36; bot.limit = 650;   // building is quick, like a designer on a deadline
+    bot.speed = 0.17; bot.limit = 1300;  // quick trip over, then a calm, visible drag
     return new Promise(function (resolve) {
-      var safety = setTimeout(resolve, 1300);
+      var safety = setTimeout(resolve, 1500);
       (async function () {
         await bot.follow(el, 0, 0);
         bot.click();
         bot.sel.target = el; bot.sel.mode = 'draw';
+        // The block fades in while its frame is being dragged out, so nothing sits blank.
+        clearTimeout(safety); resolve();
+        bot.speed = 0.075;
         await bot.follow(el, 1, 1);
+        await wait(120);
         bot.sel.mode = 'fit';
         bot.click();
         log(bot, 'built ' + label(el));
-        clearTimeout(safety); resolve();
-        await wait(380);
+        await wait(650);
         bot.sel.target = null; bot.anchor = null;
         bot.speed = 0.2; bot.limit = 1600;
         bot.home();
@@ -387,7 +390,14 @@
     clearTimeout(logT);
     logT = setTimeout(function () { logEl.innerHTML = '<i></i>All agents resting'; }, 6000);
   }
-  var label = function (el) { return el && el.dataset.cxName ? el.dataset.cxName : (el && el.closest('section') && el.closest('section').querySelector('h2') ? el.closest('section').querySelector('h2').textContent.trim() : 'a block'); };
+  var label = function (el) {
+    if (!el) return 'a block';
+    if (el.dataset.cxName) return el.dataset.cxName;
+    var h = el.querySelector('h1, h2, h3, figcaption, .eyebrow');
+    if (h) return h.textContent.replace(/\s+/g, ' ').trim().slice(0, 30);
+    var sec = el.closest('section'), h2 = sec && sec.querySelector('h2');
+    return h2 ? h2.textContent.trim() : 'a block';
+  };
 
   /* ── Edits (cursors undo theirs; visitors' edits stay until reset) ──────── */
   function snapshot(el) {
@@ -598,19 +608,19 @@
 
   var lastScroll = 0;
   addEventListener('scroll', function () { lastScroll = performance.now(); }, { passive: true });
-  // Agents mostly rest together. Now and then ONE of them leaves the group to do a single job.
-  var acting = 0;
+  // Agents are always working: up to three at a time pick a job, finish it, check in with you, repeat.
+  var acting = 0, MAX_ACTING = 3;
   async function idle(bot) {
     bot.home();
-    await wait(rand(4000, 9000));
+    await wait(rand(600, 2400));
     for (;;) {
-      await wait(rand(5000, 12000));
-      if (!api.enabled || bot.busy || document.hidden || editMode || acting >= 1) continue;
-      if (performance.now() - lastScroll < 2500) continue;
+      await wait(rand(900, 2600));
+      if (!api.enabled || bot.busy || document.hidden || editMode || acting >= MAX_ACTING) continue;
+      if (performance.now() - lastScroll < 900) continue;
       bot.busy = true; acting++;
       var roll = Math.random();
       try {
-        if (roll < 0.26) await doEdit(bot);
+        if (roll < 0.24) await doEdit(bot);
         else if (roll < 0.44) await doPlay(bot);
         else if (roll < 0.56) await doTilt(bot);
         else if (roll < 0.64) await doType(bot);

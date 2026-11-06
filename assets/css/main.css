@@ -371,7 +371,7 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 .lightbox .icon-btn { position: fixed; top: 18px; right: 18px; color: #fff; border-color: rgba(255,255,255,.25); background: rgba(0,0,0,.25); }
 
 /* ── Reveal (only when JS can undo it) ──────────────────────────────────── */
-.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 700ms var(--ease), transform 900ms var(--ease); }
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 900ms var(--ease), transform 1100ms var(--ease); }
 .js .reveal.is-visible { opacity: 1; transform: none; }
 .js .fact.reveal.is-visible[aria-pressed="true"] { transform: rotateY(180deg); }
 .js .photo-deck.reveal { transform: translateY(30px) rotate(-4deg); }

@@ -201,3 +201,21 @@
 /* "hire" easter egg */
 .cx-pulse { animation: cx-pulse 1s var(--ease) 3; }
 @keyframes cx-pulse { 50% { box-shadow: 0 0 0 10px rgba(255, 180, 155, .35); scale: 1.06; } }
+
+/* Agents: no name tags on the cursors; names live in the build log */
+.cx-cur .cx-tag { display: none; }
+.cx-log {
+  display: inline-flex; align-items: center; gap: 6px; max-width: 300px; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; font: 12px var(--font-mono); color: var(--text-muted);
+  padding-left: 10px; border-left: 1px solid var(--border-strong);
+}
+.cx-log i { flex: none; width: 8px; height: 8px; border-radius: 50%; background: #3ccf7f; }
+.cx-log b { font-weight: 500; color: var(--ink); }
+.cx-log.is-new { animation: cx-log-in 300ms var(--ease); }
+@keyframes cx-log-in { from { opacity: 0; translate: 0 4px; } }
+@media (max-width: 1180px) { .cx-tip { display: none; } }
+@media (max-width: 1000px) { .cx-log { max-width: 180px; } }
+
+/* Resting agents gather in one flock and fade back */
+.cx-cur.is-resting { opacity: .5; }
+.cx-cur.is-resting svg { scale: .85; }

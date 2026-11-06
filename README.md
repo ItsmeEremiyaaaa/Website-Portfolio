@@ -17,18 +17,15 @@ Personal portfolio of Jeremiah Falcon Escubido (Doy), BSIT student at St. Mary's
 - **Camera roll**: swipe photos away like a deck, click to view
 - **Contact**: pick a topic and the email subject fills itself, plus a GitHub QR card
 
-## Live cursors
+## Agent-built feel
 
-`assets/js/cursors.js` draws a swarm of tiny cursors that scatter from your mouse, plus three named
-cursors (Designer, Developer, Recruiter) that drag a frame over each block as it scrolls in, tilt the
-cards, restyle headings and chips, and retype the hero line. Their edits undo themselves.
-They also leave comment pins, scribble underlines and circles, chat, and sometimes follow your cursor.
-Visitors can press `/` to chat (a cursor replies), drag the stickers and chips, click empty space to call
-the swarm, press `1`–`5` for reactions, press `P` (or Draw) to sketch on the page, click a letter of
-JEREMIAH in the bar to call that cursor, click "11 editing" to gather everyone, and type `doy` or `hire`
-for a surprise. **Edit mode** (bottom bar) lets visitors click any element to
-recolor, resize, rotate or drag it.
-Named cursors and edit mode run on desktop only; everything is off with reduced motion.
+`assets/js/cursors.js` runs ten "agents" (Layout, Style, Copy, QA, Motion, Data, A11y, Content, Review,
+Deploy) as plain colored cursors. They drag a frame over each block as it scrolls in, test the demos,
+restyle and comment, and every action shows up in the **build log** in the bottom bar. Their edits undo
+themselves. Visitors can press `/` to chat, `1`–`5` for reactions, `P` (or Draw) to sketch, click a
+letter of JEREMIAH to call an agent, click "10 agents building" to gather them, and type `doy` or `hire`.
+**Edit mode** lets visitors restyle or drag any element. Agents run on desktop only and are off with
+reduced motion; **Hide cursors** turns them off.
 
 ## Built with
 

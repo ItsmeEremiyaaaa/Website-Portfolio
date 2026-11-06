@@ -212,7 +212,7 @@
 .cx-log i { flex: none; width: 8px; height: 8px; border-radius: 50%; background: #3ccf7f; }
 .cx-log b { font-weight: 500; color: var(--ink); }
 .cx-log.is-new { animation: cx-log-in 300ms var(--ease); }
-@keyframes cx-log-in { from { opacity: 0; translate: 0 4px; } }
+@keyframes cx-log-in { from { opacity: 0; } }
 @media (max-width: 1180px) { .cx-tip { display: none; } }
 @media (max-width: 1000px) { .cx-log { max-width: 180px; } }
 
@@ -232,3 +232,27 @@
 .cx-cur.is-docked { opacity: 0; transition: opacity 160ms; }
 .cx-dots button svg { transition: opacity 250ms, scale 300ms var(--spring); }
 .cx-dots button.is-out svg { opacity: .22; scale: .8; }
+
+/* Keep the bar perfectly still: fixed-width log, no layout shifts as text changes */
+.cx-log { width: 250px; max-width: none; flex: none; }
+.cx-log, .cx-log * { white-space: nowrap; }
+.cx-log { text-overflow: ellipsis; }
+.cx-bar .cx-count { flex: none; }
+.cx-dots { flex: none; }
+.cx-bar .cx-draw { width: 104px; }
+.cx-bar .cx-edit { width: 112px; }
+.cx-bar .cx-toggle { width: 116px; }
+.cx-bar .cx-draw, .cx-bar .cx-edit, .cx-bar .cx-toggle { flex: none; text-align: center; padding-inline: 0; }
+@media (max-width: 1000px) { .cx-log { width: 170px; } }
+
+/* While drawing, the bar sits above the ink layer so Stop drawing stays clickable */
+.cx-drawing .cx-bar { z-index: 415; }
+
+/* Edit-mode extras keep their space so the bar never shifts */
+.cx-bar .cx-reset-all { width: 64px; flex: none; padding-inline: 0; }
+.cx-bar .cx-reset-all.is-off { visibility: hidden; }
+.cx-tip, .cx-hint { width: 250px; flex: none; overflow: hidden; text-overflow: ellipsis; }
+.cx-editing .cx-hint { display: inline-block; }
+@media (max-width: 1180px) { .cx-tip, .cx-hint, .cx-editing .cx-hint { display: none; } }
+@media (max-width: 980px) { .cx-log { display: none; } }
+@media (max-width: 860px) { .cx-bar .cx-count { display: none; } }

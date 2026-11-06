@@ -24,6 +24,8 @@ job they fly back and dock in their own slot in the bottom bar (a faded slot mea
 restyle and comment, and every action shows up in the **build log** in the bottom bar. Their edits undo
 themselves. Visitors can press `/` to chat, `1`–`5` for reactions, `P` (or Draw) to sketch, click a
 mini cursor in the bar to call that agent, click "8 agents building" to gather them, and type `doy` or `hire`.
+If a visitor sits idle for 9 seconds, an agent slides the page down one screen (with a pause between
+slides, and it stops the instant they move, scroll or press a key).
 **Edit mode** lets visitors restyle or drag any element. Agents run on desktop only and are off with
 reduced motion; **Hide cursors** turns them off.
 

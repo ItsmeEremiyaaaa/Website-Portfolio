@@ -1016,6 +1016,63 @@
     ictx.globalAlpha = 1;
   }
 
+  /* ── Guided tour: when you're idle, an agent slides the page down for you ─ */
+  // Not annoying on purpose: only after 9s with no input, one screen at a time, a pause between
+  // slides, never while drawing / editing / chatting / viewing a photo, stops the instant you touch anything,
+  // and stops for good at the bottom of the page.
+  var IDLE_MS = 9000, PAUSE_MS = 7000;
+  var lastInput = performance.now(), lastTour = 0, touring = null;
+  function userActed() {
+    lastInput = performance.now();
+    if (touring) touring.cancel();
+  }
+  ['pointerdown', 'wheel', 'keydown', 'touchstart'].forEach(function (ev) { addEventListener(ev, userActed, { passive: true }); });
+  addEventListener('pointermove', function (e) { if (e.isTrusted && (Math.abs(e.movementX) + Math.abs(e.movementY) > 2)) userActed(); }, { passive: true });
+  var lightboxEl = document.getElementById('lightbox');
+  function canTour() {
+    if (!api.enabled || document.hidden || editMode || drawMode || !chat.hidden) return false;
+    if (lightboxEl && lightboxEl.open) return false;
+    if (root.classList && root.classList.contains('has-intro') && !root.classList.contains('intro-out')) return false;
+    var max = document.documentElement.scrollHeight - innerHeight;
+    return scrollY < max - 40;
+  }
+  var root = document.documentElement;
+  function tour() {
+    var bot = bots.filter(function (b) { return !b.busy; })[0];
+    if (!bot) return;
+    var max = document.documentElement.scrollHeight - innerHeight;
+    var from = scrollY, to = Math.min(max, from + Math.round(innerHeight * .75));
+    var dist = to - from; if (dist < 40) return;
+    bot.busy = true;
+    var cancelled = false, raf = 0;
+    touring = { cancel: function () { cancelled = true; cancelAnimationFrame(raf); } };
+    var gx = innerWidth - 70, y0 = innerHeight * .28, y1 = innerHeight * .72;
+    log(bot, 'sliding you down the page');
+    bot.go(gx, y0).then(function () {
+      if (cancelled) return finish();
+      bot.click();
+      bot.say(pick(['This way', 'Next up', 'Let me show you', 'Keep going']), 1600);
+      var start = performance.now(), dur = 1400;
+      (function step(now) {
+        if (cancelled) return finish();
+        var t = Math.min(1, (now - start) / dur), e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        scrollTo({ top: from + dist * e, behavior: 'instant' });
+        bot.anchor = null; bot.homing = false;
+        bot.tx = gx; bot.ty = y0 + (y1 - y0) * e;
+        if (t < 1) raf = requestAnimationFrame(step); else { bot.click(); finish(); }
+      })(start);
+    });
+    function finish() {
+      touring = null; lastTour = performance.now();
+      setTimeout(function () { bot.home(); bot.busy = false; }, 300);
+    }
+  }
+  setInterval(function () {
+    var now = performance.now();
+    if (touring || now - lastInput < IDLE_MS || now - lastTour < PAUSE_MS) return;
+    if (canTour()) tour();
+  }, 500);
+
   /* ── Frame loop ───────────────────────────────────────────────────────── */
   var last = performance.now();
   (function frame(now) {

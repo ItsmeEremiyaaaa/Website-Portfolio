@@ -259,3 +259,47 @@
 
 /* An agent holding the page while it slides it */
 .cx-cur.is-grab svg { scale: .82; filter: drop-shadow(0 4px 6px rgba(0,0,0,.45)); }
+
+/* ── Agent restructures (temporary layout variants, reverted after a few seconds) ── */
+::view-transition-group(*) { animation-duration: 650ms; animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 450ms; }
+.cx-vt .cx-layer { view-transition-name: cx-overlay; }
+
+/* Hero mirrored: photo panel on the left with the torn edge on the right */
+.cx-v-hero-mirror .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
+.cx-v-hero-mirror .hero-panel { order: -1; clip-path: polygon(0 0, 97.5% 0, 98.2% 8%, 96% 16%, 99% 25%, 96.5% 34%, 98.6% 43%, 95.5% 52%, 98.8% 61%, 96.2% 70%, 99.2% 79%, 96.8% 88%, 98% 100%, 0 100%); padding: 56px 72px 56px 48px; }
+.cx-v-hero-mirror .hero-copy { padding-left: clamp(24px, 5vw, 64px); }
+
+/* Work: demo and text swap sides */
+.cx-v-slides-swap .slide-art { order: 2; }
+
+/* Toolbox as a tidy grid with the info card first */
+.cx-v-tools-grid .tool-board { grid-template-columns: 300px minmax(0, 1fr); }
+.cx-v-tools-grid .tool-info { order: -1; }
+.cx-v-tools-grid .tools { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.cx-v-tools-grid .tool { width: 100%; border-radius: 10px; text-align: left; }
+
+/* Journey slider wrapped into a grid */
+.cx-v-journey-grid .journey-track { flex-wrap: wrap; overflow: visible; justify-content: center; }
+.cx-v-journey-grid .jcard { flex: 0 0 min(300px, 30%); rotate: 0deg; min-height: 0; }
+
+/* Contact columns swapped */
+.cx-v-contact-flip .contact-copy { order: 2; }
+
+/* Site-wide passes */
+.cx-v-theme-navy { --maroon: #14284a; --maroon-2: #1b345e; --maroon-3: #24467a; --coral: #2f7df6; --peach: #9cc6ff; --cream: #eef3f9; --cream-2: #e3ebf5; --paper: #ffffff; --ink: #0f1b2e; }
+.cx-v-theme-navy .hero-panel { background: radial-gradient(60% 50% at 70% 30%, rgba(156, 198, 255, .45), transparent 70%), linear-gradient(160deg, #3d8bff, #1f5fd6 55%, #173f99); }
+.cx-v-theme-navy body, .cx-v-theme-navy .hero, .cx-v-theme-navy .cream, .cx-v-theme-navy .mobile-menu { background: var(--cream); }
+.cx-v-theme-navy .site-header { --nav-bg: rgba(238, 243, 249, .86); }
+.cx-v-sharp { --r-sm: 0px; --r: 2px; --r-lg: 4px; }
+.cx-v-sharp .btn, .cx-v-sharp .tags li, .cx-v-sharp .tool, .cx-v-sharp .badge, .cx-v-sharp .topics button, .cx-v-sharp .tool-filters button, .cx-v-sharp .work-dots button { border-radius: 3px; }
+.cx-v-sharp .deck-photo, .cx-v-sharp .roll-card, .cx-v-sharp .phone, .cx-v-sharp .phone-screen { border-radius: 4px; }
+.cx-v-type-sans .hero-title, .cx-v-type-sans .section-title, .cx-v-type-sans .slide-title, .cx-v-type-sans .contact-title, .cx-v-type-sans .jcard-year, .cx-v-type-sans .fact-front b, .cx-v-type-sans .tool-info-name {
+  font-family: var(--font-sans); font-weight: 600; letter-spacing: -0.04em;
+}
+.cx-v-type-sans .hero-title { font-size: clamp(3.4rem, 8vw, 7rem); }
+.cx-v-tight { --section-y: 56px; }
+.cx-v-tight .section-head { margin-bottom: 24px; }
+
+/* Smooth fallback when View Transitions aren't available */
+.hero-panel, .section { transition: padding 500ms var(--ease), background-color 500ms var(--ease); }

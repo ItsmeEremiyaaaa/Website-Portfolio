@@ -218,7 +218,7 @@
       label = 'Frame';
     } else {
       x -= 3; y -= 3; w += 6; h += 6;
-      label = s.target.dataset.cxName || 'Frame';
+      label = s.label || s.target.dataset.cxName || 'Frame';
     }
     s.box.classList.add('is-on');
     s.box.classList.toggle('is-drawing', s.mode === 'draw');
@@ -612,6 +612,80 @@
   var lastScroll = 0;
   addEventListener('scroll', function () { lastScroll = performance.now(); }, { passive: true });
   // Agents are always working: up to three at a time pick a job, finish it, check in with you, repeat.
+  /* ── Restructure: one agent at a time rebuilds a section's layout (or the whole site's look),
+     morphs it with a View Transition where the browser supports it, then puts it back. ───── */
+  var RESTRUCTURES = [
+    { id: 'hero-mirror', target: '.hero', log: 'mirrored the hero layout', morph: '.hero-copy, .hero-panel, .photo-deck, .hero-title' },
+    { id: 'slides-swap', target: '#work .work-sticky', log: 'swapped demo and text sides', morph: '.slide-art, .slide-body' },
+    { id: 'facts-shuffle', target: '.facts', log: 'reordered the flip cards', morph: '.fact', shuffle: '.facts' },
+    { id: 'tools-grid', target: '#toolbox', log: 'rebuilt the toolbox as a grid', morph: '.tool, .tool-info, .tool-filters' },
+    { id: 'journey-grid', target: '#journey', log: 'turned the journey into a grid', morph: '.jcard' },
+    { id: 'contact-flip', target: '#contact', log: 'swapped the contact columns', morph: '.contact-copy, .contact-visual' },
+    { id: 'theme-navy', target: 'main', log: 'tried a navy theme on the whole site', global: true },
+    { id: 'sharp', target: 'main', log: 'tested sharp corners site-wide', global: true },
+    { id: 'type-sans', target: 'main', log: 'swapped headings to a bold sans', global: true },
+    { id: 'tight', target: 'main', log: 'tightened section spacing', global: true }
+  ];
+  var restructuring = false, lastRestructure = 0;
+  var canVT = typeof document.startViewTransition === 'function';
+  function withMorph(names, change) {
+    var tagged = [];
+    names.forEach(function (el, i) {
+      var r = el.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight || tagged.length > 40) return;
+      el.style.viewTransitionName = 'cx-vt-' + i; tagged.push(el);
+    });
+    var clean = function () { tagged.forEach(function (el) { el.style.viewTransitionName = ''; }); };
+    if (!canVT) { change(); clean(); return Promise.resolve(); }
+    root.classList.add('cx-vt');
+    var vt = document.startViewTransition(change);
+    return vt.finished.catch(function () {}).then(function () { clean(); root.classList.remove('cx-vt'); });
+  }
+  function shuffleKids(parent) {
+    var kids = Array.prototype.slice.call(parent.children);
+    var order = kids.slice().sort(function () { return Math.random() - .5; });
+    if (order.every(function (k, i) { return k === kids[i]; })) order.reverse();
+    order.forEach(function (k) { parent.appendChild(k); });
+    return function () { kids.forEach(function (k) { parent.appendChild(k); }); };
+  }
+  async function doRestructure(bot) {
+    if (restructuring || performance.now() - lastRestructure < 9000) return doEdit(bot);
+    var options = RESTRUCTURES.filter(function (t) {
+      var el = document.querySelector(t.target);
+      if (!el) return false;
+      var r = el.getBoundingClientRect();
+      if (t.global) return Math.random() < .35;
+      return r.top < innerHeight * .55 && r.bottom > innerHeight * .45 && !el.querySelector('.reveal:not(.is-visible)');
+    });
+    if (!options.length) return doEdit(bot);
+    var task = pick(options), sec = document.querySelector(task.target);
+    restructuring = true;
+    // Frame the area being rebuilt: the whole section, or the visible part of the page.
+    var frameEl = task.global ? (document.elementFromPoint(innerWidth / 2, innerHeight / 2) || sec).closest('section') || sec : sec;
+    await bot.follow(frameEl, .04, .12);
+    bot.click();
+    bot.sel.target = frameEl; bot.sel.mode = 'fit';
+    bot.sel.label = 'Layout';
+    bot.say(pick(['Restructuring…', 'New layout', 'Trying something', 'Hold on']), 1800);
+    log(bot, task.log);
+    await wait(500);
+    var undoShuffle = null;
+    var names = task.morph ? Array.prototype.slice.call(document.querySelectorAll(task.morph)) : [];
+    await withMorph(names, function () {
+      root.classList.add('cx-v-' + task.id);
+      if (task.shuffle) undoShuffle = shuffleKids(document.querySelector(task.shuffle));
+    });
+    await bot.follow(frameEl, .96, .9);
+    await wait(3600);
+    await withMorph(names, function () {
+      root.classList.remove('cx-v-' + task.id);
+      if (undoShuffle) undoShuffle();
+    });
+    log(bot, 'restored the original layout');
+    bot.sel.target = null; bot.sel.label = null;
+    restructuring = false; lastRestructure = performance.now();
+  }
+
   var acting = 0, MAX_ACTING = 3;
   async function idle(bot) {
     bot.home();
@@ -623,8 +697,9 @@
       bot.busy = true; acting++;
       var roll = Math.random();
       try {
-        if (roll < 0.24) await doEdit(bot);
-        else if (roll < 0.44) await doPlay(bot);
+        if (roll < 0.16) await doRestructure(bot);
+        else if (roll < 0.30) await doEdit(bot);
+        else if (roll < 0.46) await doPlay(bot);
         else if (roll < 0.56) await doTilt(bot);
         else if (roll < 0.64) await doType(bot);
         else if (roll < 0.82) await doScribble(bot);

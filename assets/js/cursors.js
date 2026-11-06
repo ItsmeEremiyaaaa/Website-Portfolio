@@ -17,7 +17,7 @@
   var full = fine.matches && wide.matches; // named cursors + edit mode only on desktop
 
   /* ── Settings ─────────────────────────────────────────────────────────── */
-  // Ten agents build the page at once. Their names show in the build log, not on the cursors.
+  // Eight agents build the page, one per letter of JEREMIAH in the bar. Their names show in the build log, not on the cursors.
   var BOTS = [
     { name: 'Layout Agent',   color: '#8cc8ff' },
     { name: 'Style Agent',    color: '#ff8fb8' },
@@ -25,8 +25,6 @@
     { name: 'QA Agent',       color: '#a9ecd0' },
     { name: 'Motion Agent',   color: '#c9b6ff' },
     { name: 'Data Agent',     color: '#ffb49b' },
-    { name: 'A11y Agent',     color: '#7fe0e6' },
-    { name: 'Content Agent',  color: '#f5e27a' },
     { name: 'Review Agent',   color: '#ff9e6b' },
     { name: 'Deploy Agent',   color: '#d8f08a' }
   ];

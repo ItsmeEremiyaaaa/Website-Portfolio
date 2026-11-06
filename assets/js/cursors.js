@@ -274,15 +274,15 @@
   var safeX = function (x) { return clamp(x, 12, innerWidth - 40); };
   var homeEl = document.querySelector('.photo-deck');
   var t0 = performance.now();
-  // Resting place: an ant-mill ring that follows your mouse arrow, circling nose-to-tail around it.
-  // Before the mouse has moved (or on touch), the ring waits on the left edge.
+  // Resting: the agents tag along behind your mouse arrow in a loose little group.
+  // Before the mouse has moved (or on touch), they wait on the left edge.
   var ringC = { x: 70, y: innerHeight * .5 };
-  var ringReady = true;
-  function homePoint(i, n) {
-    var cx = ringC.x, cy = ringC.y;
+  var OFFSETS = [[22, 26], [40, 14], [34, 44], [56, 32], [18, 54], [52, 58], [70, 18], [72, 46]];
+  function homePoint(i) {
+    var o = OFFSETS[i % OFFSETS.length];
     var t = (performance.now() - t0) / 1000;
-    var ang = i / n * Math.PI * 2 + t * 1.1, rad = 46;
-    return { x: cx + Math.cos(ang) * rad, y: cy + Math.sin(ang) * rad, heading: ang + Math.PI / 2 };
+    // A tiny idle wobble so they look alive, not pinned.
+    return { x: ringC.x + o[0] + Math.sin(t * 1.7 + i) * 3, y: ringC.y + o[1] + Math.cos(t * 1.4 + i * 2) * 3 };
   }
   // Tiny colored cursor icon used in the bar, the build log and comment pins (no names, no letters).
   var miniArrow = function (c, size) {
@@ -292,15 +292,11 @@
     this.anchor = null; this.followMouse = null; this.homing = true; this.restSince = performance.now();
   };
   Bot.prototype.step = function () {
-    var svg = this.el.firstChild;
     if (this.homing) {
-      var h = homePoint(this.idx, BOTS.length);
+      var h = homePoint(this.idx);
       this.tx = h.x; this.ty = h.y;
-      // Point each arrow along the circle so the ring reads as a march. The arrow's tip faces up-left (-135°).
-      if (Math.hypot(this.tx - this.x, this.ty - this.y) < 60) svg.style.rotate = (h.heading * 180 / Math.PI + 135).toFixed(1) + 'deg';
       this.el.classList.toggle('is-resting', performance.now() - this.restSince > 1500);
     } else {
-      svg.style.rotate = '';
       this.el.classList.remove('is-resting');
     }
     if (this.homing) { /* handled above */ } else if (this.followMouse && mouse.x > -500) {
@@ -324,8 +320,9 @@
       // A straggler left parked out of the content area drifts back in.
       this.ty = rand(TOP + 40, innerHeight - BOTTOM - 40);
     }
-    this.x += (this.tx - this.x) * this.speed;
-    this.y += (this.ty - this.y) * this.speed;
+    var k = this.homing ? 0.07 + (this.idx % 8) * 0.018 : this.speed;
+    this.x += (this.tx - this.x) * k;
+    this.y += (this.ty - this.y) * k;
     this.el.style.transform = 'translate(' + this.x + 'px,' + this.y + 'px)';
     if (this.tilt) this.tilt.dispatchEvent(new PointerEvent('pointermove', { clientX: this.x, clientY: this.y, bubbles: true }));
     if (this.done && Math.hypot(this.tx - this.x, this.ty - this.y) < 4) { var d = this.done; this.done = null; d(); }
@@ -1008,7 +1005,7 @@
   var last = performance.now();
   (function frame(now) {
     stepSwarm(now - last); last = now;
-    if (mouse.x > -500) { ringC.x += (mouse.x - ringC.x) * .14; ringC.y += (mouse.y - ringC.y) * .14; }
+    if (mouse.x > -500) { ringC.x = mouse.x; ringC.y = mouse.y; }
     bots.forEach(function (b) { b.step(); });
     you.style.transform = 'translate(' + mouse.x + 'px,' + mouse.y + 'px)';
     drawSel(userSel);

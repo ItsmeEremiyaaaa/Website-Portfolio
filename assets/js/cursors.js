@@ -1232,6 +1232,7 @@
   }
   setInterval(function () {
     var now = performance.now();
+    if (document.documentElement.classList.contains('swarm-on')) return;   // SWARM Rebuild has the page
     if (touring || now - lastInput < IDLE_MS || now - lastTour < PAUSE_MS) return;
     if (!canTour()) { if (!themeShown && api.enabled && !seqRunning && !editMode && !drawMode && !rewinding && !liveAppOnScreen()) themeDemo(); return; }
     if (!themeShown) themeDemo(); else tour();
@@ -1418,6 +1419,9 @@
     started = true;
     bots.forEach(function (b, i) { setTimeout(function () { idle(b); }, i * 450); });
   }
-  document.addEventListener('intro:done', start);
-  setTimeout(start, 4000);
+  // While SWARM Rebuild is building the page, wait until it goes live.
+  function swarmBusy() { var c = document.documentElement.classList; return c.contains('swarm-on') || c.contains('swarm-boot'); }
+  function startSoon() { if (swarmBusy()) window.addEventListener('swarm:live', start, { once: true }); else start(); }
+  document.addEventListener('intro:done', startSoon);
+  setTimeout(startSoon, 4000);
 })();

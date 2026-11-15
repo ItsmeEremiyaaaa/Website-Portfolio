@@ -1,0 +1,97 @@
+/* Swarm Rebuild: overlay, ghosts, cursors, design-tool visuals and the control HUD. Pairs with swarm-rebuild.js. */
+
+/* Hide the real page (layout stays, so scrolling works) while the swarm builds its copy.
+   .swarm-boot is set as early as possible to avoid a flash before the overlay mounts. */
+html.swarm-boot body > *:not(.swarm-keep),
+html.swarm-on body > *:not(.swarm-keep) { visibility: hidden !important; }
+html.swarm-on .swarm-keep-vis { visibility: visible !important; }
+/* While scanning, measure every element in its final state. */
+html.swarm-scanning *, html.swarm-scanning *::before, html.swarm-scanning *::after { transition: none !important; animation: none !important; }
+
+#swarm-overlay {
+  position: absolute; left: 0; top: 0; z-index: 2147483000; pointer-events: none; overflow: hidden;
+  background-image:
+    radial-gradient(circle, rgba(128, 128, 140, .32) 1px, transparent 1.4px),
+    linear-gradient(rgba(128, 128, 140, .08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(128, 128, 140, .08) 1px, transparent 1px);
+  background-size: 20px 20px, 120px 120px, 120px 120px;
+  transition: opacity 520ms ease;
+}
+#swarm-overlay.sw-out { opacity: 0; }
+#swarm-overlay .sw-layer { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+#swarm-overlay .sw-fixed { position: fixed; inset: 0; z-index: 1; }
+#swarm-overlay .sw-fx { z-index: 2; }
+#swarm-overlay .sw-cursors { z-index: 3; }
+
+/* Ghost copies of the page */
+.sw-ghost { position: absolute; box-sizing: border-box; margin: 0; }
+.sw-ghost .sw-txt { display: inline; }
+.sw-ghost .sw-media { display: block; width: 100%; height: 100%; }
+.sw-embed { display: grid; place-items: center; background: linear-gradient(135deg, #1d1d24, #2c2c38) !important; color: #fff; }
+.sw-embed-label { font: 600 12px/1 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+.sw-pen { position: absolute; overflow: visible; pointer-events: none; }
+.sw-caret { display: inline-block; width: 2px; height: 1.05em; margin-left: 1px; vertical-align: -0.12em; border-radius: 1px; animation: sw-blink 1s steps(1) infinite; }
+@keyframes sw-blink { 50% { opacity: 0; } }
+
+/* Cursors */
+.sw-cursor { position: absolute; left: 0; top: 0; will-change: transform; display: flex; align-items: flex-start; }
+.sw-arrow { width: 22px; height: 22px; flex: none; fill: var(--c); stroke: #fff; stroke-width: 1.5; stroke-linejoin: round;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .25)); transform-origin: 4px 3px; transition: transform 120ms ease; }
+.sw-cursor.is-down .sw-arrow { transform: scale(.84); }
+.sw-tag, .sw-clone { margin-top: 16px; padding: 3px 8px; border-radius: 999px; font: 600 11px/1.2 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  white-space: nowrap; box-shadow: 0 2px 6px rgba(0, 0, 0, .18); }
+.sw-tag { background: var(--c); color: #fff; }
+.sw-clone { display: none; margin-left: 4px; background: #16161d; color: #fff; }
+.sw-cursor.is-cloning .sw-clone { display: inline-block; }
+
+/* Selection box, resize handles and W × H badge */
+.sw-sel { position: absolute; box-sizing: border-box; border: 1.5px dashed var(--c); background: color-mix(in srgb, var(--c) 8%, transparent); }
+.sw-sel.is-done { border-style: solid; background: transparent; transition: opacity 160ms; }
+.sw-h { position: absolute; width: 7px; height: 7px; background: #fff; border: 1.5px solid var(--c); box-sizing: border-box; }
+.sw-tl { left: -4px; top: -4px; } .sw-tr { right: -4px; top: -4px; } .sw-bl { left: -4px; bottom: -4px; } .sw-br { right: -4px; bottom: -4px; }
+.sw-dim { position: absolute; left: 50%; bottom: -24px; transform: translateX(-50%); padding: 2px 6px; border-radius: 4px; background: var(--c); color: #fff;
+  font: 600 10px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: nowrap; }
+
+/* Smart guides and the ⌥-drag clone proxy */
+.sw-guide { position: absolute; background: #ff2fd6; box-shadow: 0 0 6px rgba(255, 47, 214, .6); animation: sw-guide 650ms ease-out forwards; }
+@keyframes sw-guide { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
+.sw-proxy { position: absolute; box-sizing: border-box; border: 1.5px dashed var(--c); border-radius: 10px;
+  background: color-mix(in srgb, var(--c) 12%, transparent); box-shadow: 0 16px 34px -14px rgba(0, 0, 0, .35); }
+
+/* Floating glass HUD */
+#swarm-hud { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 2147483600; display: flex; align-items: center; gap: 4px;
+  padding: 6px; border-radius: 999px; background: rgba(255, 255, 255, .62); color: #17171f;
+  -webkit-backdrop-filter: blur(16px) saturate(1.6); backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, .75); box-shadow: 0 14px 40px -14px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .6);
+  font: 500 13px/1 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; transition: transform 300ms ease, left 300ms ease, opacity 300ms; }
+#swarm-hud .sw-btn { appearance: none; border: 0; background: transparent; color: inherit; font: inherit; display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 12px; border-radius: 999px; cursor: pointer; transition: background-color 150ms; }
+#swarm-hud .sw-btn:hover { background: rgba(0, 0, 0, .07); }
+#swarm-hud .sw-btn:focus-visible { outline: 2px solid #3d7bff; outline-offset: 1px; }
+#swarm-hud .sw-btn[aria-pressed="true"] { background: rgba(0, 0, 0, .1); }
+#swarm-hud svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#swarm-hud .sw-seg { display: inline-flex; padding: 2px; border-radius: 999px; background: rgba(0, 0, 0, .05); }
+#swarm-hud .sw-seg .sw-btn { padding: 6px 10px; font-variant-numeric: tabular-nums; }
+#swarm-hud .sw-seg .sw-btn[aria-pressed="true"] { background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .15); }
+#swarm-hud .sw-status { min-width: 10ch; padding: 0 6px; font: 500 12px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: .7; }
+#swarm-hud .sw-live { background: #17171f; color: #fff; padding: 8px 14px; }
+#swarm-hud .sw-live:hover { background: #2c2c38; }
+#swarm-hud .sw-live svg { fill: currentColor; stroke: none; }
+/* After Go Live the HUD shrinks to a single Rebuild pill in the corner. */
+#swarm-hud.is-live { left: 20px; transform: none; }
+#swarm-hud.is-live > :not([data-act="replay"]) { display: none; }
+
+@media (prefers-color-scheme: dark) {
+  #swarm-hud { background: rgba(28, 28, 36, .6); color: #f3f3f7; border-color: rgba(255, 255, 255, .12); }
+  #swarm-hud .sw-btn:hover { background: rgba(255, 255, 255, .08); }
+  #swarm-hud .sw-btn[aria-pressed="true"] { background: rgba(255, 255, 255, .12); }
+  #swarm-hud .sw-seg { background: rgba(255, 255, 255, .06); }
+  #swarm-hud .sw-seg .sw-btn[aria-pressed="true"] { background: rgba(255, 255, 255, .18); }
+  #swarm-hud .sw-live { background: #fff; color: #17171f; }
+}
+@media (max-width: 640px) {
+  #swarm-hud { bottom: 12px; }
+  #swarm-hud .sw-lbl, #swarm-hud .sw-status { display: none; }
+  #swarm-hud .sw-btn { padding: 8px 9px; }
+}
+@media (prefers-reduced-motion: reduce) { #swarm-overlay, #swarm-hud { transition: none; } .sw-caret { animation: none; } }

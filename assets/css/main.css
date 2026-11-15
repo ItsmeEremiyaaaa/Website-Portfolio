@@ -245,6 +245,10 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 .phone { position: relative; width: min(270px, 60%); aspect-ratio: 9 / 18.5; border-radius: 34px; background: #1b0a10; padding: 10px; box-shadow: 0 40px 70px -30px rgba(30, 4, 12, .75), inset 0 0 0 2px #3a1a24; z-index: 2; }
 .phone::before { content: ""; position: absolute; top: 16px; left: 50%; translate: -50% 0; width: 70px; height: 18px; border-radius: 12px; background: #1b0a10; z-index: 3; }
 .phone-screen { position: relative; height: 100%; border-radius: 26px; overflow: hidden; font-family: var(--font-sans); }
+.phone-screen[hidden] { display: none; }
+.phone-live { background: #fff; }
+/* render the app at a real phone width (375px), then scale it into the mockup */
+.phone-live iframe { position: absolute; top: 0; left: 0; width: 150%; height: 150%; border: 0; transform: scale(.6667); transform-origin: 0 0; }
 
 /* StudyQuest mini quiz */
 .sq { background: #FCF1E3; color: #3b2418; padding: 44px 14px 14px; display: flex; flex-direction: column; gap: 10px; font-size: 12px; }

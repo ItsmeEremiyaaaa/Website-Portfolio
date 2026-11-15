@@ -539,6 +539,19 @@
     });
   });
 
+  /* ── Live app: swap a slide's demo phone for the real app (loaded on first click) ── */
+  $$('.live-toggle').forEach(function (btn) {
+    var slide = btn.closest('.slide');
+    var demo = $('.phone-screen:not(.phone-live)', slide), live = $('.phone-live', slide), frame = $('iframe', live);
+    btn.addEventListener('click', function () {
+      var on = live.hidden;
+      if (on && !frame.src) frame.src = frame.dataset.src;
+      live.hidden = !on; demo.hidden = on;
+      btn.setAttribute('aria-pressed', String(on));
+      btn.textContent = on ? 'Back to the mini demo' : 'Play the live app';
+    });
+  });
+
   var year = $('#year');
   if (year) year.textContent = new Date().getFullYear();
 

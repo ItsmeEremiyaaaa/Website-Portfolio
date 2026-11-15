@@ -335,15 +335,33 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 
 /* ── Flip cards ─────────────────────────────────────────────────────────── */
 .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; perspective: 1200px; }
-.fact { position: relative; height: 230px; border: 0; padding: 0; background: none; text-align: left; transform-style: preserve-3d; transition: transform 700ms var(--spring); }
-.fact[aria-pressed="true"] { transform: rotateY(180deg); }
-.fact > span { position: absolute; inset: 0; border-radius: var(--r-lg); padding: 22px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+/* Flip cards as playing cards: fanned, corner index + icon, tilt toward the mouse with a shine, project-colored backs.
+   Flip and tilt share one transform through --flip / --rx / --ry; the fan uses rotate/translate so they never clash. */
+.fact { --flip: 0deg; --rx: 0deg; --ry: 0deg; --ink: var(--coral); position: relative; height: 250px; border: 0; padding: 0; background: none; text-align: left;
+  transform-style: preserve-3d; transform: rotateX(var(--rx)) rotateY(calc(var(--flip) + var(--ry)));
+  transition: transform 650ms var(--spring), rotate 450ms var(--spring), translate 450ms var(--spring); }
+.fact[aria-pressed="true"] { --flip: 180deg; }
+.facts .fact:nth-child(1) { rotate: -3deg; translate: 0 10px; } .facts .fact:nth-child(2) { rotate: -1deg; }
+.facts .fact:nth-child(3) { rotate: 1deg; } .facts .fact:nth-child(4) { rotate: 3deg; translate: 0 10px; }
+.facts .fact:hover, .facts .fact:focus-visible { rotate: 0deg; translate: 0 -10px; z-index: 2; }
+.fact > span { position: absolute; inset: 0; border-radius: var(--r-lg); padding: 22px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; overflow: hidden; }
 .fact-front { background: var(--paper); border: 1px solid var(--border); box-shadow: var(--shadow); }
-.fact-front b { font-family: var(--font-display); font-weight: 400; font-size: 5rem; line-height: .9; color: var(--coral); }
-.fact-front span { font-weight: 600; font-size: 1.05rem; color: var(--maroon); }
+.fact-front::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 300ms;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, .9), rgba(255, 194, 75, .16) 30%, transparent 60%); }
+.fact:hover .fact-front::before { opacity: 1; }
+.fact-front b { font-family: var(--font-display); font-weight: 400; font-size: 5rem; line-height: .9; color: var(--ink); font-variant-numeric: tabular-nums; position: relative; }
+.fact-front span { font-weight: 600; font-size: 1.05rem; color: var(--maroon); position: relative; }
 .fact-front::after { content: "Tap to flip"; position: absolute; right: 18px; top: 20px; font: 11px var(--font-mono); color: var(--text-subtle); }
-.fact-back { background: var(--maroon); color: #f8ede8; transform: rotateY(180deg); font-size: 1rem; line-height: 1.5; justify-content: center !important; }
-.fact:nth-child(2) .fact-front b { color: #2f6fe4; } .fact:nth-child(3) .fact-front b { color: #1f9d6b; } .fact:nth-child(4) .fact-front b { color: var(--maroon); }
+.fact-idx { position: absolute; left: 16px; top: 14px; display: grid; justify-items: center; gap: 3px; font: 700 .95rem/1 var(--font-sans); font-style: normal; color: var(--ink); }
+.fact-idx svg { width: 16px; height: 16px; }
+.fact-idx-b { left: auto; top: auto; right: 16px; bottom: 14px; rotate: 180deg; }
+.fact-back { color: #fff; transform: rotateY(180deg); font-size: 1rem; line-height: 1.5; justify-content: center !important; gap: 14px !important; }
+.fact-back-icon { width: 34px; height: 34px; opacity: .85; }
+.f-dean { --ink: var(--coral); } .f-dean .fact-back { background: radial-gradient(80% 60% at 20% 0%, rgba(255,180,155,.35), transparent 70%), var(--maroon); }
+.f-teams { --ink: #2f6fe4; } .f-teams .fact-back { background: radial-gradient(70% 60% at 30% 10%, rgba(219,233,255,.55), transparent 70%), linear-gradient(160deg, #3d7bff, #0b2fa8); }
+.f-routes { --ink: #c98a00; } .f-routes .fact-back { background: radial-gradient(70% 60% at 70% 10%, #ffe28a, transparent 70%), #f6b800; color: #2a1d00; }
+.f-paper { --ink: var(--maroon); } .f-paper .fact-back { background: repeating-linear-gradient(#fffaf6 0 26px, #efe4da 26px 27px); color: var(--ink); border: 1px solid var(--border); }
+@media (hover: none), (prefers-reduced-motion: reduce) { .facts .fact { rotate: 0deg; translate: none; } }
 
 /* ── Toolbox ────────────────────────────────────────────────────────────── */
 .tool-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
@@ -471,7 +489,7 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 /* ── Reveal (only when JS can undo it) ──────────────────────────────────── */
 .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 900ms var(--ease), transform 1100ms var(--ease); }
 .js .reveal.is-visible { opacity: 1; transform: none; }
-.js .fact.reveal.is-visible[aria-pressed="true"] { transform: rotateY(180deg); }
+.js .fact.reveal.is-visible { transform: rotateX(var(--rx)) rotateY(calc(var(--flip) + var(--ry))); }
 .js .photo-deck.reveal { transform: translateY(30px) rotate(-4deg); }
 .js .photo-deck.reveal.is-visible { transform: none; }
 

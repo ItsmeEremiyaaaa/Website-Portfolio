@@ -27,7 +27,7 @@
 
   <link rel="preload" href="assets/fonts/caveat-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=fe6318c5">
+  <link rel="stylesheet" href="assets/css/main.css?v=6df6bbc1">
   <link rel="stylesheet" href="assets/css/cursors.css?v=c77f0a4c">
 
   <script>
@@ -46,7 +46,7 @@
     })();
   </script>
   <script src="assets/js/cursors.js?v=17cdc1c2" defer></script>
-  <script src="assets/js/main.js?v=9fb0573c" defer></script>
+  <script src="assets/js/main.js?v=84c88b8d" defer></script>
 
   <script type="application/ld+json">
   {
@@ -89,6 +89,10 @@
   <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></g></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-download" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5M22 9v6"/></g></symbol>
+  <symbol id="i-team" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15.5 14.6c2.9.3 5.5 2.3 5.5 5.4"/></g></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></g></symbol>
+  <symbol id="i-paper" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></g></symbol>
   <symbol id="i-orcid" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24ZM8.3 17.4H6.9V7.5h1.4v9.9Zm-.7-11.2a.94.94 0 1 1 0-1.88.94.94 0 0 1 0 1.88Zm3.2 11.2V7.5h3.8c3.6 0 5.2 2.6 5.2 4.95 0 2.56-2 4.95-5.2 4.95h-3.8Zm1.4-1.27h2.3c2.9 0 3.7-2.2 3.7-3.68 0-2.4-1.5-3.68-3.8-3.68h-2.2v7.36Z"/></symbol>
   <symbol id="i-star" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/></g></symbol>
@@ -375,21 +379,21 @@
         <h2 class="section-title" id="numbers-title">Flip a card.</h2>
       </header>
       <div class="facts">
-        <button class="fact reveal" type="button" aria-pressed="false">
-          <span class="fact-front"><b>4×</b><span>Dean's Lister</span></span>
-          <span class="fact-back">Recognized four times for academic performance in the BSIT program.</span>
+        <button class="fact f-dean reveal" type="button" aria-pressed="false">
+          <span class="fact-front"><i class="fact-idx" aria-hidden="true">4×<svg><use href="#i-cap"/></svg></i><b data-count="4" data-suffix="×">4×</b><span>Dean's Lister</span><i class="fact-idx fact-idx-b" aria-hidden="true">4×<svg><use href="#i-cap"/></svg></i></span>
+          <span class="fact-back"><svg class="fact-back-icon" aria-hidden="true"><use href="#i-cap"/></svg>Recognized four times for academic performance in the BSIT program.</span>
         </button>
-        <button class="fact reveal" type="button" aria-pressed="false">
-          <span class="fact-front"><b>6</b><span>teammates led</span></span>
-          <span class="fact-back">Project leader and developer of StudyQuest, shown at the TechCase showcase.</span>
+        <button class="fact f-teams reveal" type="button" aria-pressed="false">
+          <span class="fact-front"><i class="fact-idx" aria-hidden="true">2<svg><use href="#i-team"/></svg></i><b data-count="2">2</b><span>teams led</span><i class="fact-idx fact-idx-b" aria-hidden="true">2<svg><use href="#i-team"/></svg></i></span>
+          <span class="fact-back"><svg class="fact-back-icon" aria-hidden="true"><use href="#i-team"/></svg>Project leader of StudyQuest (team of 6, shown at TechCase) and GABAY, our AR capstone (team of 3).</span>
         </button>
-        <button class="fact reveal" type="button" aria-pressed="false">
-          <span class="fact-front"><b>96</b><span>real routes</span></span>
-          <span class="fact-back">Road routes mapped in BansaRide, so riders in Bansalan know where to wait and what to pay.</span>
+        <button class="fact f-routes reveal" type="button" aria-pressed="false">
+          <span class="fact-front"><i class="fact-idx" aria-hidden="true">96<svg><use href="#i-pin"/></svg></i><b data-count="96">96</b><span>real routes</span><i class="fact-idx fact-idx-b" aria-hidden="true">96<svg><use href="#i-pin"/></svg></i></span>
+          <span class="fact-back"><svg class="fact-back-icon" aria-hidden="true"><use href="#i-pin"/></svg>Road routes mapped in BansaRide, so riders in Bansalan know where to wait and what to pay.</span>
         </button>
-        <button class="fact reveal" type="button" aria-pressed="false">
-          <span class="fact-front"><b>2025</b><span>published</span></span>
-          <span class="fact-back">First-listed author of a study on ICT integration and student performance.</span>
+        <button class="fact f-paper reveal" type="button" aria-pressed="false">
+          <span class="fact-front"><i class="fact-idx" aria-hidden="true">'25<svg><use href="#i-paper"/></svg></i><b data-count="2025" data-from="2000">2025</b><span>published</span><i class="fact-idx fact-idx-b" aria-hidden="true">'25<svg><use href="#i-paper"/></svg></i></span>
+          <span class="fact-back"><svg class="fact-back-icon" aria-hidden="true"><use href="#i-paper"/></svg>First-listed author of a study on ICT integration and student performance.</span>
         </button>
       </div>
     </div>

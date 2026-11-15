@@ -288,9 +288,40 @@
   })();
 
   /* ── Flip cards ───────────────────────────────────────────────────────── */
+  var finePointer = matchMedia('(hover: hover) and (pointer: fine)');
   $$('.fact').forEach(function (card) {
     card.addEventListener('click', function () { card.setAttribute('aria-pressed', String(card.getAttribute('aria-pressed') !== 'true')); });
+    // Tilt toward the mouse and move the shine with it.
+    card.addEventListener('pointermove', function (e) {
+      if (!finePointer.matches || reduceMotion.matches) return;
+      var r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      card.style.setProperty('--ry', ((x - .5) * 16).toFixed(1) + 'deg');
+      card.style.setProperty('--rx', ((.5 - y) * 12).toFixed(1) + 'deg');
+      card.style.setProperty('--mx', (x * 100).toFixed(0) + '%');
+      card.style.setProperty('--my', (y * 100).toFixed(0) + '%');
+    });
+    card.addEventListener('pointerleave', function () { card.style.setProperty('--ry', '0deg'); card.style.setProperty('--rx', '0deg'); });
   });
+
+  // Numbers count up once when the cards scroll into view.
+  (function () {
+    var facts = $('.facts'), nums = $$('.fact-front b[data-count]');
+    if (!facts || !nums.length || reduceMotion.matches || !('IntersectionObserver' in window)) return;
+    nums.forEach(function (b) { b.textContent = (b.dataset.from || '0') + (b.dataset.suffix || ''); });
+    new IntersectionObserver(function (entries, io) {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      var t0 = performance.now(), DUR = 1300;
+      (function tick(now) {
+        var p = Math.min(1, (now - t0) / DUR), e = 1 - Math.pow(1 - p, 3);
+        nums.forEach(function (b) {
+          var from = +(b.dataset.from || 0), to = +b.dataset.count;
+          b.textContent = Math.round(from + (to - from) * e) + (b.dataset.suffix || '');
+        });
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+    }, { threshold: .4 }).observe(facts);
+  })();
 
   /* ── Toolbox: filter + where I used it ────────────────────────────────── */
   (function () {

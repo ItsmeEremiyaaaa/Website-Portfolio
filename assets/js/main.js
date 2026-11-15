@@ -63,6 +63,18 @@
   menuBtn.addEventListener('click', function () { setMenu(menu.hidden); });
   menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { setMenu(false); menuBtn.focus(); } });
+
+  // Auto-hide nav: slides away while you scroll down, comes back as soon as you scroll up.
+  var header = $('.site-header'), lastY = scrollY;
+  addEventListener('scroll', function () {
+    var y = scrollY, d = y - lastY;
+    if (Math.abs(d) < 6) return;
+    var hide = d > 0 && y > 140 && menu.hidden && !header.contains(document.activeElement);
+    header.classList.toggle('is-hidden', hide);
+    lastY = y;
+  }, { passive: true });
+  header.addEventListener('focusin', function () { header.classList.remove('is-hidden'); });   // keyboard users always see it
+
   var navLinks = $$('.nav-links a');
   if ('IntersectionObserver' in window) {
     var navObserver = new IntersectionObserver(function (entries) {

@@ -554,3 +554,8 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 /* GABAY as a phone too: same iPhone frame as the live apps, no blue panel, screen list beside it */
 .art-gabay.art-phone { background: none; padding: 0; gap: 28px; }
 .art-phone .phone.phone-real { width: auto; max-height: none; }
+
+/* Auto-hide nav (see main.js) */
+.site-header { transition: translate 320ms var(--ease); }
+.site-header.is-hidden { translate: 0 -100%; }
+@media (prefers-reduced-motion: reduce) { .site-header { transition: none; } }

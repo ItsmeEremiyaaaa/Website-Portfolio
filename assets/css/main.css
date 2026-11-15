@@ -542,3 +542,9 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
   .work:not(.is-native) .project-desc { font-size: .95rem; line-height: 1.5; }
   .work:not(.is-native) .work-dots { padding-top: 8px; }
 }
+
+/* Bigger live-app phones, close to Chrome's iPhone 14 Pro preview: the phone may run past the progress line,
+   so the project tabs move under the text column */
+.work:not(.is-native) .slide { padding-block: 0; }
+.work:not(.is-native) .slide-art.art-phone { height: calc(100% + 34px); margin-top: 16px; align-self: start; z-index: 2; }
+.work:not(.is-native) .work-dots { justify-content: flex-end; padding-inline: max(var(--gutter), calc((100vw - var(--wrap)) / 2)); }

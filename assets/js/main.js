@@ -396,6 +396,18 @@
     dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); }); // click on the backdrop
   });
 
+  /* ── Live apps: render at a real iPhone 14 Pro width (390 CSS px) and scale to fit the phone frame ── */
+  if ('ResizeObserver' in window) {
+    $$('.phone-live').forEach(function (box) {
+      var frame = $('iframe', box); if (!frame) return;
+      new ResizeObserver(function () {
+        var s = box.clientWidth / 390; if (!s) return;
+        frame.style.width = '390px'; frame.style.height = (box.clientHeight / s) + 'px';
+        frame.style.transform = 'scale(' + s + ')';
+      }).observe(box);
+    });
+  }
+
   /* ── Camera roll: swipe the top photo away ────────────────────────────── */
   (function () {
     var roll = $('#roll'); if (!roll) return;

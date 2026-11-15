@@ -27,8 +27,8 @@
 
   <link rel="preload" href="assets/fonts/caveat-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=4e608d1f">
-  <link rel="stylesheet" href="assets/css/cursors.css?v=692de489">
+  <link rel="stylesheet" href="assets/css/main.css?v=6f896422">
+  <link rel="stylesheet" href="assets/css/cursors.css?v=845df1d0">
 
   <script>
     // Mark JS early so reveal styles only apply when they can be undone, and show the intro once per visit.
@@ -45,8 +45,8 @@
           !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('hero-seq');
     })();
   </script>
-  <script src="assets/js/cursors.js?v=d31ec65c" defer></script>
-  <script src="assets/js/main.js?v=e03a732b" defer></script>
+  <script src="assets/js/cursors.js?v=dec5bab8" defer></script>
+  <script src="assets/js/main.js?v=bd6dab41" defer></script>
 
   <script type="application/ld+json">
   {
@@ -161,8 +161,8 @@
       </h1>
       <p class="hero-role reveal">I build <span class="hero-phrase">mobile, web and AR apps</span> for the people around me.</p>
       <p class="hero-lede reveal">
-        Fourth-year BSIT student in Bansalan, Davao del Sur. Project leader of StudyQuest, maker of BansaRide,
-        and finishing GABAY, an AR campus navigator, as my capstone.
+        Fourth-year BSIT student in Bansalan, Davao del Sur. Project leader of StudyQuest and of GABAY, our finished
+        AR campus navigator capstone, and maker of BansaRide and MindTrack.
       </p>
       <div class="hero-actions reveal">
         <a class="btn btn-maroon" href="#work">Play with my work <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
@@ -204,7 +204,7 @@
             <h2 class="section-title" id="work-title">Things I've built.</h2>
           </div>
           <div class="work-controls">
-            <span class="work-count" aria-live="polite"><b id="work-now">01</b> / 04</span>
+            <span class="work-count" aria-live="polite"><b id="work-now">01</b> / 05</span>
             <button class="icon-btn" type="button" id="work-prev" aria-label="Previous project"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
             <button class="icon-btn" type="button" id="work-next" aria-label="Next project"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
           </div>
@@ -308,7 +308,7 @@
             </div>
             <div class="slide-body">
               <p class="slide-num">03</p>
-              <p class="project-meta"><span class="badge badge-accent">Capstone</span><span>Mobile · AR · Real screens</span></p>
+              <p class="project-meta"><span class="badge badge-accent">Capstone · Completed</span><span>Project leader · Team of 3</span></p>
               <h3 class="slide-title" id="s-gabay">GABAY</h3>
               <p class="project-kind">Find your way, instantly. AR campus navigation for SMCBI</p>
               <p class="project-desc">Pick who you are (personnel, student or visitor), search "Where to?" across offices like the Registrar, Clinic, Guidance Office and every program office, and see how far each one is. After a quick scan of the hallway, floating AR signs and a blue path guide you there, turn by turn.</p>
@@ -317,7 +317,28 @@
             </div>
           </article>
 
-          <!-- Slide 4: Research -->
+          <!-- Slide 4: MindTrack -->
+          <article class="slide" aria-roledescription="slide" aria-labelledby="s-mindtrack">
+            <div class="slide-art art-paper">
+              <div class="browser">
+                <div class="browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>MindTrack · Wellness Space</em></div>
+                <img src="assets/img/mindtrack-wellness.png" width="1045" height="538" loading="lazy" decoding="async" alt="MindTrack Wellness Space with Guided Breathing, Bubble Wrap, Daily Wellness Challenge and a Wellness Check">
+              </div>
+              <span class="art-chip c1">Student portal</span>
+              <span class="art-chip c2">Counselor portal</span>
+            </div>
+            <div class="slide-body">
+              <p class="slide-num">04</p>
+              <p class="project-meta"><span class="badge">Web app</span><span>React · PHP · MySQL</span></p>
+              <h3 class="slide-title" id="s-mindtrack">MindTrack</h3>
+              <p class="project-kind">Student wellness and guidance system for SMCBI</p>
+              <p class="project-desc">Students check in their mood each day, try short wellness activities like guided breathing, keep private journals and book counseling sessions. Guidance counselors get their own portal with mood overviews, review flags and appointment scheduling, all behind role-based, privacy-first access.</p>
+              <ul class="tags" aria-label="Built with"><li>React</li><li>Vite</li><li>PHP</li><li>MySQL</li></ul>
+              <div class="project-links"><a class="btn btn-sm btn-cream" href="https://github.com/ItsmeEremiyaaaa/Mindtrack" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> Source code <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
+            </div>
+          </article>
+
+          <!-- Slide 5: Research -->
           <article class="slide" aria-roledescription="slide" aria-labelledby="s-research">
             <div class="slide-art art-paper">
               <div class="browser">
@@ -328,7 +349,7 @@
               <span class="art-chip c2">First author</span>
             </div>
             <div class="slide-body">
-              <p class="slide-num">04</p>
+              <p class="slide-num">05</p>
               <p class="project-meta"><span class="badge badge-accent">Published</span><span>June 2025</span></p>
               <h3 class="slide-title" id="s-research">ICT &amp; Student Performance</h3>
               <p class="project-kind">Asian Journal of Education and Social Studies · Vol. 51, Issue 6</p>
@@ -344,6 +365,7 @@
           <button type="button" role="tab" aria-selected="true">StudyQuest</button>
           <button type="button" role="tab" aria-selected="false">BansaRide</button>
           <button type="button" role="tab" aria-selected="false">GABAY</button>
+          <button type="button" role="tab" aria-selected="false">MindTrack</button>
           <button type="button" role="tab" aria-selected="false">Research</button>
         </div>
       </div>
@@ -401,7 +423,7 @@
           <li><button type="button" class="tool" data-c="mobile" data-u="GABAY">C#</button></li>
           <li><button type="button" class="tool" data-c="mobile" data-u="GABAY">MultiSet SDK</button></li>
           <li><button type="button" class="tool" data-c="mobile" data-u="BansaRide (Android app)">Capacitor</button></li>
-          <li><button type="button" class="tool" data-c="web" data-u="BansaRide, GradeHub">React</button></li>
+          <li><button type="button" class="tool" data-c="web" data-u="BansaRide, MindTrack, GradeHub">React</button></li>
           <li><button type="button" class="tool" data-c="web" data-u="GradeHub, StudyQuest">TypeScript</button></li>
           <li><button type="button" class="tool" data-c="web" data-u="BansaRide">Vite</button></li>
           <li><button type="button" class="tool" data-c="web" data-u="BansaRide (maps)">Leaflet</button></li>
@@ -411,8 +433,8 @@
           <li><button type="button" class="tool" data-c="data" data-u="StudyQuest">Firebase</button></li>
           <li><button type="button" class="tool" data-c="data" data-u="StudyQuest (leaderboards, reset emails)">Cloud Functions</button></li>
           <li><button type="button" class="tool" data-c="data" data-u="BansaRide, GABAY">Supabase</button></li>
-          <li><button type="button" class="tool" data-c="data" data-u="GradeHub">PHP</button></li>
-          <li><button type="button" class="tool" data-c="data" data-u="Coursework and web systems">MySQL</button></li>
+          <li><button type="button" class="tool" data-c="data" data-u="GradeHub, MindTrack">PHP</button></li>
+          <li><button type="button" class="tool" data-c="data" data-u="MindTrack and web systems">MySQL</button></li>
           <li><button type="button" class="tool" data-c="design" data-u="GABAY screens and onboarding">Figma</button></li>
           <li><button type="button" class="tool" data-c="design" data-u="Every project">Git &amp; GitHub</button></li>
           <li><button type="button" class="tool" data-c="design" data-u="Every project">VS Code</button></li>

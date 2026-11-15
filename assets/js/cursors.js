@@ -825,7 +825,7 @@
       return '<button type="button" data-bot="' + i + '" aria-label="Call agent ' + (i + 1) + '">' + miniArrow(b.color, 16) + '</button>';
     }).join('') +
     '</span>' +
-    '<button type="button" class="cx-count" title="Gather every agent in the middle">SWARM Rebuild</button>' +
+    '<button type="button" class="cx-count" title="Gather every agent in the middle" aria-label="Gather cursors"></button>' +
     '<span class="cx-log" aria-live="polite"><i></i>Agents warming up…</span>' +
     '<span class="cx-hint">Click anything to restyle it, drag to move</span>' +
     '<span class="cx-tip"><kbd>/</kbd> chat · <kbd>1</kbd>–<kbd>5</kbd> react · <kbd>P</kbd> draw</span>' +

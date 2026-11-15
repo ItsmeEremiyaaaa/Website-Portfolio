@@ -121,13 +121,11 @@
     };
   }
 
-  /* ── Back to top: agents rewind the page (falls back to a plain smooth scroll) ── */
+  /* ── Back to top: glide straight back to the intro (no teardown and rebuild) ── */
   $$('.back-top').forEach(function (a) {
     a.addEventListener('click', function (e) {
       e.preventDefault();
-      var c = window.PortfolioCursors;
-      if (c && c.enabled && c.backToTop && window.PortfolioReveal) c.backToTop(a);
-      else window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+      window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
       if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
     });
   });
@@ -199,7 +197,6 @@
       }, 330);
     };
     deck.addEventListener('click', shuffle);
-    $('#hero-shuffle').addEventListener('click', shuffle);
   }
 
   /* ── Work: vertical scroll drives the slides sideways ─────────────────── */

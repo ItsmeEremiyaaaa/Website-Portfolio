@@ -65,6 +65,7 @@
     set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   };
   var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  var dialogOpen = function () { return !!document.querySelector('dialog[open]'); };   // a popup is up: cursors keep still
   var rand = function (a, b) { return a + Math.random() * (b - a); };
   var pick = function (a) { return a[Math.floor(Math.random() * a.length)]; };
   var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
@@ -366,7 +367,7 @@
     } else if (this.anchor) {
       var r = this.anchor.el.getBoundingClientRect();
       // The thing it was working on scrolled away: let go instead of sticking to the screen edge.
-      if (r.bottom < TOP || r.top > innerHeight - BOTTOM) {
+      if (!this.reachNav && (r.bottom < TOP || r.top > innerHeight - BOTTOM)) {
         this.anchor = null;
         this.sel.target = null;
         this.tx = safeX(this.x + rand(-120, 120));
@@ -374,7 +375,9 @@
         if (this.done) { var d0 = this.done; this.done = null; d0(); }
       } else {
         this.tx = safeX(r.left + r.width * this.anchor.fx);
-        this.ty = safeY(r.top + r.height * this.anchor.fy);
+        // Normally cursors stay below the nav; `reachNav` lets one go up to the theme dots in the header.
+        var ay = r.top + r.height * this.anchor.fy;
+        this.ty = this.reachNav ? clamp(ay, 6, innerHeight - BOTTOM) : safeY(ay);
       }
     } else if (this.ty < TOP || this.ty > innerHeight - BOTTOM) {
       // A straggler left parked out of the content area drifts back in.
@@ -676,7 +679,6 @@
      morphs it with a View Transition where the browser supports it, then puts it back. ───── */
   var RESTRUCTURES = [
     { id: 'hero-mirror', target: '.hero', log: 'mirrored the hero layout', morph: '.hero-copy, .hero-panel, .photo-deck, .hero-title' },
-    { id: 'slides-swap', target: '#work .work-sticky', log: 'swapped demo and text sides', morph: '.slide-art, .slide-body' },
     { id: 'facts-shuffle', target: '.facts', log: 'reordered the flip cards', morph: '.fact', shuffle: '.facts' },
     { id: 'tools-grid', target: '#toolbox', log: 'rebuilt the toolbox as a grid', morph: '.tool, .tool-info, .tool-filters' },
     { id: 'journey-grid', target: '#journey', log: 'turned the journey into a grid', morph: '.jcard' },
@@ -695,7 +697,7 @@
       el.style.viewTransitionName = 'cx-vt-' + i; tagged.push(el);
     });
     var clean = function () { tagged.forEach(function (el) { el.style.viewTransitionName = ''; }); };
-    if (!canVT) { change(); clean(); return Promise.resolve(); }
+    if (!canVT || dialogOpen()) { change(); clean(); return Promise.resolve(); }   // a View Transition would paint over an open popup
     root.classList.add('cx-vt');
     var vt = document.startViewTransition(change);
     return vt.finished.catch(function () {}).then(function () { clean(); root.classList.remove('cx-vt'); });
@@ -758,7 +760,7 @@
     await wait(rand(600, 2400));
     for (;;) {
       await wait(rand(900, 2600));
-      if (!api.enabled || bot.busy || document.hidden || editMode || seqRunning || acting >= MAX_ACTING) continue;
+      if (!api.enabled || bot.busy || document.hidden || editMode || seqRunning || acting >= MAX_ACTING || dialogOpen()) continue;
       if (performance.now() - lastScroll < 900) continue;
       bot.busy = true; acting++;
       var roll = Math.random();
@@ -1177,7 +1179,7 @@
   var lightboxEl = document.getElementById('lightbox');
   function canTour() {
     if (!api.enabled || document.hidden || editMode || drawMode || !chat.hidden || restructuring || rewinding || seqRunning) return false;
-    if (lightboxEl && lightboxEl.open) return false;
+    if (dialogOpen()) return false;
     // Mouse moves inside an app's iframe never reach this page, so don't mistake playing for being idle.
     if (liveAppOnScreen()) return false;
     if (root.classList && root.classList.contains('has-intro') && !root.classList.contains('intro-out')) return false;
@@ -1281,16 +1283,24 @@
     touring = { cancel: function () { if (!cancelled) { cancelled = true; T.set(original, { preview: true, instant: true }); } } };
     bot.busy = true;
     log(bot, 'showing off the themes');
+    // The cursor flies up to each color dot and the theme only changes when it actually clicks there.
+    async function reach(btn) {
+      await bot.follow(btn, .5, .55);
+      for (var t = 0; t < 120 && !cancelled && Math.hypot(bot.tx - bot.x, bot.ty - bot.y) > 5; t++) await wait(50);
+    }
     (async function () {
-      await bot.follow(btns[0], .5, .6);
+      bot.reachNav = true; bot.speed = 0.16;
+      await reach(btns[0]);
       bot.say('Themes!', 1400);
       var order = btns.concat([btns.filter(function (b) { return b.dataset.theme === original; })[0] || btns[0]]);
       for (var i = 0; i < order.length && !cancelled; i++) {
-        await bot.follow(order[i], .5, .6);
+        await reach(order[i]);
+        if (cancelled) break;
         bot.click();
         T.set(order[i].dataset.theme, { preview: true });
-        await wait(i === order.length - 1 ? 200 : 650);
+        await wait(i === order.length - 1 ? 250 : 900);
       }
+      bot.reachNav = false; bot.speed = 0.2;
       touring = null; lastTour = performance.now();
       bot0.home(); bot0.busy = false;
     })();
@@ -1388,7 +1398,7 @@
   }
   var $1 = function (q) { return document.querySelector(q); };
   var $all = function (q) { return Array.prototype.slice.call(document.querySelectorAll(q)); };
-  var SEQ_PARTS = '.hero-panel, .ltr, .hero-actions .btn, .deck-photo, .sticker, .deck-hint, .hero-vertical';
+  var SEQ_PARTS = '.hero-panel, .ltr, .hero-actions .btn, .deck-photo, .sticker, .hero-vertical';
   api.heroSequence = async function () {
     if (seqRunning) return;
     seqRunning = true;
@@ -1443,7 +1453,6 @@
         } },
         { el: '.sticker-c', msg: 'stuck on the stickers', after: async function (b) {
           for (var q = 0, S = $all('.sticker'); q < S.length; q++) { await b.follow(S[q], .5, .5); b.click(); S[q].classList.add('is-in'); await wait(80); }
-          var hint = $1('.deck-hint'); if (hint) { await b.follow(hint, .5, .5); b.click(); hint.classList.add('is-in'); }
           var vert = $1('.hero-vertical'); if (vert) vert.classList.add('is-in');
         }, noFrame: true }
       ];

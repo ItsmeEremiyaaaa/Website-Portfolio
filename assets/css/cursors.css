@@ -271,7 +271,6 @@
 .cx-v-hero-mirror .hero-copy { padding-left: clamp(24px, 5vw, 64px); }
 
 /* Work: demo and text swap sides */
-.cx-v-slides-swap .slide-art { order: 2; }
 
 /* Toolbox as a tidy grid with the info card first */
 .cx-v-tools-grid .tool-board { grid-template-columns: 300px minmax(0, 1fr); }
@@ -321,8 +320,8 @@
 .hero-seq .deck-photo:not(.is-in) { opacity: 0; translate: 180px -50px; rotate: 22deg; }
 .hero-seq .sticker { transition: opacity 250ms, scale 500ms var(--spring); }
 .hero-seq .sticker:not(.is-in) { opacity: 0; scale: .2; }
-.hero-seq .deck-hint, .hero-seq .hero-vertical { transition: opacity 400ms; }
-.hero-seq .deck-hint:not(.is-in), .hero-seq .hero-vertical:not(.is-in) { opacity: 0; }
+.hero-seq .hero-vertical { transition: opacity 400ms; }
+.hero-seq .hero-vertical:not(.is-in) { opacity: 0; }
 
 /* Smart guides: magenta lines flash along a frame when it snaps into place */
 .cx-guide { position: absolute; display: block; background: #ff2fd6; box-shadow: 0 0 6px rgba(255, 47, 214, .55); pointer-events: none; animation: cx-guide 600ms ease-out forwards; }

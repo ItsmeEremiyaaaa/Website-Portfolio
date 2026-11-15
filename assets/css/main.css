@@ -199,7 +199,6 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 .deck-photo[data-pos="2"] { transform: rotate(9deg) translate(28px, 18px); z-index: 2; }
 .deck-photo[data-pos="3"] { transform: rotate(-11deg) translate(-12px, 24px); z-index: 1; }
 .deck-photo.is-leaving { transform: rotate(-24deg) translate(-120%, -10%); z-index: 4; }
-.deck-hint { background: rgba(255, 250, 246, .92); color: var(--maroon); border: 0; border-radius: 999px; padding: 8px 16px; font-size: .85rem; font-weight: 500; box-shadow: 0 10px 24px -12px rgba(60,10,0,.6); }
 .sticker { position: absolute; display: grid; place-items: center; font-family: var(--font-display); color: var(--maroon); background: var(--sun); box-shadow: 0 12px 26px -10px rgba(60, 10, 0, .5); animation: bob 5s ease-in-out infinite; z-index: 5; }
 .sticker-a { width: 70px; height: 58px; border-radius: 10px; right: 9%; bottom: 12%; font-size: 2.4rem; rotate: 8deg; background: #f7c99c; }
 .sticker-b { width: 58px; height: 50px; border-radius: 10px; right: 22%; bottom: 7%; font-size: 2rem; rotate: -10deg; animation-delay: -1.5s; background: #f7c99c; }
@@ -458,7 +457,7 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 .dl-art::after { content: ""; position: absolute; width: 260px; height: 260px; right: -70px; bottom: -70px; border-radius: 50%; border: 2px dashed rgba(255,255,255,.35); }
 .dl-chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.4);
   font: 500 .74rem var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
-.dl-logo { width: 96px; height: auto; justify-self: center; filter: drop-shadow(0 16px 24px rgba(5, 20, 80, .45)); animation: bob 6s ease-in-out infinite; }
+.dl-logo { width: 168px; height: auto; justify-self: center; filter: drop-shadow(0 16px 24px rgba(5, 20, 80, .45)); animation: bob 6s ease-in-out infinite; }
 .dl-kicker { font: 500 .8rem var(--font-mono); letter-spacing: .3em; opacity: .85; }
 .dl-art-title { font-family: var(--font-display); font-size: clamp(2rem, 3.2vw, 2.6rem); line-height: 1; margin-top: 6px; position: relative; z-index: 1; }
 .dl-body { padding: 34px 34px 28px; display: grid; gap: 18px; align-content: start; }
@@ -479,7 +478,7 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
   .dl-modal { grid-template-columns: 1fr; }
   .dl-art { min-height: 0; grid-template-columns: auto 1fr; align-items: center; padding: 20px; gap: 12px 16px; }
   .dl-art .dl-chip { grid-column: 1 / -1; }
-  .dl-logo { width: 56px; }
+  .dl-logo { width: 84px; }
   .dl-art::after { display: none; }
   .dl-body { padding: 24px 20px 20px; }
   .dl-cols { grid-template-columns: 1fr; gap: 16px; }
@@ -532,4 +531,14 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .js .reveal { opacity: 1; transform: none; }
+}
+
+/* Work slides: keep the project tabs clear of the floating cursor bar, and fit the text on shorter screens */
+.work:not(.is-native) .work-sticky { padding-bottom: 92px; }
+@media (max-height: 940px) {
+  .work:not(.is-native) .slide-num { font-size: 3.2rem; }
+  .work:not(.is-native) .slide-title { font-size: clamp(2.4rem, 4vw, 3.4rem); }
+  .work:not(.is-native) .slide-body { gap: 8px; }
+  .work:not(.is-native) .project-desc { font-size: .95rem; line-height: 1.5; }
+  .work:not(.is-native) .work-dots { padding-top: 8px; }
 }

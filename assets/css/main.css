@@ -548,3 +548,6 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 .work:not(.is-native) .slide { padding-block: 0; }
 .work:not(.is-native) .slide-art.art-phone { height: calc(100% + 34px); margin-top: 16px; align-self: start; z-index: 2; }
 .work:not(.is-native) .work-dots { justify-content: flex-end; padding-inline: max(var(--gutter), calc((100vw - var(--wrap)) / 2)); }
+
+/* No progress line under the work slides (the tabs show where you are) */
+.work-progress { display: none; }

@@ -20,6 +20,7 @@
    5. Sound       clacks, clicks and pentatonic marimba notes are synthesized with the Web Audio API, unlocked on the
                   first user gesture.
    6. HUD         Replay (Alt+Shift+S), speed 1×/2×/3× (1/2/3), Tour, Sound (M), Go Live (L or Esc).
+                  By default it goes live once what is on screen is built (liveAfter: "view"); use "page" for all.
                   Go Live fades the overlay out, shows the real page and stops every loop, timer, listener and audio node.
 
    Events: window "swarm:start" and "swarm:live". The html element gets .swarm-on while the overlay is up. */
@@ -39,7 +40,9 @@
     onStart: null,
     onLive: null,
     margin: 420,       // also build this far above/below the viewport
-    autoLive: true,    // go live by itself once everything has been built
+    autoLive: true,    // go live by itself once the build is done
+    liveAfter: 'view', // 'view' = once what's on screen is built (the rest of the page is the live site); 'page' = whole page
+    nameTags: true,    // show a name pill next to each cursor
     hud: true,
     names: ['Maya', 'Alex', 'Kai', 'Zoe', 'Leo', 'Sam', 'Ivy', 'Noor', 'Ren', 'Tess'],
     colors: ['#ff4f8b', '#3d7bff', '#f5a524', '#17c08c', '#9b5cff', '#ff6a3d', '#12b5c9', '#e14fd1', '#6cc33c', '#f04848']
@@ -180,6 +183,17 @@
     return (e.innerText || e.textContent || '').replace(/\s+\n/g, '\n').trim();
   }
 
+  // Where the first character really sits inside e (relative to e's box). Used when the text shares the box with
+  // icons, so the copy starts after the icon instead of overlapping it.
+  function textStart(e, r) {
+    var w = document.createTreeWalker(e, NodeFilter.SHOW_TEXT, { acceptNode: function (n) { return /\S/.test(n.data) ? 1 : 3; } });
+    var n = w.nextNode(); if (!n) return null;
+    var i = n.data.search(/\S/), range = document.createRange();
+    range.setStart(n, i); range.setEnd(n, i + 1);
+    var b = range.getClientRects()[0] || range.getBoundingClientRect();
+    return b && b.height ? { x: b.left - r.left, y: b.top - r.top, h: b.height } : null;
+  }
+
   // Repeated siblings with the same tag + classes become a clone group: build the first, ⌥-drag copies for the rest.
   function findGroups(kids, skipSel) {
     if (kids.length < 2) return null;
@@ -255,6 +269,7 @@
               divider: box && (vis.h <= 4 || vis.w <= 4) && Math.max(vis.w, vis.h) >= 40,
               area: vis.w * vis.h
             };
+            if (text && !form && e.querySelector('svg,img,i,picture')) item.textAt = textStart(e, r);
             items.push(item);
             if (group) group.items.push(item);
           }
@@ -302,6 +317,13 @@
         st.display = 'flex'; st.flexDirection = 'column';
         st.justifyContent = cs.alignItems === 'center' || /column/.test(cs.flexDirection) && cs.justifyContent === 'center' ? 'center' : 'flex-start';
         st.alignItems = cs.justifyContent === 'center' || cs.textAlign === 'center' ? 'center' : 'flex-start';
+      }
+      if (it.textAt) {   // text beside an icon: start exactly where the real text starts
+        var lh = parseFloat(cs.lineHeight) || it.textAt.h;
+        st.display = 'block'; st.textAlign = 'left'; st.whiteSpace = 'nowrap';
+        st.paddingLeft = Math.max(0, it.textAt.x - (parseFloat(cs.borderLeftWidth) || 0)) + 'px';
+        st.paddingTop = Math.max(0, it.textAt.y - (parseFloat(cs.borderTopWidth) || 0) - (lh - it.textAt.h) / 2) + 'px';
+        st.paddingRight = '0px'; st.paddingBottom = '0px';
       }
       st.overflow = 'visible';
       it.span = mk('span', 'sw-txt', g);
@@ -370,7 +392,7 @@
     this.idle = true; this.arrive = null; this.orbit = rand(0, Math.PI * 2);
     var el = mk('div', 'sw-cursor', layer);
     el.style.setProperty('--c', this.color);
-    el.innerHTML = ARROW + '<span class="sw-tag">' + this.name + '</span><span class="sw-clone">⌥ Clone</span>';
+    el.innerHTML = ARROW + (opts.nameTags ? '<span class="sw-tag">' + this.name + '</span>' : '') + '<span class="sw-clone">⌥ Clone</span>';
     this.el = el;
   }
   Cursor.prototype.step = function (dt, speed) {
@@ -677,8 +699,13 @@
 
   function maybeComplete() {
     var s = S;
-    if (!opts.autoLive || s.liveTimer || s.pool.length || s.queue.length || s.running || s.pops.length) return;
-    s.liveTimer = setTimeout(function () { if (S === s) goLive(); }, 900 / s.speed);
+    if (!opts.autoLive || s.liveTimer || s.queue.length || s.running) return;
+    if (opts.liveAfter === 'page' && (s.pool.length || s.pops.length)) return;
+    s.liveTimer = setTimeout(function () {
+      if (S !== s) return;
+      if (s.queue.length || s.running) { s.liveTimer = null; return; }   // the visitor scrolled to new work meanwhile
+      goLive();
+    }, 900 / s.speed);
     s.timers.add(s.liveTimer);
   }
 

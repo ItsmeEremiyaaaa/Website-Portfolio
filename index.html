@@ -27,7 +27,7 @@
 
   <link rel="preload" href="assets/fonts/caveat-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=be9271dc">
+  <link rel="stylesheet" href="assets/css/main.css?v=fe6318c5">
   <link rel="stylesheet" href="assets/css/cursors.css?v=c77f0a4c">
 
   <script>
@@ -46,7 +46,7 @@
     })();
   </script>
   <script src="assets/js/cursors.js?v=17cdc1c2" defer></script>
-  <script src="assets/js/main.js?v=dd79d145" defer></script>
+  <script src="assets/js/main.js?v=9fb0573c" defer></script>
 
   <script type="application/ld+json">
   {
@@ -285,7 +285,7 @@
               <p class="project-kind">Find your way, instantly. AR campus navigation for SMCBI</p>
               <p class="project-desc">Pick who you are (personnel, student or visitor), search "Where to?" across offices like the Registrar, Clinic, Guidance Office and every program office, and see how far each one is. After a quick scan of the hallway, floating AR signs and a blue path guide you there, turn by turn.</p>
               <ul class="tags" aria-label="Technologies"><li>Unity</li><li>C#</li><li>MultiSet SDK</li><li>Supabase</li><li>Figma</li></ul>
-              <div class="project-links"><a class="btn btn-sm btn-cream" href="https://drive.google.com/file/d/1DOFLegRXFJYq6JX6lSl11othWAMgICnp/view" target="_blank" rel="noopener">Download for Android (APK · 565 MB) <svg class="icon icon-sm" aria-hidden="true"><use href="#i-download"/></svg></a></div>
+              <div class="project-links"><a class="btn btn-sm btn-cream" href="https://drive.google.com/file/d/1DOFLegRXFJYq6JX6lSl11othWAMgICnp/view" target="_blank" rel="noopener" data-dialog="gabay-dl">Download for Android (APK · 565 MB) <svg class="icon icon-sm" aria-hidden="true"><use href="#i-download"/></svg></a></div>
               <p class="slide-hint">Tap the phone, or pick a screen, to walk through the app. The APK needs an ARCore-supported Android phone.</p>
             </div>
           </article>
@@ -546,6 +546,48 @@
     <a class="text-link back-top" href="#top">Back to top <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
   </div>
 </footer>
+
+<!-- GABAY: compatibility check before downloading the APK -->
+<dialog class="dl-modal" id="gabay-dl" aria-labelledby="dl-title">
+  <div class="dl-art">
+    <span class="dl-chip"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-download"/></svg> Android AR app</span>
+    <img class="dl-logo" src="assets/img/gabay-logo.webp" width="177" height="200" alt="">
+    <div>
+      <p class="dl-kicker">GABAY</p>
+      <p class="dl-art-title">Check your phone, then start your AR journey.</p>
+    </div>
+  </div>
+  <div class="dl-body">
+    <p class="dl-eyebrow">APK download · 565 MB</p>
+    <h2 class="dl-title" id="dl-title">Is your phone ready for GABAY?</h2>
+    <div class="dl-cols">
+      <div>
+        <p class="dl-label">Before you download</p>
+        <ul class="dl-checks">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Android 7.0 (Nougat) or newer.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>An ARCore-certified Android phone with a working rear camera.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Google Play Services for AR installed and up to date.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>About 600 MB free, and Wi-Fi if you can.</li>
+        </ul>
+      </div>
+      <div>
+        <p class="dl-label">Examples of supported phones</p>
+        <ul class="dl-devices">
+          <li>Google Pixel 4 and newer</li>
+          <li>Samsung Galaxy S21, S22, S23 and S24 series</li>
+          <li>Samsung Galaxy A52, A53 5G, A54 5G and A55 5G</li>
+          <li>Samsung Galaxy Z Flip3 / Fold3 and newer</li>
+        </ul>
+      </div>
+    </div>
+    <div class="dl-actions">
+      <a class="btn btn-maroon" href="https://drive.google.com/file/d/1DOFLegRXFJYq6JX6lSl11othWAMgICnp/view" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> Download GABAY APK</a>
+      <a class="dl-link" href="https://developers.google.com/ar/devices" target="_blank" rel="noopener">See Google's full device list <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+    </div>
+    <p class="dl-note">GABAY guides you around the SMCBI campus, so the AR path works best on site. Google Drive may say it can't scan a file this big for viruses; that's normal for large files. iPhones aren't supported.</p>
+  </div>
+  <button class="icon-btn dl-close" type="button" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+</dialog>
 
 <!-- Photo viewer -->
 <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">

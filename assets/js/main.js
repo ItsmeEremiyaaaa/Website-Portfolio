@@ -359,6 +359,15 @@
     lightbox.addEventListener('click', function (e) { if (e.target === lightbox || e.target.tagName === 'FIGURE') lightbox.close(); });
   }
 
+  /* ── Links with data-dialog open that dialog first (the plain link still works without JS) ── */
+  $$('[data-dialog]').forEach(function (link) {
+    var dlg = document.getElementById(link.dataset.dialog);
+    if (!dlg || typeof dlg.showModal !== 'function') return;
+    link.addEventListener('click', function (e) { e.preventDefault(); dlg.showModal(); });
+    $('.dl-close', dlg).addEventListener('click', function () { dlg.close(); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); }); // click on the backdrop
+  });
+
   /* ── Camera roll: swipe the top photo away ────────────────────────────── */
   (function () {
     var roll = $('#roll'); if (!roll) return;

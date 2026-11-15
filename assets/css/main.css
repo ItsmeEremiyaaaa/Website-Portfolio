@@ -429,6 +429,45 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 .lightbox figcaption { color: #f8ede8; font-size: .92rem; text-align: center; }
 .lightbox .icon-btn { position: fixed; top: 18px; right: 18px; color: #fff; border-color: rgba(255,255,255,.25); background: rgba(0,0,0,.25); }
 
+/* GABAY download modal: GABAY-blue art panel + the site's paper card */
+.dl-modal { border: 0; padding: 0; width: min(960px, calc(100vw - 32px)); max-height: calc(100svh - 32px); border-radius: 26px; overflow: auto;
+  background: var(--paper); color: var(--ink); display: none; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); box-shadow: 0 40px 90px -30px rgba(10, 3, 6, .7); }
+.dl-modal[open] { display: grid; animation: dl-in 420ms var(--spring); }
+.dl-modal::backdrop { background: rgba(20, 4, 10, .72); backdrop-filter: blur(6px); }
+@keyframes dl-in { from { opacity: 0; transform: translateY(24px) scale(.96); } }
+.dl-art { position: relative; display: grid; align-content: space-between; justify-items: start; gap: 24px; padding: 28px; min-height: 420px; color: #fff; overflow: hidden;
+  background: radial-gradient(70% 60% at 30% 20%, #dbe9ff, transparent 70%), linear-gradient(160deg, #3d7bff, #0b2fa8); }
+.dl-art::after { content: ""; position: absolute; width: 260px; height: 260px; right: -70px; bottom: -70px; border-radius: 50%; border: 2px dashed rgba(255,255,255,.35); }
+.dl-chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.4);
+  font: 500 .74rem var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.dl-logo { width: 96px; height: auto; justify-self: center; filter: drop-shadow(0 16px 24px rgba(5, 20, 80, .45)); animation: bob 6s ease-in-out infinite; }
+.dl-kicker { font: 500 .8rem var(--font-mono); letter-spacing: .3em; opacity: .85; }
+.dl-art-title { font-family: var(--font-display); font-size: clamp(2rem, 3.2vw, 2.6rem); line-height: 1; margin-top: 6px; position: relative; z-index: 1; }
+.dl-body { padding: 34px 34px 28px; display: grid; gap: 18px; align-content: start; }
+.dl-eyebrow { font: 500 .74rem var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent-text, var(--coral)); }
+.dl-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.2rem, 4vw, 3.2rem); line-height: .95; color: var(--maroon); padding-right: 40px; }
+.dl-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.dl-label { font: 500 .7rem var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--text-subtle, #8a6a72); margin-bottom: 10px; }
+.dl-checks, .dl-devices { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-size: .92rem; line-height: 1.4; }
+.dl-checks li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; }
+.dl-checks .icon { width: 18px; height: 18px; margin-top: 1px; color: #2f6fe4; }
+.dl-devices li { padding-left: 14px; position: relative; color: var(--text-muted, #5b4a50); }
+.dl-devices li::before { content: ""; position: absolute; left: 0; top: .55em; width: 6px; height: 6px; border-radius: 50%; background: var(--peach); }
+.dl-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; padding-top: 4px; }
+.dl-link { display: inline-flex; align-items: center; gap: 6px; color: var(--maroon); font-weight: 500; text-underline-offset: 4px; }
+.dl-note { font-size: .78rem; line-height: 1.45; color: var(--text-subtle, #8a6a72); border-top: 1px dashed var(--border-strong, #ddd); padding-top: 14px; }
+.dl-close { position: absolute; top: 16px; right: 16px; background: var(--paper); }
+@media (max-width: 760px) {
+  .dl-modal { grid-template-columns: 1fr; }
+  .dl-art { min-height: 0; grid-template-columns: auto 1fr; align-items: center; padding: 20px; gap: 12px 16px; }
+  .dl-art .dl-chip { grid-column: 1 / -1; }
+  .dl-logo { width: 56px; }
+  .dl-art::after { display: none; }
+  .dl-body { padding: 24px 20px 20px; }
+  .dl-cols { grid-template-columns: 1fr; gap: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .dl-modal[open], .dl-logo { animation: none; } }
+
 /* ── Reveal (only when JS can undo it) ──────────────────────────────────── */
 .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 900ms var(--ease), transform 1100ms var(--ease); }
 .js .reveal.is-visible { opacity: 1; transform: none; }

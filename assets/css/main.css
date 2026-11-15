@@ -222,7 +222,7 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 }
 .slide-art { position: relative; height: min(100%, 560px); min-height: 360px; border-radius: var(--r-lg); display: grid; place-items: center; overflow: hidden; }
 /* Live app slides: just the phone, sized to the slide height so the whole screen shows */
-.art-phone { overflow: visible; }
+.art-phone, .art-bare { overflow: visible; } /* no panel: just the phone or the paper */
 .art-phone .phone { width: auto; height: 100%; max-width: 100%; }
 /* iPhone 14 Pro-style frame (Space Black): black bezel, stainless steel edge, Dynamic Island, side buttons */
 .phone.iphone { aspect-ratio: 1179 / 2556; padding: 8px; border-radius: 48px; background: #050506;
@@ -331,9 +331,7 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 /* MindTrack: the browser window fills the whole panel; the screenshot covers it from the top */
 .art-site { padding: 0; place-items: stretch; }
 .art-site .browser { max-width: none; height: 100%; border-radius: inherit; display: flex; flex-direction: column; box-shadow: none; }
-.art-site .browser img { flex: 1; min-height: 0; width: 100%; object-fit: cover; object-position: top left; }
-.art-site .art-chip.c1 { top: auto; bottom: 14%; left: 5%; }
-.art-site .art-chip.c2 { bottom: 5%; right: 5%; }
+.art-site .browser img { flex: 1; min-height: 0; width: 100%; object-fit: cover; object-position: 62% top; }
 
 /* ── Flip cards ─────────────────────────────────────────────────────────── */
 .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; perspective: 1200px; }

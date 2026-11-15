@@ -497,16 +497,6 @@
       if (c && c.heroSequence) c.heroSequence();
       else root.classList.remove('hero-seq'), $$('.hero .reveal').forEach(function (el) { el.classList.add('is-visible'); });
     }
-    // SWARM Rebuild: desktop only. Builds the page on the first visit; afterwards the Rebuild pill and Alt+Shift+S replay it.
-    if (window.SwarmRebuild && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      window.SwarmRebuild.init({
-        autoStart: root.classList.contains('swarm-boot'), speed: 1, sound: true, cursors: 8, nameTags: false, liveAfter: 'view',
-        exclude: ['.cx-layer', '.cx-bar', '#lightbox', '#gabay-dl'],
-        // Show every scroll-in block in its final state so the swarm copies the finished page.
-        prepare: function () { $$('.reveal').forEach(function (el) { el.classList.add('is-visible'); }); },
-        onLive: function () { try { sessionStorage.setItem('swarm-seen', '1'); } catch (e) {} }
-      });
-    } else root.classList.remove('swarm-boot');
     document.dispatchEvent(new CustomEvent('intro:done'));
   });
 })();

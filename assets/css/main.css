@@ -533,6 +533,3 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .js .reveal { opacity: 1; transform: none; }
 }
-
-/* SWARM Rebuild: keep the Rebuild pill clear of the cursor bar */
-#swarm-hud.is-live { bottom: 92px; }

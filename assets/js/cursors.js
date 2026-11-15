@@ -88,6 +88,63 @@
   resize();
   addEventListener('resize', resize);
 
+  /* ── Sound: tiny procedural Web Audio effects (no files). Starts after the first click or key press. ── */
+  var Sound = (function () {
+    var actx = null, master = null, noise = null, on = store.get('cx-sound') !== 'off', voices = 0;
+    var PENTA = [0, 2, 4, 7, 9, 12, 14, 16];
+    function ensure() {
+      if (actx) return actx;
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
+      actx = new AC();
+      master = actx.createGain(); master.gain.value = 0.18; master.connect(actx.destination);
+      var len = Math.floor(actx.sampleRate * 0.06); noise = actx.createBuffer(1, len, actx.sampleRate);
+      var d = noise.getChannelData(0); for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      return actx;
+    }
+    function ok() { return on && actx && actx.state === 'running' && voices < 24 && !document.hidden; }
+    function env(p, t, a, peak, dec) { p.setValueAtTime(0.0001, t); p.exponentialRampToValueAtTime(peak, t + a); p.exponentialRampToValueAtTime(0.0001, t + a + dec); }
+    function play(n, t, len) { voices++; n.onended = function () { voices--; }; n.start(t); n.stop(t + len); }
+    function tone(type, f, peak, dec) {
+      var t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain();
+      o.type = type; o.frequency.value = f; env(g.gain, t, 0.002, peak, dec);
+      o.connect(g); g.connect(master); play(o, t, dec + 0.05);
+    }
+    function hiss(type, f, peak, dec) {
+      var t = actx.currentTime, n = actx.createBufferSource(), fl = actx.createBiquadFilter(), g = actx.createGain();
+      n.buffer = noise; fl.type = type; fl.frequency.value = f; fl.Q.value = 1.3; env(g.gain, t, 0.002, peak, dec);
+      n.connect(fl); fl.connect(g); g.connect(master); play(n, t, dec + 0.03);
+    }
+    function unlock() { if (on && ensure() && actx.state === 'suspended') actx.resume(); }
+    addEventListener('pointerdown', unlock, true);
+    addEventListener('keydown', unlock, true);
+    return {
+      isOn: function () { return on; },
+      set: function (v) { on = v; store.set('cx-sound', v ? 'on' : 'off'); if (v) unlock(); },
+      click: function () { if (ok()) { tone('sine', 1300, 0.09, 0.025); hiss('highpass', 4500, 0.05, 0.012); } },
+      key: function () { if (ok()) { hiss('bandpass', rand(1800, 3600), 0.4, 0.03); tone('triangle', rand(150, 250), 0.12, 0.025); } },
+      snap: function () {   // soft marimba / glass note
+        if (!ok()) return;
+        var f = 523.25 * Math.pow(2, PENTA[Math.floor(Math.random() * PENTA.length)] / 12);
+        tone('sine', f, 0.22, 0.55); tone('sine', f * 3.93, 0.05, 0.16);
+      }
+    };
+  })();
+
+  // Magenta smart guides flash along a frame's edges when it snaps into place.
+  var guideCount = 0;
+  function guides(el) {
+    if (!el || guideCount > 8) return;
+    var r = el.getBoundingClientRect(); if (r.width < 30 || r.height < 16) return;
+    [[0, r.top, innerWidth, 1], [0, r.bottom, innerWidth, 1], [r.left, 0, 1, innerHeight], [r.right, 0, 1, innerHeight]].forEach(function (g) {
+      var line = document.createElement('i');
+      line.className = 'cx-guide';
+      line.style.cssText = 'left:' + g[0] + 'px;top:' + g[1] + 'px;width:' + g[2] + 'px;height:' + g[3] + 'px';
+      layer.appendChild(line); guideCount++;
+      setTimeout(function () { line.remove(); guideCount--; }, 600);
+    });
+  }
+  function snapped(el) { guides(el); Sound.snap(); }
+
   function ring(x, y, color) {
     var el = document.createElement('div');
     el.className = 'cx-ring';
@@ -343,6 +400,7 @@
     el.classList.add('is-down');
     setTimeout(function () { el.classList.remove('is-down'); }, 160);
     ring(this.x + 2, this.y + 2, this.color);
+    Sound.click();
   };
   Bot.prototype.wander = function () {
     return this.go(clamp(this.x + rand(-280, 280), 40, innerWidth - 120), clamp(this.y + rand(-200, 200), TOP + 30, innerHeight - BOTTOM - 30));
@@ -374,6 +432,7 @@
         await wait(120);
         bot.sel.mode = 'fit';
         bot.click();
+        snapped(el);
         log(bot, 'built ' + label(el));
         await wait(650);
         bot.sel.target = null; bot.anchor = null;
@@ -476,11 +535,12 @@
     await bot.go(r.right - 4, r.bottom - 10);
     bot.click();
     roleEl.classList.add('cx-typing');
+    roleEl.style.setProperty('--cx-caret', bot.color);   // the caret takes the typing cursor's color
     var current = phraseEl.textContent.trim();
-    while (phraseEl.textContent.length) { phraseEl.textContent = phraseEl.textContent.slice(0, -1); await wait(22); }
+    while (phraseEl.textContent.length) { phraseEl.textContent = phraseEl.textContent.slice(0, -1); if (phraseEl.textContent.length % 3 === 0) Sound.key(); await wait(22); }
     var next = pick(PHRASES.filter(function (p) { return p !== current; }));
     log(bot, 'rewriting the hero line');
-    for (var i = 0; i < next.length; i++) { phraseEl.textContent += next[i]; await wait(rand(40, 95)); }
+    for (var i = 0; i < next.length; i++) { phraseEl.textContent += next[i]; if (next[i] !== ' ') Sound.key(); await wait(rand(40, 95)); }
     await wait(400);
     roleEl.classList.remove('cx-typing');
     busyEls.delete(roleEl);
@@ -836,6 +896,7 @@
     '<span class="cx-log" aria-live="polite"><i></i>Agents warming up…</span>' +
     '<span class="cx-hint">Click anything to restyle it, drag to move</span>' +
     '<span class="cx-tip"><kbd>/</kbd> chat · <kbd>1</kbd>–<kbd>5</kbd> react · <kbd>P</kbd> draw</span>' +
+    '<button type="button" class="cx-sound" aria-pressed="false" title="Cursor sounds">Sound</button>' +
     '<button type="button" class="cx-draw" aria-pressed="false">Draw</button>' +
     '<button type="button" class="cx-edit" aria-pressed="false">Edit mode</button>' +
     '<button type="button" class="cx-reset-all is-off">Reset</button>' +
@@ -863,6 +924,10 @@
     if (!on) bots.forEach(function (b) { b.sel.target = null; });
     store.set('cursors', on ? 'on' : 'off');
   }
+  var soundBtn = bar.querySelector('.cx-sound');
+  function syncSound() { soundBtn.setAttribute('aria-pressed', String(Sound.isOn())); soundBtn.textContent = Sound.isOn() ? 'Sound on' : 'Sound off'; }
+  soundBtn.addEventListener('click', function () { Sound.set(!Sound.isOn()); syncSound(); });
+  syncSound();
   editBtn.addEventListener('click', function () { setEdit(!editMode); });
   toggleBtn.addEventListener('click', function () { setBots(!api.enabled); });
   resetAll.addEventListener('click', function () {
@@ -1232,7 +1297,6 @@
   }
   setInterval(function () {
     var now = performance.now();
-    if (document.documentElement.classList.contains('swarm-on')) return;   // SWARM Rebuild has the page
     if (touring || now - lastInput < IDLE_MS || now - lastTour < PAUSE_MS) return;
     if (!canTour()) { if (!themeShown && api.enabled && !seqRunning && !editMode && !drawMode && !rewinding && !liveAppOnScreen()) themeDemo(); return; }
     if (!themeShown) themeDemo(); else tour();
@@ -1316,6 +1380,7 @@
     await bot.follow(el, 1, 1);
     bot.sel.mode = 'fit';
     bot.click();
+    snapped(el);
     if (msg) log(bot, msg);
     await wait(110);
     bot.sel.target = null;
@@ -1419,9 +1484,6 @@
     started = true;
     bots.forEach(function (b, i) { setTimeout(function () { idle(b); }, i * 450); });
   }
-  // While SWARM Rebuild is building the page, wait until it goes live.
-  function swarmBusy() { var c = document.documentElement.classList; return c.contains('swarm-on') || c.contains('swarm-boot'); }
-  function startSoon() { if (swarmBusy()) window.addEventListener('swarm:live', start, { once: true }); else start(); }
-  document.addEventListener('intro:done', startSoon);
-  setTimeout(startSoon, 4000);
+  document.addEventListener('intro:done', start);
+  setTimeout(start, 4000);
 })();

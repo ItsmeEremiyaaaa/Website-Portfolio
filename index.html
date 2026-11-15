@@ -27,30 +27,26 @@
 
   <link rel="preload" href="assets/fonts/caveat-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=322db2f8">
-  <link rel="stylesheet" href="assets/css/cursors.css?v=c77f0a4c">
-  <link rel="stylesheet" href="assets/css/swarm-rebuild.css?v=d54ba591">
+  <link rel="stylesheet" href="assets/css/main.css?v=22d33f37">
+  <link rel="stylesheet" href="assets/css/cursors.css?v=f1a1f77c">
 
   <script>
-    // Mark JS early so reveal styles only apply when they can be undone, and pick the opening:
-    // first visit on desktop = SWARM Rebuild (swarm-rebuild.js), otherwise the intro + hero build as before.
+    // Mark JS early so reveal styles only apply when they can be undone, and show the intro once per visit.
     (function () {
       var d = document.documentElement;
       d.classList.add('js');
       try { var t = localStorage.getItem('theme'); if (t && t !== 'maroon') d.dataset.theme = t; } catch (e) {}
-      var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var desktop = matchMedia('(hover: hover) and (pointer: fine)').matches && matchMedia('(min-width: 720px)').matches;
-      var seen = false, swarmSeen = false, off = false;
-      try { seen = sessionStorage.getItem('intro-seen') === '1'; swarmSeen = sessionStorage.getItem('swarm-seen') === '1'; off = localStorage.getItem('cursors') === 'off'; } catch (e) {}
-      if (desktop && !off && !calm && !swarmSeen) { d.classList.add('swarm-boot'); return; }
-      if (!seen && !calm) d.classList.add('has-intro');
+      var seen = false;
+      try { seen = sessionStorage.getItem('intro-seen') === '1'; } catch (e) {}
+      if (!seen && !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('has-intro');
       // Desktop visitors watch the agents build the hero step by step (see cursors.js heroSequence).
-      if (desktop && !off && !calm) d.classList.add('hero-seq');
+      var off = false; try { off = localStorage.getItem('cursors') === 'off'; } catch (e) {}
+      if (!off && matchMedia('(hover: hover) and (pointer: fine)').matches && matchMedia('(min-width: 720px)').matches &&
+          !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('hero-seq');
     })();
   </script>
-  <script src="assets/js/swarm-rebuild.js?v=d0338bc8" defer></script>
-  <script src="assets/js/cursors.js?v=1ae71562" defer></script>
-  <script src="assets/js/main.js?v=8f29aa3a" defer></script>
+  <script src="assets/js/cursors.js?v=b2971719" defer></script>
+  <script src="assets/js/main.js?v=ff86f232" defer></script>
 
   <script type="application/ld+json">
   {

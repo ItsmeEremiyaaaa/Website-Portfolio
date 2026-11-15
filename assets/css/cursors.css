@@ -54,7 +54,7 @@
 .cx-anim.cx-dragging { transition: color 400ms ease, background-color 400ms ease, transform 160ms linear !important; }
 .hero-role.cx-typing .hero-phrase::after {
   content: ""; display: inline-block; width: 2px; height: 0.9em; margin-left: 3px;
-  background: currentColor; vertical-align: -0.08em; animation: cx-blink 800ms steps(1) infinite;
+  background: var(--cx-caret, currentColor); vertical-align: -0.08em; animation: cx-blink 800ms steps(1) infinite;
 }
 @keyframes cx-blink { 50% { opacity: 0; } }
 
@@ -323,3 +323,11 @@
 .hero-seq .sticker:not(.is-in) { opacity: 0; scale: .2; }
 .hero-seq .deck-hint, .hero-seq .hero-vertical { transition: opacity 400ms; }
 .hero-seq .deck-hint:not(.is-in), .hero-seq .hero-vertical:not(.is-in) { opacity: 0; }
+
+/* Smart guides: magenta lines flash along a frame when it snaps into place */
+.cx-guide { position: absolute; display: block; background: #ff2fd6; box-shadow: 0 0 6px rgba(255, 47, 214, .55); pointer-events: none; animation: cx-guide 600ms ease-out forwards; }
+@keyframes cx-guide { 0% { opacity: 0; } 15% { opacity: .9; } 100% { opacity: 0; } }
+.cx-bar .cx-sound { flex: none; width: 96px; text-align: center; padding-inline: 0; }
+.cx-bar .cx-sound[aria-pressed="true"] { background: transparent; color: inherit; border-color: var(--border-strong); }
+@media (max-width: 860px) { .cx-bar .cx-sound { display: none; } }
+@media (prefers-reduced-motion: reduce) { .cx-guide { animation: none; opacity: 0; } }

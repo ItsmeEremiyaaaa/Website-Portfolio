@@ -27,7 +27,7 @@
 
   <link rel="preload" href="assets/fonts/caveat-brush-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/main.css?v=f8c420db">
+  <link rel="stylesheet" href="assets/css/main.css?v=6e70dc27">
   <link rel="stylesheet" href="assets/css/cursors.css?v=c77f0a4c">
 
   <script>
@@ -45,8 +45,8 @@
           !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('hero-seq');
     })();
   </script>
-  <script src="assets/js/cursors.js?v=faa19eb6" defer></script>
-  <script src="assets/js/main.js?v=f4d19de0" defer></script>
+  <script src="assets/js/cursors.js?v=17cdc1c2" defer></script>
+  <script src="assets/js/main.js?v=dd79d145" defer></script>
 
   <script type="application/ld+json">
   {
@@ -216,23 +216,10 @@
 
           <!-- Slide 1: StudyQuest -->
           <article class="slide" aria-roledescription="slide" aria-labelledby="s-studyquest">
-            <div class="slide-art art-orange">
-              <div class="phone" aria-label="Playable StudyQuest demo">
-                <div class="phone-screen sq" hidden>
-                  <div class="sq-top"><span>Hi, Doy!</span><span class="sq-pill" id="sq-streak">7-day streak</span></div>
-                  <div class="sq-xp"><span id="sq-xpbar"></span></div>
-                  <p class="sq-lvl">Level 4 · <b id="sq-xp">340</b> XP</p>
-                  <div class="sq-card">
-                    <div class="sq-timer"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15"/><circle id="sq-ring" cx="18" cy="18" r="15"/></svg><span id="sq-sec">20</span></div>
-                    <p class="sq-q" id="sq-q">Which HTML tag makes a link?</p>
-                    <div class="sq-opts" id="sq-opts"></div>
-                  </div>
-                  <p class="sq-msg" id="sq-msg" aria-live="polite">Tap an answer to play</p>
-                </div>
+            <div class="slide-art art-phone">
+              <div class="phone" aria-label="StudyQuest live app">
                 <div class="phone-screen phone-live"><iframe src="https://studyquest-a547c.web.app/dashboard" loading="lazy" title="StudyQuest live app" allow="clipboard-write"></iframe></div>
               </div>
-              <span class="art-chip c1">+20 XP</span>
-              <span class="art-chip c2">32 badges</span>
             </div>
             <div class="slide-body">
               <p class="slide-num">01</p>
@@ -241,35 +228,16 @@
               <p class="project-kind">Gamified quiz app</p>
               <p class="project-desc">Quizzes that play like a game: XP and levels, daily streaks, 32 badges, friends and quiz leaderboards, and a 20-second timer on every question, in English or Tagalog. Shipped as an Android APK for a school beta test and showcased at TechCase.</p>
               <ul class="tags" aria-label="Technologies"><li>React Native</li><li>Expo</li><li>Firebase</li><li>Cloud Functions</li><li>i18next</li></ul>
-              <div class="project-links"><button class="btn btn-sm btn-cream live-toggle" type="button" aria-pressed="true">Show the mini demo</button><a class="btn btn-sm btn-cream" href="https://studyquest-a547c.web.app" target="_blank" rel="noopener">Try the web version <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
+              <div class="project-links"><a class="btn btn-sm btn-cream" href="https://studyquest-a547c.web.app" target="_blank" rel="noopener">Try the web version <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
             </div>
           </article>
 
           <!-- Slide 2: BansaRide -->
           <article class="slide" aria-roledescription="slide" aria-labelledby="s-bansaride">
-            <div class="slide-art art-blue">
-              <div class="phone" aria-label="Interactive BansaRide demo">
-                <div class="phone-screen br" hidden>
-                  <svg class="br-map" viewBox="0 0 200 300" aria-hidden="true">
-                    <path class="br-road" d="M-10 60 L210 90 M40 -10 L70 310 M-10 200 L210 170 M150 -10 L130 310 M-10 260 L120 300"/>
-                    <path class="br-route" id="br-route" d="M58 70 C 90 110, 150 95, 142 160 S 80 230, 104 262"/>
-                    <circle class="br-dot a" cx="58" cy="70" r="7"/><circle class="br-dot b" cx="104" cy="262" r="7"/>
-                  </svg>
-                  <div class="br-sheet">
-                    <p class="br-route-name" id="br-name">Public Market → Bus Terminal</p>
-                    <p class="br-sub" id="br-sub">Tricycle or pedicab · fare shown for a student</p>
-                    <div class="br-seg" role="group" aria-label="Passenger type">
-                      <button type="button" aria-pressed="true" data-p="student">Student</button>
-                      <button type="button" aria-pressed="false" data-p="senior">Senior</button>
-                      <button type="button" aria-pressed="false" data-p="adult">Adult</button>
-                    </div>
-                    <button class="br-swap" type="button" id="br-swap">Try another route</button>
-                  </div>
-                </div>
+            <div class="slide-art art-phone">
+              <div class="phone" aria-label="BansaRide live app">
                 <div class="phone-screen phone-live"><iframe src="https://bansalanride.netlify.app/#/home" loading="lazy" title="BansaRide live app" allow="geolocation"></iframe></div>
               </div>
-              <span class="art-chip c1">96 routes</span>
-              <span class="art-chip c2">Works offline</span>
             </div>
             <div class="slide-body">
               <p class="slide-num">02</p>
@@ -278,7 +246,7 @@
               <p class="project-kind">Ride and fare guide for Bansalan</p>
               <p class="project-desc">Shows where to catch a tricycle, pedicab, bus or van in Bansalan, what the ride costs for students, seniors, PWD and adults, and where the drivers' groups wait. About 96 real road routes on a map that keeps working without signal, plus rider-reported fares and ride alerts.</p>
               <ul class="tags" aria-label="Technologies"><li>React</li><li>Vite</li><li>Leaflet</li><li>OpenStreetMap</li><li>Supabase</li><li>Capacitor</li></ul>
-              <div class="project-links"><button class="btn btn-sm btn-cream live-toggle" type="button" aria-pressed="true">Show the mini demo</button><a class="btn btn-sm btn-cream" href="https://github.com/ItsmeEremiyaaaa/BansaRide" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> Source code <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
+              <div class="project-links"><a class="btn btn-sm btn-cream" href="https://github.com/ItsmeEremiyaaaa/BansaRide" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> Source code <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
             </div>
           </article>
 

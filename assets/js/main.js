@@ -260,99 +260,6 @@
     update();
   }
 
-  /* ── Demo 1: StudyQuest mini quiz ─────────────────────────────────────── */
-  (function () {
-    var opts = $('#sq-opts'); if (!opts) return;
-    var QUESTIONS = [
-      { q: 'Which HTML tag makes a link?', a: ['<a>', '<link>', '<href>'], r: 0 },
-      { q: 'What does CSS stand for?', a: ['Cascading Style Sheets', 'Creative Style System', 'Coded Site Styles'], r: 0 },
-      { q: 'Which one is a JavaScript framework for mobile apps?', a: ['Laravel', 'React Native', 'MySQL'], r: 1 },
-      { q: 'Which database does StudyQuest use?', a: ['Firebase', 'Oracle', 'Excel'], r: 0 },
-      { q: 'What does "AR" stand for in GABAY?', a: ['Auto Routing', 'Augmented Reality', 'Active Response'], r: 1 },
-      { q: 'Which tag holds the biggest heading?', a: ['<h6>', '<head>', '<h1>'], r: 2 }
-    ];
-    var qEl = $('#sq-q'), msg = $('#sq-msg'), secEl = $('#sq-sec'), ring = $('#sq-ring'), xpEl = $('#sq-xp'), xpBar = $('#sq-xpbar'), timerBox = $('.sq-timer'), streak = $('#sq-streak');
-    var xp = 340, idx = 0, sec = 20, timer = null, locked = false, correctRun = 0;
-    function render() {
-      var Q = QUESTIONS[idx];
-      qEl.textContent = Q.q;
-      opts.innerHTML = '';
-      Q.a.forEach(function (t, i) {
-        var b = document.createElement('button');
-        b.type = 'button'; b.textContent = t;
-        b.addEventListener('click', function () { answer(i, b); });
-        opts.appendChild(b);
-      });
-      sec = 20; locked = false; tickView();
-    }
-    function tickView() {
-      secEl.textContent = sec;
-      ring.style.strokeDashoffset = String(94.25 * (1 - sec / 20));
-      timerBox.classList.toggle('is-urgent', sec <= 5);
-    }
-    function startTimer() {
-      if (timer) return;
-      timer = setInterval(function () {
-        if (locked) return;
-        sec = Math.max(0, sec - 1); tickView();
-        if (sec === 0) { locked = true; msg.textContent = "Time's up! Next question…"; correctRun = 0; setTimeout(next, 1200); }
-      }, 1000);
-    }
-    function answer(i, btn) {
-      if (locked) return;
-      locked = true; startTimer();
-      var Q = QUESTIONS[idx];
-      if (i === Q.r) {
-        btn.classList.add('is-right');
-        var gain = 20 + sec; xp += gain; correctRun++;
-        msg.textContent = 'Correct! +' + gain + ' XP';
-        xpEl.textContent = xp;
-        xpBar.style.width = Math.min(100, 40 + correctRun * 12) + '%';
-        if (correctRun >= 3) streak.textContent = correctRun + ' in a row!';
-      } else {
-        btn.classList.add('is-wrong');
-        opts.children[Q.r].classList.add('is-right');
-        msg.textContent = 'Not quite. The answer is ' + Q.a[Q.r];
-        correctRun = 0; streak.textContent = '7-day streak';
-      }
-      setTimeout(next, 1400);
-    }
-    function next() { idx = (idx + 1) % QUESTIONS.length; render(); }
-    // The timer only runs while the demo is on screen.
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting) startTimer(); else { clearInterval(timer); timer = null; } });
-      }, { threshold: .5 }).observe(opts);
-    }
-    render();
-  })();
-
-  /* ── Demo 2: BansaRide route + passenger toggle ───────────────────────── */
-  (function () {
-    var seg = $$('.br-seg button'); if (!seg.length) return;
-    var ROUTES = [
-      { n: 'Public Market → Bus Terminal', d: 'M58 70 C 90 110, 150 95, 142 160 S 80 230, 104 262' },
-      { n: 'Bus Terminal → SMCBI', d: 'M150 40 C 120 80, 60 90, 70 150 S 150 200, 120 250' },
-      { n: 'Poblacion → Barangay hall', d: 'M30 120 C 70 90, 120 140, 160 110 S 170 220, 60 240' }
-    ];
-    var r = 0, route = $('#br-route'), name = $('#br-name'), sub = $('#br-sub'), dots = $$('.br-dot');
-    function draw() {
-      var R = ROUTES[r];
-      route.setAttribute('d', R.d);
-      var m = R.d.match(/M(\d+) (\d+)/), e = R.d.match(/(\d+) (\d+)$/);
-      dots[0].setAttribute('cx', m[1]); dots[0].setAttribute('cy', m[2]);
-      dots[1].setAttribute('cx', e[1]); dots[1].setAttribute('cy', e[2]);
-      name.textContent = R.n;
-    }
-    seg.forEach(function (b) {
-      b.addEventListener('click', function () {
-        seg.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-        sub.textContent = 'Tricycle or pedicab · fare shown for ' + (b.dataset.p === 'adult' ? 'an adult' : 'a ' + b.dataset.p);
-      });
-    });
-    $('#br-swap').addEventListener('click', function () { r = (r + 1) % ROUTES.length; draw(); });
-  })();
-
   /* ── Demo 3: GABAY — walk through the real app screens ─────────────── */
   (function () {
     var screen = $('#gb-real'); if (!screen) return;
@@ -536,18 +443,6 @@
       };
       if (navigator.clipboard) navigator.clipboard.writeText(email).then(done, function () { label.textContent = email; });
       else label.textContent = email;
-    });
-  });
-
-  /* ── Live app: the real app shows in the phone; the button swaps in the mini demo ── */
-  $$('.live-toggle').forEach(function (btn) {
-    var slide = btn.closest('.slide');
-    var demo = $('.phone-screen:not(.phone-live)', slide), live = $('.phone-live', slide), frame = $('iframe', live);
-    btn.addEventListener('click', function () {
-      var on = live.hidden;
-      live.hidden = !on; demo.hidden = on;
-      btn.setAttribute('aria-pressed', String(on));
-      btn.textContent = on ? 'Show the mini demo' : 'Play the live app';
     });
   });
 

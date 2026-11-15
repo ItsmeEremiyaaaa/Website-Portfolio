@@ -316,7 +316,10 @@
     this.anchor = { el: el, fx: fx, fy: fy };
     return Promise.race([new Promise(function (r) { self.done = r; }), wait(this.limit)]);
   };
+  // Cursors work quietly: no speech bubbles. (Your own "/" chat still works.) Set TALK = true to bring them back.
+  var TALK = false;
   Bot.prototype.say = function (text, ms) {
+    if (!TALK) return;
     var b = this.bubble;
     if (!b) { b = this.bubble = document.createElement('span'); b.className = 'cx-say'; this.el.appendChild(b); }
     b.textContent = text;
@@ -770,7 +773,7 @@
         else if (roll < 0.46) await doPlay(bot);
         else if (roll < 0.56) await doTilt(bot);
         else if (roll < 0.64) await doType(bot);
-        else if (roll < 0.82) await doScribble(bot);
+        else if (roll < 0.82 || !TALK) await doScribble(bot);   // comment pins are talking too
         else await doPin(bot);
       } catch (e) { /* keep the loop alive */ }
       bot.sel.target = null;

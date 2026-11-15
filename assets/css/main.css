@@ -224,17 +224,32 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 /* Live app slides: just the phone, sized to the slide height so the whole screen shows */
 .art-phone { overflow: visible; }
 .art-phone .phone { width: auto; height: 100%; max-width: 100%; }
-/* iPhone 17-style frame: thin black bezel, aluminium edge, Dynamic Island, side buttons */
-.phone.iphone { aspect-ratio: 1206 / 2622; padding: 7px; border-radius: 46px; background: #050506;
-  box-shadow: 0 0 0 1.5px #2b2c30, 0 0 0 3.5px #b4b7bd, 0 0 0 4.5px #75787f, 0 40px 70px -30px rgba(10, 4, 8, .75); }
-.phone.iphone::before { top: 2.4%; width: 30%; height: 3.3%; border-radius: 999px; background: #000; z-index: 3; }
-.phone.iphone .phone-screen { border-radius: 39px; }
+/* iPhone 14 Pro-style frame (Space Black): black bezel, stainless steel edge, Dynamic Island, side buttons */
+.phone.iphone { aspect-ratio: 1179 / 2556; padding: 8px; border-radius: 48px; background: #050506;
+  box-shadow: 0 0 0 1.5px #1c1c1f, 0 0 0 4px #4a4950, 0 0 0 5px #2a2a2e, 0 40px 70px -30px rgba(10, 4, 8, .75); }
+.phone.iphone::before { top: 2.3%; width: 31%; height: 3.4%; border-radius: 999px; background: #000; z-index: 3; }
+.phone.iphone .phone-screen { border-radius: 40px; }
 .iphone-btns { position: absolute; inset: 0; pointer-events: none; }
 .iphone-btns::before, .iphone-btns::after { content: ""; position: absolute; top: 0; bottom: 0; width: 3px; border-radius: 2px; }
-/* left: Action button, volume up, volume down */
-.iphone-btns::before { left: -7px; background: linear-gradient(#a4a7ae, #a4a7ae) 0 17% / 100% 4% no-repeat, linear-gradient(#a4a7ae, #a4a7ae) 0 27% / 100% 8% no-repeat, linear-gradient(#a4a7ae, #a4a7ae) 0 39% / 100% 8% no-repeat; }
-/* right: side button, Camera Control */
-.iphone-btns::after { right: -7px; background: linear-gradient(#a4a7ae, #a4a7ae) 0 29% / 100% 12% no-repeat, linear-gradient(#a4a7ae, #a4a7ae) 0 66% / 100% 6% no-repeat; }
+/* left: ring/silent switch, volume up, volume down */
+.iphone-btns::before { left: -8px; background: linear-gradient(#55545b, #55545b) 0 18% / 100% 3.5% no-repeat, linear-gradient(#55545b, #55545b) 0 27% / 100% 7% no-repeat, linear-gradient(#55545b, #55545b) 0 37% / 100% 7% no-repeat; }
+/* right: side button */
+.iphone-btns::after { right: -8px; background: linear-gradient(#55545b, #55545b) 0 30% / 100% 11% no-repeat; }
+
+/* Collab credit: a soft pink pill with a beating heart (MindTrack × Nicole) */
+.collab { justify-self: start; display: inline-flex; align-items: center; gap: 9px; padding: 7px 16px 7px 8px; border-radius: 999px;
+  background: linear-gradient(120deg, #ffe3ee, #ffd0e1 55%, #ffe9d6); color: #7a1f45; text-decoration: none; font-size: .9rem;
+  box-shadow: 0 10px 24px -14px rgba(214, 51, 108, .7), inset 0 0 0 1px rgba(255, 255, 255, .7); position: relative;
+  transition: transform 300ms var(--spring), box-shadow 300ms; }
+.collab b { color: #c2185b; font-weight: 700; }
+.collab:hover, .collab:focus-visible { transform: translateY(-2px) rotate(-1deg); box-shadow: 0 16px 30px -14px rgba(214, 51, 108, .85), inset 0 0 0 1px #fff; }
+.collab-heart { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #fff; box-shadow: 0 4px 10px -4px rgba(214, 51, 108, .6); flex: none; }
+.collab-heart svg { width: 16px; height: 16px; fill: #e91e63; animation: heartbeat 1.3s ease-in-out infinite; transform-origin: 50% 60%; }
+.collab-spark { position: absolute; top: -9px; right: 6px; color: #ff6fa3; font-size: .85rem; animation: twinkle 2.2s ease-in-out infinite; }
+.collab:hover .collab-heart svg { animation-duration: .6s; }
+@keyframes heartbeat { 0%, 40%, 100% { transform: scale(1); } 15% { transform: scale(1.25); } 25% { transform: scale(.95); } 32% { transform: scale(1.15); } }
+@keyframes twinkle { 0%, 100% { opacity: .2; transform: scale(.7) rotate(0deg); } 50% { opacity: 1; transform: scale(1.15) rotate(25deg); } }
+@media (prefers-reduced-motion: reduce) { .collab-heart svg, .collab-spark { animation: none; } }
 .art-mint { background: radial-gradient(70% 60% at 30% 80%, #f2fff8, transparent 70%), var(--mint); }
 .art-paper { background: radial-gradient(70% 60% at 50% 0%, #fff, transparent 70%), #f1e6dc; padding: 24px; }
 .art-chip { position: absolute; padding: 7px 12px; border-radius: 999px; background: var(--paper); color: var(--ink); font-family: var(--font-mono); font-size: .78rem; box-shadow: 0 10px 24px -12px rgba(42,15,24,.45); animation: bob 6s ease-in-out infinite; z-index: 3; }

@@ -647,8 +647,15 @@
     order.forEach(function (k) { parent.appendChild(k); });
     return function () { kids.forEach(function (k) { parent.appendChild(k); }); };
   }
+  // A View Transition freezes clicks on the whole page, so never morph while a live app is on screen.
+  function liveAppOnScreen() {
+    return Array.prototype.some.call(document.querySelectorAll('.phone-live:not([hidden])'), function (el) {
+      var r = el.getBoundingClientRect();
+      return r.width && r.right > 0 && r.left < innerWidth && r.bottom > 0 && r.top < innerHeight;
+    });
+  }
   async function doRestructure(bot) {
-    if (restructuring || touring || rewinding || performance.now() - lastRestructure < 9000) return doEdit(bot);
+    if (restructuring || touring || rewinding || liveAppOnScreen() || performance.now() - lastRestructure < 9000) return doEdit(bot);
     var options = RESTRUCTURES.filter(function (t) {
       var el = document.querySelector(t.target);
       if (!el) return false;
@@ -1106,6 +1113,8 @@
   function canTour() {
     if (!api.enabled || document.hidden || editMode || drawMode || !chat.hidden || restructuring || rewinding || seqRunning) return false;
     if (lightboxEl && lightboxEl.open) return false;
+    // Mouse moves inside an app's iframe never reach this page, so don't mistake playing for being idle.
+    if (liveAppOnScreen()) return false;
     if (root.classList && root.classList.contains('has-intro') && !root.classList.contains('intro-out')) return false;
     var max = document.documentElement.scrollHeight - innerHeight;
     return scrollY < max - 24;
@@ -1224,7 +1233,7 @@
   setInterval(function () {
     var now = performance.now();
     if (touring || now - lastInput < IDLE_MS || now - lastTour < PAUSE_MS) return;
-    if (!canTour()) { if (!themeShown && api.enabled && !seqRunning && !editMode && !drawMode && !rewinding) themeDemo(); return; }
+    if (!canTour()) { if (!themeShown && api.enabled && !seqRunning && !editMode && !drawMode && !rewinding && !liveAppOnScreen()) themeDemo(); return; }
     if (!themeShown) themeDemo(); else tour();
   }, 500);
 

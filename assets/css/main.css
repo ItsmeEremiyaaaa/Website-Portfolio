@@ -209,7 +209,7 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 
 /* ── Work: scroll-driven slides ─────────────────────────────────────────── */
 .work-pin { height: 500vh; }                       /* 5 slides × 100vh of scroll */
-.work-sticky { position: sticky; top: var(--nav-h); height: calc(100svh - var(--nav-h)); overflow: clip; display: grid; grid-template-rows: auto 1fr auto auto; padding-block: clamp(20px, 3vh, 36px) 18px; }
+.work-sticky { position: sticky; top: var(--nav-h); height: calc(100svh - var(--nav-h)); overflow: clip; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr auto auto; padding-block: clamp(20px, 3vh, 36px) 18px; }
 .work-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; }
 .work-head .section-title { font-size: clamp(2.6rem, 5vw, 4rem); }
 .work-controls { display: flex; align-items: center; gap: 10px; }

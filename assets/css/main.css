@@ -224,6 +224,17 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 /* Live app slides: just the phone, sized to the slide height so the whole screen shows */
 .art-phone { overflow: visible; }
 .art-phone .phone { width: auto; height: 100%; max-width: 100%; }
+/* iPhone 17-style frame: thin black bezel, aluminium edge, Dynamic Island, side buttons */
+.phone.iphone { aspect-ratio: 1206 / 2622; padding: 7px; border-radius: 46px; background: #050506;
+  box-shadow: 0 0 0 1.5px #2b2c30, 0 0 0 3.5px #b4b7bd, 0 0 0 4.5px #75787f, 0 40px 70px -30px rgba(10, 4, 8, .75); }
+.phone.iphone::before { top: 2.4%; width: 30%; height: 3.3%; border-radius: 999px; background: #000; z-index: 3; }
+.phone.iphone .phone-screen { border-radius: 39px; }
+.iphone-btns { position: absolute; inset: 0; pointer-events: none; }
+.iphone-btns::before, .iphone-btns::after { content: ""; position: absolute; top: 0; bottom: 0; width: 3px; border-radius: 2px; }
+/* left: Action button, volume up, volume down */
+.iphone-btns::before { left: -7px; background: linear-gradient(#a4a7ae, #a4a7ae) 0 17% / 100% 4% no-repeat, linear-gradient(#a4a7ae, #a4a7ae) 0 27% / 100% 8% no-repeat, linear-gradient(#a4a7ae, #a4a7ae) 0 39% / 100% 8% no-repeat; }
+/* right: side button, Camera Control */
+.iphone-btns::after { right: -7px; background: linear-gradient(#a4a7ae, #a4a7ae) 0 29% / 100% 12% no-repeat, linear-gradient(#a4a7ae, #a4a7ae) 0 66% / 100% 6% no-repeat; }
 .art-mint { background: radial-gradient(70% 60% at 30% 80%, #f2fff8, transparent 70%), var(--mint); }
 .art-paper { background: radial-gradient(70% 60% at 50% 0%, #fff, transparent 70%), #f1e6dc; padding: 24px; }
 .art-chip { position: absolute; padding: 7px 12px; border-radius: 999px; background: var(--paper); color: var(--ink); font-family: var(--font-mono); font-size: .78rem; box-shadow: 0 10px 24px -12px rgba(42,15,24,.45); animation: bob 6s ease-in-out infinite; z-index: 3; }

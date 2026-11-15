@@ -318,7 +318,6 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 .gb-tabs { display: grid; gap: 6px; align-self: center; z-index: 2; }
 .gb-tabs button { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: #fff; border-radius: 999px; padding: 6px 12px; font-size: .78rem; text-align: left; transition: background-color var(--dur), color var(--dur); }
 .gb-tabs button[aria-pressed="true"] { background: #fff; color: #0b2fa8; border-color: transparent; }
-.gb-logo { position: absolute; right: 16px; top: 16px; width: 64px; height: auto; padding: 6px; background: #fff; border-radius: 16px; box-shadow: 0 12px 26px -12px rgba(0,0,30,.6); rotate: 6deg; z-index: 3; }
 .slide-hint { font: .78rem var(--font-mono); color: var(--text-subtle); }
 @media (max-width: 640px) { .art-gabay { grid-template-columns: 1fr; } .phone-real { width: 210px; justify-self: center; } .gb-tabs { grid-template-columns: repeat(4, auto); justify-content: center; } .gb-tabs button { padding: 5px 9px; font-size: .7rem; } }
 
@@ -551,3 +550,7 @@ kbd { font: 500 .8em var(--font-mono); padding: 1px 6px; border: 1px solid var(-
 
 /* No progress line under the work slides (the tabs show where you are) */
 .work-progress { display: none; }
+
+/* GABAY as a phone too: same iPhone frame as the live apps, no blue panel, screen list beside it */
+.art-gabay.art-phone { background: none; padding: 0; gap: 28px; }
+.art-phone .phone.phone-real { width: auto; max-height: none; }
